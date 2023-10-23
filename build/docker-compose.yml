@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  next-ui:
+    stdin_open: true
+    tty: true
+    image: next-ui
+    volumes:
+      - ../public:/satiscribble-ui/public
+      - ../src:/satiscribble-ui/src
+      - ../package.json:/satiscribble-ui/package.json
+      - ../package-lock.json:/satiscribble-ui/package-lock.json
+      - ../.env:/satiscribble-ui/.env
+      - ../next-env.d.ts:/satiscribble-ui/next-env.d.ts
+      - ../next.config.js:/satiscribble-ui/next.config.js
+      - ../tsconfig.json:/satiscribble-ui/tsconfig.json
+      - ../.eslintrc.json:/satiscribble-ui/.eslintrc.json
+    ports:
+      - ${UI_HOST_PORT}:${UI_SERVICE_PORT}
+    build:
+      context: ../
+      dockerfile: build/Dockerfile
