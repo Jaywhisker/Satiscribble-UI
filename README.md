@@ -4,10 +4,12 @@ This is the repository for Satiscribble UI. The UI will integrate AI features to
 
 # Setup
 This repository is hosted on a Next.js running in Docker. To set up your docker image, please follow the following steps after git cloning and entering the root folder.
+<br/><br/>
 `
 cd build
 docker compose up
 `
+<br/><br/>
 Afterwhich, enter the docker container terminal and run `npm run dev` to start the server on http://localhost:8000
 
 # Setting up the endpoint
