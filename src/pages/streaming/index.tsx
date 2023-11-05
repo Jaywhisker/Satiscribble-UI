@@ -11,9 +11,17 @@ const DynamicTextareaWithSend = () => {
 
   useEffect(() => {
     async function getfield() {
-      const response = await axios.get("/api/webQuery");
-      console.log(response);
-      setTypedContent(response.data.response);
+      const response = await axios.post("/api/streaming", {
+        responseType: "stream",
+      });
+      const stream = response.data;
+      stream.on("data", (data) => {
+        console.log(data);
+      });
+
+      stream.on("end", () => {
+        console.log("stream done");
+      });
     }
     getfield();
   }, []);
