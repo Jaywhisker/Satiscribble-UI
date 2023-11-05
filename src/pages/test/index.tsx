@@ -66,6 +66,6 @@ export default function Home() {
       <p>Testing page works!</p>
       <button onClick={handleSubmit}>Test</button>
       <p>{response}</p>
-    </>
+    </div>
   )
 }
