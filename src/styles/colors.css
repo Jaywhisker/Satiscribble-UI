@@ -1,0 +1,27 @@
+:root{
+    --Dark_Purple_Blue: rgb(52,53,65);
+    --Nice_Blue: rgb(156,165,216);
+    --Nice_Blue_10: rgb(156,165,216,0.1);
+    --Nice_Blue_25: rgb(156,165,216,0.25);
+    --Dark_Grey: rgb(32,33,35);
+    --Grey: rgb(50,50,51);
+    --Light_Grey: rgb(177,177,177);
+    --Off_White: rgb(209,209,209);
+    --Off_White_10: rgb(209,209,209, 0.1);
+    --Off_White_50: rgb(209,209,209,0.5);
+    --Blue: rgb(174,201,229);
+    --Lighter_Grey: rgb(217,217,217,0.1);
+    --Orange: rgb(255,206,133);
+
+    /* Unnamed Colors */
+    --Pure_White: rgb(255,255,255);
+    --Darkish_Blue: rgb(78,89,156);
+
+    /* Honestly I have no idea what these ones are here for */
+    --Not_Nice_Blue: rgb(156,165,216);
+    --Not_Dark_Grey: rgb(32,33,35);
+    --Not_Lighter_Grey: rgb(217,217,217,0.1);
+
+
+
+}
