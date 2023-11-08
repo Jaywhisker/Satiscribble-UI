@@ -16,7 +16,7 @@ const ModularTextField = forwardRef((props, ref) => {
         type="text"
         className={`${styles.meetingBlockTextField} ${styles.meetingBlockTextFieldText}`}
         placeholder={placeholder}
-        onChange={onChange} // Ensure you pass the onChange handler here
+        onChange={onChange}
       />
     </div>
   );
