@@ -1,9 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
-function ModularTextField(props) {
-  const { label, placeholder, value, onChange, onBlur } = props;
-  const textFieldRef = useRef(null);
+const ModularTextField = forwardRef((props, ref) => {
+  const { label, placeholder, onChange } = props;
 
   return (
     <div className={styles.meetingBlockTextFieldHolder}>
@@ -12,15 +11,15 @@ function ModularTextField(props) {
       >
         {label}:
       </p>
-      <textarea
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
+      <input
+        ref={ref}
+        type="text"
         className={`${styles.meetingBlockTextField} ${styles.meetingBlockTextFieldText}`}
-      ></textarea>
+        placeholder={placeholder}
+        onChange={onChange} // Ensure you pass the onChange handler here
+      />
     </div>
   );
-}
+});
 
 export default ModularTextField;

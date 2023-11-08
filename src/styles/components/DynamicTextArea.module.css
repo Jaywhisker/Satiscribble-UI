@@ -44,6 +44,7 @@
   height: var(--psize);
   border: none; 
   outline: none; 
+  padding-top: calc(var(--psize)/8)
 }
 
 .meetingBlockTextFieldLabel{
