@@ -1,0 +1,114 @@
+.overallContainer{
+    width: 25vw;
+    position: absolute;
+    right: 0;
+    background-color: var(--Dark_Grey);
+    overflow-y: scroll;
+    height: 5.2vh;
+    bottom: 0;
+}
+
+.overallContainer::-webkit-scrollbar {
+    display: none;
+}
+  
+.overallContainer {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+@keyframes scrollUp {
+    0% {
+        height: 5.2vh;
+        bottom: 0;
+    } 100% {
+        height: 100vh;
+        bottom: 0;
+    }
+}
+
+@keyframes scrollDown {
+    0%{
+        height: 100vh;
+        bottom: 0;
+    } 100% {
+        height: 5.2vh;
+        bottom: 0;
+    }
+}
+
+.dropDownContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 2vh 0;
+    border-bottom: 2px solid var(--Grey);
+}
+
+.dropDownContainer:hover{
+    cursor: pointer;
+}
+
+.dropDownIcon{
+    height: 1.2vh;
+    object-fit: contain;
+}
+
+.tabOverallContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.tabContainer{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabContainer:hover{
+    cursor: pointer;
+}
+
+.tabText{
+    margin: 0;
+    font-size: 2.5vmin;
+    font-weight: 600;
+    margin: 1.5vh 0;
+}
+
+.tabDetailsContainer{
+    position: relative;
+    width: 100%;
+}
+
+.moreContainer{
+    z-index: 999;
+    width: 100%;
+    position: absolute;
+    padding: 1.5vh 0;
+    display: flex;
+    justify-content: flex-end;
+    background-color: var(--Dark_Grey);
+}
+
+.moreIcon{
+    z-index: 999;
+    padding-right: 1vw;
+    height: 3.5vh;
+    object-fit: contain;
+}
+
+.moreIcon:hover{
+    cursor: pointer;
+}
+
+.chatContainer{
+    z-index: 1;
+    position: absolute;
+}
+
+.hoverable:hover{
+    fill-opacity: 0.25;
+}
