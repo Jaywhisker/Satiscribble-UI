@@ -46,9 +46,7 @@ function MeetingDetailBlocks() {
 
   return (
     <div className={styles.container}>
-      <h1 style={{ "font-size": "var(--headersize)", "font-family": "Lato" }}>
-        Meeting Details
-      </h1>
+      <h1 className={styles.blockHeader}>Meeting Details</h1>
       <ModularTextField
         label="Date"
         placeholder="Enter date here"

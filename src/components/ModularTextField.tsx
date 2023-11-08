@@ -6,10 +6,9 @@ function ModularTextField(props) {
   const textFieldRef = useRef(null);
 
   return (
-    <div className={styles.textFieldHolder}>
+    <div className={styles.meetingBlockTextFieldHolder}>
       <p
-        className={`${styles.textFieldLabel} ${styles.textFieldText}`}
-        style={{ "font-size": "var(--psize)" }}
+        className={`${styles.meetingBlockTextFieldLabel} ${styles.meetingBlockTextFieldText}`}
       >
         {label}:
       </p>
@@ -18,8 +17,7 @@ function ModularTextField(props) {
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        className={`${styles.textField} ${styles.textFieldText}`}
-        style={{ "font-size": "var(--psize)" }}
+        className={`${styles.meetingBlockTextField} ${styles.meetingBlockTextFieldText}`}
       ></textarea>
     </div>
   );

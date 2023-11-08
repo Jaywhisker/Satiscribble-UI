@@ -51,7 +51,6 @@ function DynamicTextarea({ id }) {
         ref={textareaRef}
         value={text}
         onChange={handleChange}
-        className={styles.textArea}
         onFocus={() => handleFocus(id)} // Added onFocus handler
         onBlur={() => handleBlur(id, textareaRef.current.value)} // Added onBlur handler
       ></textarea>

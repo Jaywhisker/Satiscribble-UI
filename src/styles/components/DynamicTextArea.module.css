@@ -1,30 +1,34 @@
 .container {
-    padding: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 32px;
+    padding-right:32px;
     margin-right: 20px;
     margin-left:20px;
     /* width: 100%; */
-    background-color: aliceblue;
     display: flex;
     flex-direction: column;
     gap:20px;
-  }
-  
-.textAreaContainer {
-  background-color: #87CEEB;
+    background-color: var(--Dark_Grey);
+    border-radius:10px;
 }
 
-.textArea {
+.blockHeader{
+  font-size: var(--headersize);
+  font-family: Lato;
+  margin: 0;
+  color: var(--Nice_Blue )
+}
+
+
+.meetingBlockTextArea {
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
   resize: none; /* Prevent user resizing of textarea */
 }
 
-.containerHeader{
-  color:black
-}
-
-.textFieldHolder{
+.meetingBlockTextFieldHolder{
   width:100%;
   gap:20px;
   display:flex;
@@ -32,23 +36,23 @@
   margin:0;
 }
 
-.textField{
+.meetingBlockTextField{
   width:100%;
   background: transparent;
   resize:none;
   line-height: 1;
-  height:25px;
+  height: var(--psize);
   border: none; 
   outline: none; 
 }
 
-.textFieldLabel{
+.meetingBlockTextFieldLabel{
   margin:auto;
   height:fit-content; 
 }
 
-.textFieldText{
-  color: black;
-  /* font-size: 24px; */
+.meetingBlockTextFieldText{
+  color: var(--Off_White);  
   font-family: lato;
+  font-size: var(--psize);
 }
