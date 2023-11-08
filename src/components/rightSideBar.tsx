@@ -7,14 +7,40 @@ export default function RightSideBar() {
     const [selected, setSelected] = useState('CuriousCat')
     const [queryMode, setQueryMode] = useState('document')
     const [query, setQuery] = useState('')
+    const [showMore, setShowMore] = useState(false)
     const queryInputArea = useRef(null)
+
+
+    useEffect(() => {
+        window.addEventListener('click', closeModal)
+        return () => {
+            window.removeEventListener('click', closeModal)
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if (selected === 'CuriousCat') {
+            const textarea = queryInputArea.current
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+    
+            const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
+            bottomTabElement.style.top = `${window.innerHeight * 0.86 - textarea.scrollHeight}px`
+        }
+    }, [query, selected])
+
 
     function handleExpand() {
         const dropDownContainerElement = document.querySelector('#rightSideBar') as HTMLElement
+        const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
         if (!expanded) {
             //previously not expanded but now expanding
+            bottomTabElement.style.position = 'absolute'
             dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
+            setTimeout(() => {bottomTabElement.style.position = 'fixed'}, 1250)
         } else {
+            bottomTabElement.style.position = 'absolute'
             dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
         }
         setExpanded(!expanded)
@@ -35,8 +61,8 @@ export default function RightSideBar() {
             insertLineBreak();
         } else if (event.key ==='Enter') {
             event.preventDefault();
-            //submit query
             setQuery('')
+            handleSubmitQuery()
         }
       }
 
@@ -54,17 +80,21 @@ export default function RightSideBar() {
         setQuery(event.target.value)
     }
 
-    useEffect(() => {
-        if (selected === 'CuriousCat') {
-            const textarea = queryInputArea.current
-            textarea.style.height = 'auto';
-            textarea.style.height = `${textarea.scrollHeight}px`;
-    
-            const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
-            bottomTabElement.style.top = `${window.innerHeight * 0.9 - textarea.scrollHeight}px`
-        }
-    }, [query, selected])
+    function handleSubmitQuery() {
+        console.log('submit')
+    }
 
+    function handleClearChat() {
+        console.log('clear chat')
+    }
+
+    function closeModal(event) {
+        if (event.target.id == 'showMore') {
+            setShowMore(!showMore)
+        } else {
+            setShowMore(false)
+        }
+    }
 
 
     return(
@@ -130,12 +160,18 @@ export default function RightSideBar() {
 
                         <div className={rightBar.moreContainer}>
                             <svg className={rightBar.moreIcon} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="36" height="36" rx="5" fill="#9CA5D8" fillOpacity="0.1" className={rightBar.hoverable}/>
+                                <rect width="36" height="36" rx="5" fill="#9CA5D8" className={rightBar.hoverable} id='showMore' style={{fillOpacity: showMore ? 0.35 : 0.1}}/>
                                 <path d="M25.5753 18H25.4253" stroke="#9CA5D8" strokeWidth="3.75" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M18.0753 18H17.9253" stroke="#9CA5D8" strokeWidth="3.75" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M10.5753 18H10.4253" stroke="#9CA5D8" strokeWidth="3.75" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         </div>
+
+                        {showMore && (
+                                <div className={rightBar.clearChatContainer}>
+                                    <p className={rightBar.clearChatText}>Clear Chat</p>
+                                </div>
+                            )}
 
                         <div className={rightBar.chatContainer}>
                             <p style={{color: `var(--Off_White)`}}>{queryMode == 'document' ? 'DOCUMENT QUERY' : "WEB QUERY"}</p>
@@ -163,10 +199,12 @@ export default function RightSideBar() {
                                     onKeyDown = {handleKeyDown}
                                     rows = {1}
                                     />
-                                <svg className = {rightBar.sendIcon} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg onClick={handleSubmitQuery} className = {rightBar.sendIcon} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2.18675 24.505L23.7099 13.9249C23.9324 13.8162 24.1222 13.6349 24.2555 13.4036C24.3889 13.1722 24.46 12.901 24.46 12.6236C24.46 12.3463 24.3889 12.0751 24.2555 11.8437C24.1222 11.6123 23.9324 11.431 23.7099 11.3223L2.18675 0.742227C2.00038 0.649007 1.79671 0.610461 1.5941 0.630065C1.3915 0.64967 1.19633 0.726809 1.02622 0.854523C0.85611 0.982238 0.716399 1.15651 0.619695 1.36162C0.52299 1.56672 0.472333 1.79621 0.472295 2.02938L0.459961 8.55001C0.459961 9.25723 0.916326 9.86545 1.53304 9.95031L18.9613 12.6236L1.53304 15.2828C0.916326 15.3818 0.459961 15.99 0.459961 16.6973L0.472295 23.2179C0.472295 24.2221 1.37269 24.9152 2.18675 24.505Z" fill="#B1B1B1"/>
                                 </svg>
                             </div>
+
+                            <p  className={rightBar.warningText}>CuriousCat can make mistakes. Remember to double check.</p>
                         </div>
                     </div>
                 ) : selected == "Glossary" ? (
