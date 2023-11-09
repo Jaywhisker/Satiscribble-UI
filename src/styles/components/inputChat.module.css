@@ -1,0 +1,40 @@
+.userContainer{
+    margin: auto;
+    margin-right: 0;
+    width: 65%;
+    padding: 0;
+    background-color: var(--Nice_Blue);
+    border-radius: 8px;
+    margin-bottom: 2vh;
+}
+
+.userText{
+    margin: 0;
+    text-align: left;
+    padding: 1.5vh 1vw;
+    color: var(--Dark_Grey);
+    font-weight: 600;
+    font-size: 2vmin;
+    letter-spacing: 0.25px;
+}
+
+.assistantContainer{
+    margin: auto;
+    margin-left: 0;
+    width: 65%;
+    padding: 0;
+    background-color: var(--Dark_Purple_Blue);
+    border-radius: 8px;
+    margin-bottom: 2vh;
+}
+
+
+.assistantText{
+    margin: 0;
+    text-align: left;
+    padding: 1.5vh 1vw;
+    color: var(--Off_White);
+    font-weight: 600;
+    font-size: 2vmin;
+    letter-spacing: 0.25px;
+}
