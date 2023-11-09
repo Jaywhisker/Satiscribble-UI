@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Button } from '../components/buttons';
+
 
 export default function Home() {
   const [name, setName] = useState(null);
@@ -19,6 +21,9 @@ export default function Home() {
       <p>Testing hello!</p>
       <p>API works! {name} says hello</p>
       <p>Python Backend works! Python says {pythonMsg}</p>
+      <Button size="large" fillBorderVariant="border" leftIcon={<span>🚀</span>}>
+        button
+      </Button>
     </>
   );
 }
