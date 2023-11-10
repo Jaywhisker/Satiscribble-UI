@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import inputChat from '@/styles/components/inputChat.module.css'
 
 export interface assistantResponse {
@@ -9,11 +10,27 @@ export interface assistantResponse {
 
 
 export default function AssistantResponse(props: assistantResponse ) {
+
+    useEffect(() => {
+        console.log(props.sourceID)
+    })
+
     return(
-    <>
-        <div key = {props.id} className={inputChat.assistantContainer}>
+    <div key={props.id} className={inputChat.assistantContainer}>
+        <div>
             <p className={inputChat.assistantText}>{props.text}</p>
         </div>
-    </>
+        
+        {props.sourceID && (
+            <div className={inputChat.sourceContainer}>
+                <p className={inputChat.sourceText}>Sources</p>
+                <ul className={inputChat.listIndex}>
+                    {props.sourceID.map((topicTitle, index) => (
+                        <li className={inputChat.source} key={index}>{topicTitle}</li>
+                    ))}
+                </ul>
+            </div>
+        )}
+    </div>
     
 )}

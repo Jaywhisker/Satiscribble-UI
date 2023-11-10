@@ -18,6 +18,9 @@ export default function RightSideBar() {
     const [webChatHistory, setWebChatHistory] = useState(webJson.web)
     const queryInputArea = useRef(null)
 
+    //props
+    const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development'])
+
     //useEffect to get document and web history 
 
     useEffect(() => {
@@ -36,6 +39,10 @@ export default function RightSideBar() {
     
             const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
             bottomTabElement.style.top = `${window.innerHeight * 0.86 - textarea.scrollHeight}px`
+
+            const chatContainerElement = document.querySelector('#chatContainer') as HTMLElement
+            chatContainerElement.style.height = `${window.innerHeight * 0.69 - textarea.scrollHeight}px`
+            //insert scrolling logic if desired
         }
     }, [query, selected])
 
@@ -146,7 +153,7 @@ export default function RightSideBar() {
                                 </div>
                             )}
 
-                        <div className={rightBar.chatContainer}>
+                        <div id='chatContainer' className={rightBar.chatContainer}>
                             {queryMode === 'document' && documentChatHistory.map((chatDetail, index) => (
                                 chatDetail.hasOwnProperty("user") ? (
                                     <UserChat 
@@ -156,7 +163,7 @@ export default function RightSideBar() {
                                 ) : (
                                     <AssistantResponse
                                         text={chatDetail.assistant}
-                                        sourceID={chatDetail.sourceID}
+                                        sourceID={chatDetail.sourceID.map(data => topicTitles[parseInt(data, 10)])}
                                         copyable={false}
                                         id={index}
                                     />

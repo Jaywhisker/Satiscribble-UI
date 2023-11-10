@@ -124,7 +124,6 @@
     z-index: 2;
     position: relative;
     width: 88%;
-    height: 65vh;
     margin:auto;
     overflow-y: scroll;
 }
