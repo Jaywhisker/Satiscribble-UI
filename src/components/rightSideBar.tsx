@@ -50,13 +50,17 @@ export default function RightSideBar() {
     function handleExpand() {
         const dropDownContainerElement = document.querySelector('#rightSideBar') as HTMLElement
         const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
-        if (!expanded) {
+        if (!expanded && selected === 'CuriousCat') {
             //previously not expanded but now expanding
             bottomTabElement.style.position = 'absolute'
             dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
             setTimeout(() => {bottomTabElement.style.position = 'fixed'}, 1250)
-        } else {
+        } else if (expanded && selected === 'CuriousCat') {
             bottomTabElement.style.position = 'absolute'
+            dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
+        } else if (!expanded) {
+            dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
+        } else {
             dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
         }
         setExpanded(!expanded)
