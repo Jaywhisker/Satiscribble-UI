@@ -55,12 +55,15 @@ export default function RightSideBar() {
             bottomTabElement.style.position = 'absolute'
             dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
             setTimeout(() => {bottomTabElement.style.position = 'fixed'}, 1250)
-        } else if (expanded && selected === 'CuriousCat') {
+        } 
+        else if (expanded && selected === 'CuriousCat') {
             bottomTabElement.style.position = 'absolute'
             dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
-        } else if (!expanded) {
+        } 
+        else if (!expanded) {
             dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
-        } else {
+        } 
+        else {
             dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
         }
         setExpanded(!expanded)
