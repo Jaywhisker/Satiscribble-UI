@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
-import ModularTextField from "@/components/ModularTextField";
+import ModularTextField from "@/components/centerArea/ModularTextField";
 
 function MeetingDetailBlocks() {
   const containerRef = useRef(null);

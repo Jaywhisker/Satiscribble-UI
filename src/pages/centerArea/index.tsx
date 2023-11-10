@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import DynamicTextarea from "@/components/DynamicTextArea";
-import MeetingDetailBlocks from "@/components/MeetingDetailBlocks";
-import TextAreaQuill from "@/components/TextAreaUsingQuill";
+import DynamicTextarea from "@/components/centerArea/DynamicTextArea";
+import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
+import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 
 function App() {
   const [textareas, setTextareas] = useState([{}]);

@@ -1,6 +1,6 @@
 // pages/index.js
 import React, { useState } from "react";
-import MyEditor from "@/components/ReactQuill";
+import MyEditor from "@/components/centerArea/ReactQuill";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 function TextAreaQuill() {
@@ -17,7 +17,9 @@ function TextAreaQuill() {
 
   return (
     <div className={styles.container}>
+      {/* Make this into a textarea so that topic title can be changed */}
       <h1 className={styles.blockHeader}>Topic</h1>
+      {/* Reduce the amount of tab spacing */}
       <MyEditor onContentChange={handleContentChange} />
       <button onClick={handleSubmit}>Submit</button>
     </div>
