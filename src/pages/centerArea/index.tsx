@@ -12,10 +12,10 @@ function App() {
 
   return (
     <div style={{ display: "flex", "flex-direction": "column", gap: 20 }}>
-      {textareas.map((_, index) => (
+      {/* {textareas.map((_, index) => (
         <DynamicTextarea key={index} id={index} />
       ))}
-      <button onClick={handleAddTextarea}>Add Textarea</button>{" "}
+      <button onClick={handleAddTextarea}>Add Textarea</button>{" "} */}
       <MeetingDetailBlocks />
       <TextAreaQuill />
     </div>

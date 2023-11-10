@@ -4,7 +4,7 @@ import {
   adjustHeight,
   handleFocus,
   handleBlur,
-} from "@/functions/helpers";
+} from "@/functions/centerArea/helpers";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 let typingTimer;
