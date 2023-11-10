@@ -9,3 +9,9 @@ body{
 p{
   font-family: lato;
 }
+
+li{
+  font-family: lato;
+  font-size: var(--psize);
+
+}

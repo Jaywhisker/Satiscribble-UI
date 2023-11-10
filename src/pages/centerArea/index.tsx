@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DynamicTextarea from "@/components/DynamicTextArea";
 import MeetingDetailBlocks from "@/components/MeetingDetailBlocks";
+import TextAreaQuill from "@/components/TextAreaUsingQuill";
 
 function App() {
   const [textareas, setTextareas] = useState([{}]);
@@ -16,6 +17,7 @@ function App() {
       ))}
       <button onClick={handleAddTextarea}>Add Textarea</button>{" "}
       <MeetingDetailBlocks />
+      <TextAreaQuill />
     </div>
   );
 }
