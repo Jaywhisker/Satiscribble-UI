@@ -1,20 +1,10 @@
 .overallContainer{
     width: 25vw;
-    position: absolute;
+    position: fixed;
     right: 0;
     background-color: var(--Dark_Grey);
-    overflow-y: scroll;
-    height: 5.2vh;
+    height: 100vh;
     bottom: 0;
-}
-
-.overallContainer::-webkit-scrollbar {
-    display: none;
-}
-  
-.overallContainer {
-    scrollbar-width: none;  /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
 }
 
 @keyframes scrollUp {
@@ -44,11 +34,9 @@
     align-items: center;
     padding: 2vh 0;
     border-bottom: 2px solid var(--Grey);
+    z-index: 999;
 }
 
-.dropDownContainer:hover{
-    cursor: pointer;
-}
 
 .dropDownIcon{
     height: 1.2vh;
@@ -67,26 +55,55 @@
     align-items: center;
 }
 
-.tabContainer:hover{
-    cursor: pointer;
-}
 
 .tabText{
     margin: 0;
-    font-size: 2.5vmin;
+    /* font-size: 2.5vmin; */
+    font-size: 1.2rem;
     font-weight: 600;
     margin: 1.5vh 0;
 }
 
 .tabDetailsContainer{
-    position: relative;
     width: 100%;
 }
+
+.backgroundIconContainer{
+    z-index: 1;
+    top:50vh;
+    position: absolute;
+    width: 100%;
+    transform: translateY(-60%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.backgroundText{
+    color: var(--Dark_Purple_Blue);
+    /* font-size: 5vmin; */
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 1.5vh;
+}
+
+.backgroundIcon{
+    width: 75%;
+    object-fit: contain;
+}
+
+
+.backgroundGlossaryIcon{
+    width: 55%;
+    object-fit: contain;
+}
+
 
 .moreContainer{
     z-index: 999;
     width: 100%;
-    position: absolute;
     padding: 1.5vh 0;
     display: flex;
     justify-content: flex-end;
@@ -95,20 +112,152 @@
 
 .moreIcon{
     z-index: 999;
-    padding-right: 1vw;
+    padding-right: 6%;
     height: 3.5vh;
     object-fit: contain;
 }
 
 .moreIcon:hover{
     cursor: pointer;
+    fill-opacity: 0.25;
 }
 
 .chatContainer{
-    z-index: 1;
-    position: absolute;
+    z-index: 2;
+    position: relative;
+    width: 88%;
+    margin:auto;
+    overflow-y: scroll;
+}
+
+
+.chatContainer::-webkit-scrollbar {
+    display: none;
+}
+  
+.chatContainer {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
 }
 
 .hoverable:hover{
-    fill-opacity: 0.25;
+    fill-opacity: 0.25 !important;
 }
+
+.clearChatContainer{
+    position: absolute;
+    top: 18vh;
+    right: 6%;
+    background-color: var(--Grey);
+    padding: 1vh 1vw;
+    border-radius: 3.5px;
+    z-index: 5;
+}
+
+.clearChatContainer:hover{
+    cursor: pointer;
+    background-color: var(--Dark_Purple_Blue);
+}
+
+.clearChatText{
+    color: var(--Off_White);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+    /* font-size: 1.75vmin; */
+    margin: 0;
+}
+
+.inputContainer{
+    z-index: 999;
+    position: fixed;
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--Dark_Grey);
+    padding-top: 2vh;
+}
+
+.buttonContainer{
+    display: flex;
+    flex-direction: row;
+    width: 84%;
+    align-items: center;
+    border-radius: 3.5px;
+    border: 1.5px solid var(--Nice_Blue);
+    margin-bottom: 2vh;
+}
+
+.buttonContainer:hover{
+    cursor: pointer;
+}
+
+.button{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonText{
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 1.75vmin;
+    margin: 0.5vh 0;
+    color: var(--Nice_Blue);
+}
+
+.inputTextContainer{
+    width: 84%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    background-color: var(--Grey);
+    padding: 0.5vh;
+    border-radius: 3.5px;
+}
+
+.queryContainer{
+    max-height: 15vh;
+    width: 88%;
+    border:none;
+    resize: none;
+    border: none;
+    background-color: transparent;
+    font: 400 1.75vmin 'Lato';
+    color: var(--Off_White);
+    overflow: hidden;
+    height: auto;
+    padding: 0.75vh 0 0vh 0.5vw;
+}
+
+.queryContainer:focus{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.sendIcon{
+    width: 5%;
+    object-fit: contain;
+    margin-bottom: 0.75vh;
+    margin-right: 2%;
+}
+
+.warningText{
+    width: 84%;
+    font: 400 1.5vmin 'Lato';
+    color: var(--Off_White);
+    text-align: center;
+}
+
+
+.dropDownContainer:hover,
+.tabContainer:hover,
+.sendIcon:hover{
+    cursor: pointer;
+}
+

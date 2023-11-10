@@ -1,17 +1,69 @@
-import React, { useState, useEffect} from "react";
-import rightBar from '@/styles/components/rightSideBar.module.css'
+import React, { useState, useEffect, useRef} from "react";
+import rightBar from '@/styles/components/rightSideBar.module.css';
+import SirLogo from "./chatContainer/sirLogos";
+
+import documentJson from '@/data/documentChatHistory.json'
+import webJson from '@/data/webChatHistory.json'
+import UserChat from "./chatContainer/userInput";
+import AssistantResponse from "./chatContainer/assistantResponse";
 
 export default function RightSideBar() {
 
-    const [expanded, setExpanded] = useState(false)
+    const [expanded, setExpanded] = useState(true)
     const [selected, setSelected] = useState('CuriousCat')
+    const [queryMode, setQueryMode] = useState('document')
+    const [query, setQuery] = useState('')
+    const [showMore, setShowMore] = useState(false)
+    const [documentChatHistory, setDocumentChatHistory] = useState(documentJson.document)
+    const [webChatHistory, setWebChatHistory] = useState(webJson.web)
+    const queryInputArea = useRef(null)
+
+    //props
+    const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development'])
+
+    //useEffect to get document and web history 
+
+    useEffect(() => {
+        window.addEventListener('click', closeModal)
+        return () => {
+            window.removeEventListener('click', closeModal)
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if (selected === 'CuriousCat') {
+            const textarea = queryInputArea.current
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+    
+            const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
+            bottomTabElement.style.top = `${window.innerHeight * 0.86 - textarea.scrollHeight}px`
+
+            const chatContainerElement = document.querySelector('#chatContainer') as HTMLElement
+            chatContainerElement.style.height = `${window.innerHeight * 0.69 - textarea.scrollHeight}px`
+            //insert scrolling logic if desired
+        }
+    }, [query, selected])
+
 
     function handleExpand() {
         const dropDownContainerElement = document.querySelector('#rightSideBar') as HTMLElement
-        if (!expanded) {
+        const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
+        if (!expanded && selected === 'CuriousCat') {
             //previously not expanded but now expanding
+            bottomTabElement.style.position = 'absolute'
             dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
-        } else {
+            setTimeout(() => {bottomTabElement.style.position = 'fixed'}, 1250)
+        } 
+        else if (expanded && selected === 'CuriousCat') {
+            bottomTabElement.style.position = 'absolute'
+            dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
+        } 
+        else if (!expanded) {
+            dropDownContainerElement.style.animation = `${rightBar.scrollUp} 1.25s ease-in-out forwards`
+        } 
+        else {
             dropDownContainerElement.style.animation = `${rightBar.scrollDown} 1.25s ease-in-out forwards`
         }
         setExpanded(!expanded)
@@ -20,6 +72,52 @@ export default function RightSideBar() {
     function handleTabChange(tabName) {
         setSelected(tabName)
     }
+
+    function handleQueryChange(queryMode){
+        setQueryMode(queryMode)
+    }
+
+    function handleKeyDown(event) {
+        if (event.shiftKey && event.key === 'Enter') {
+            event.preventDefault();
+            insertLineBreak();
+        } else if (event.key ==='Enter') {
+            event.preventDefault();
+            setQuery('')
+            handleSubmitQuery()
+        }
+      }
+
+    function insertLineBreak() {
+        const textarea = document.getElementById('queryInput') as HTMLTextAreaElement;
+        const { selectionStart, selectionEnd } = textarea;
+        const text = textarea.value;
+        const newText = text.substring(0, selectionStart) + '\n' + text.substring(selectionEnd);
+        textarea.value = newText;
+        textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
+        setQuery(textarea.value)
+    }
+
+    function handleInputChange(event) {
+        setQuery(event.target.value)
+    }
+
+    function handleSubmitQuery() {
+        console.log('submit')
+    }
+
+    function handleClearChat() {
+        console.log('clear chat')
+    }
+
+    function closeModal(event) {
+        if (event.target.id == 'showMore') {
+            setShowMore(!showMore)
+        } else {
+            setShowMore(false)
+        }
+    }
+
 
     return(
         <div className={rightBar.overallContainer} id='rightSideBar'>
@@ -42,22 +140,96 @@ export default function RightSideBar() {
             {
                 selected == "CuriousCat" ? (
                     <div className={rightBar.tabDetailsContainer}>
+                        <div className={rightBar.backgroundIconContainer}>
+                            <p className={rightBar.backgroundText}>CURIOUSCAT</p>
+                            <SirLogo mode='qna'/>
+                        </div>
+
                         <div className={rightBar.moreContainer}>
                             <svg className={rightBar.moreIcon} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="36" height="36" rx="5" fill="#9CA5D8" fillOpacity="0.1" className={rightBar.hoverable}/>
+                                <rect width="36" height="36" rx="5" fill="#9CA5D8" className={rightBar.hoverable} id='showMore' style={{fillOpacity: showMore ? 0.35 : 0.1}}/>
                                 <path d="M25.5753 18H25.4253" stroke="#9CA5D8" strokeWidth="3.75" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M18.0753 18H17.9253" stroke="#9CA5D8" strokeWidth="3.75" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M10.5753 18H10.4253" stroke="#9CA5D8" strokeWidth="3.75" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                         </div>
 
-                        <div className={rightBar.chatContainer}>
-                            <p>TEXT CONTAINER</p>
+                        {showMore && (
+                                <div className={rightBar.clearChatContainer} onClick={handleClearChat}>
+                                    <p className={rightBar.clearChatText}>Clear Chat</p>
+                                </div>
+                            )}
+
+                        <div id='chatContainer' className={rightBar.chatContainer}>
+                            {queryMode === 'document' && documentChatHistory.map((chatDetail, index) => (
+                                chatDetail.hasOwnProperty("user") ? (
+                                    <UserChat 
+                                        text={chatDetail.user}
+                                        id={index}
+                                    />
+                                ) : (
+                                    <AssistantResponse
+                                        text={chatDetail.assistant}
+                                        sourceID={chatDetail.sourceID.map(data => topicTitles[parseInt(data, 10)])}
+                                        copyable={false}
+                                        id={index}
+                                    />
+                                )
+                            ))}
+
+                            {queryMode === 'web' && webChatHistory.map((chatDetail, index) => (
+                                chatDetail.hasOwnProperty("user") ? (
+                                    <UserChat 
+                                        text={chatDetail.user}
+                                        id={index}
+                                    />
+                                ) : (
+                                    <AssistantResponse
+                                        text={chatDetail.assistant}
+                                        copyable={true}
+                                        id={index}
+                                    />
+                                )
+                            ))}
+                            
+                        </div>
+                        
+                        <div className={rightBar.inputContainer} id="bottomTab">
+                            <div className={rightBar.buttonContainer}>
+                                <div className={rightBar.button}  onClick={() => handleQueryChange('document')} style={{backgroundColor: queryMode == 'document' ? `var(--Nice_Blue)` : `var(--Dark_Blue)`}}>
+                                    <p className={rightBar.buttonText} style={{color: queryMode == 'document' ? `var(--Dark_Blue)` : `var(--Nice_Blue)`}}>DOCUMENT QUERY</p>
+                                </div>
+
+                                <div className={rightBar.button} onClick={() => handleQueryChange('web')} style={{backgroundColor: queryMode == 'web' ? `var(--Nice_Blue)` : `var(--Dark_Blue)`}}>
+                                    <p className={rightBar.buttonText} style={{color: queryMode == 'web' ? `var(--Dark_Blue)` : `var(--Nice_Blue)`}}>WEB QUERY</p>
+                                </div>
+                            </div>
+
+                            <div className={rightBar.inputTextContainer}>
+                                <textarea
+                                    id = "queryInput"
+                                    className = {rightBar.queryContainer}
+                                    ref = {queryInputArea}
+                                    placeholder = 'Ask me anything! Shift enter for newline'
+                                    value = {query}
+                                    onChange = {handleInputChange}
+                                    onKeyDown = {handleKeyDown}
+                                    rows = {1}
+                                    />
+                                <svg onClick={handleSubmitQuery} className = {rightBar.sendIcon} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.18675 24.505L23.7099 13.9249C23.9324 13.8162 24.1222 13.6349 24.2555 13.4036C24.3889 13.1722 24.46 12.901 24.46 12.6236C24.46 12.3463 24.3889 12.0751 24.2555 11.8437C24.1222 11.6123 23.9324 11.431 23.7099 11.3223L2.18675 0.742227C2.00038 0.649007 1.79671 0.610461 1.5941 0.630065C1.3915 0.64967 1.19633 0.726809 1.02622 0.854523C0.85611 0.982238 0.716399 1.15651 0.619695 1.36162C0.52299 1.56672 0.472333 1.79621 0.472295 2.02938L0.459961 8.55001C0.459961 9.25723 0.916326 9.86545 1.53304 9.95031L18.9613 12.6236L1.53304 15.2828C0.916326 15.3818 0.459961 15.99 0.459961 16.6973L0.472295 23.2179C0.472295 24.2221 1.37269 24.9152 2.18675 24.505Z" fill="#B1B1B1"/>
+                                </svg>
+                            </div>
+
+                            <p  className={rightBar.warningText}>CuriousCat can make mistakes. Remember to double check.</p>
                         </div>
                     </div>
                 ) : selected == "Glossary" ? (
                     <div>
-                        <p>GLOSSARY</p>
+                        <div className={rightBar.backgroundIconContainer}>
+                            <p className={rightBar.backgroundText}>GLOSSARY</p>
+                            <SirLogo mode='glossary'/>
+                        </div>
                     </div>
                 ) : (
                     null
