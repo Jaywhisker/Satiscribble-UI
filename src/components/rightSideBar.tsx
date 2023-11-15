@@ -2,10 +2,14 @@ import React, { useState, useEffect, useRef} from "react";
 import rightBar from '@/styles/components/rightSideBar.module.css';
 import SirLogo from "./chatContainer/sirLogos";
 
-import documentJson from '@/data/documentChatHistory.json'
-import webJson from '@/data/webChatHistory.json'
 import UserChat from "./chatContainer/userInput";
 import AssistantResponse from "./chatContainer/assistantResponse";
+import GlossaryModal from "./glossary/glossaryModal";
+
+import glosaryJSON from '@/data/glossaryData.json'
+import documentJson from '@/data/documentChatHistory.json'
+import webJson from '@/data/webChatHistory.json'
+
 
 export default function RightSideBar() {
 
@@ -14,14 +18,19 @@ export default function RightSideBar() {
     const [queryMode, setQueryMode] = useState('document')
     const [query, setQuery] = useState('')
     const [showMore, setShowMore] = useState(false)
+    
     const [documentChatHistory, setDocumentChatHistory] = useState(documentJson.document)
     const [webChatHistory, setWebChatHistory] = useState(webJson.web)
+    const [glossaryData, setGlossaryData] = useState(glosaryJSON.glossary)
+    const [glossaryMode, setGlossaryMode] =  useState(Array(glossaryData.length).fill('default'))
+
     const queryInputArea = useRef(null)
 
     //props
     const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development'])
 
     //useEffect to get document and web history 
+    //useEffect to get glossary data
 
     useEffect(() => {
         window.addEventListener('click', closeModal)
@@ -37,11 +46,12 @@ export default function RightSideBar() {
             textarea.style.height = 'auto';
             textarea.style.height = `${textarea.scrollHeight}px`;
     
+            var inputHeight = Math.min(textarea.scrollHeight, window.innerHeight * 0.25)
             const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
-            bottomTabElement.style.top = `${window.innerHeight * 0.86 - textarea.scrollHeight}px`
+            bottomTabElement.style.top = `${window.innerHeight * 0.86 - inputHeight}px`
 
             const chatContainerElement = document.querySelector('#chatContainer') as HTMLElement
-            chatContainerElement.style.height = `${window.innerHeight * 0.69 - textarea.scrollHeight}px`
+            chatContainerElement.style.height = `${window.innerHeight * 0.69 - inputHeight}px`
             //insert scrolling logic if desired
         }
     }, [query, selected])
@@ -219,6 +229,7 @@ export default function RightSideBar() {
                                 <svg onClick={handleSubmitQuery} className = {rightBar.sendIcon} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2.18675 24.505L23.7099 13.9249C23.9324 13.8162 24.1222 13.6349 24.2555 13.4036C24.3889 13.1722 24.46 12.901 24.46 12.6236C24.46 12.3463 24.3889 12.0751 24.2555 11.8437C24.1222 11.6123 23.9324 11.431 23.7099 11.3223L2.18675 0.742227C2.00038 0.649007 1.79671 0.610461 1.5941 0.630065C1.3915 0.64967 1.19633 0.726809 1.02622 0.854523C0.85611 0.982238 0.716399 1.15651 0.619695 1.36162C0.52299 1.56672 0.472333 1.79621 0.472295 2.02938L0.459961 8.55001C0.459961 9.25723 0.916326 9.86545 1.53304 9.95031L18.9613 12.6236L1.53304 15.2828C0.916326 15.3818 0.459961 15.99 0.459961 16.6973L0.472295 23.2179C0.472295 24.2221 1.37269 24.9152 2.18675 24.505Z" fill="#B1B1B1"/>
                                 </svg>
+                                
                             </div>
 
                             <p  className={rightBar.warningText}>CuriousCat can make mistakes. Remember to double check.</p>
@@ -229,6 +240,21 @@ export default function RightSideBar() {
                         <div className={rightBar.backgroundIconContainer}>
                             <p className={rightBar.backgroundText}>GLOSSARY</p>
                             <SirLogo mode='glossary'/>
+                        </div>
+
+                        <div>
+                            { glossaryData.map((data, index) => (
+                                <GlossaryModal
+                                    type= {glossaryMode[index]}
+                                    abbreviation= {data.abbreviation}
+                                    meaning= {data.meaning}
+                                    id={index}
+                                    glossaryType={glossaryMode}
+                                    setGlossaryType={setGlossaryMode}
+                                    glossaryData={glossaryData}
+                                    setGlossaryData={setGlossaryData}
+                                />
+                            ))}
                         </div>
                     </div>
                 ) : (

@@ -2,9 +2,9 @@ import {useEffect} from 'react'
 import inputChat from '@/styles/components/inputChat.module.css'
 
 export interface assistantResponse {
-    text: string;
-    sourceID?: any[];
-    copyable: boolean;
+    text: string
+    sourceID?: any[]
+    copyable: boolean
     id: number
 }
 

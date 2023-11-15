@@ -83,7 +83,7 @@
 .backgroundText{
     color: var(--Dark_Purple_Blue);
     /* font-size: 5vmin; */
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 800;
     letter-spacing: 1px;
     margin-bottom: 1.5vh;
@@ -146,7 +146,7 @@
 
 .clearChatContainer{
     position: absolute;
-    top: 18vh;
+    top: 17vh;
     right: 6%;
     background-color: var(--Grey);
     padding: 1vh 1vw;
@@ -163,7 +163,7 @@
     color: var(--Off_White);
     font-weight: 600;
     letter-spacing: 0.5px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     /* font-size: 1.75vmin; */
     margin: 0;
 }
@@ -221,7 +221,7 @@
 }
 
 .queryContainer{
-    max-height: 15vh;
+    max-height: 25vh;
     width: 88%;
     border:none;
     resize: none;

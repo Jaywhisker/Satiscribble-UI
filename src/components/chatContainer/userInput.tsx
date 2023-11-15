@@ -1,7 +1,7 @@
 import inputChat from '@/styles/components/inputChat.module.css'
 
 export interface userInput {
-    text: string,
+    text: string
     id: number
 }
 

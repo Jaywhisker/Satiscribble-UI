@@ -1,0 +1,78 @@
+.glossaryContainer{
+    position: relative;
+    background-color: var(--Dark_Purple_Blue);
+    width: 88%;
+    margin: auto;
+    margin-bottom: 2vh;
+    z-index: 2;
+    border-radius: 3.5px;
+}
+
+.glossaryContainer:first-child{
+    margin-top: 5vh;
+}
+
+.detailsContainer{
+    width: 88%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5vh 1vw;
+}
+
+.titleContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.abbreviationText{
+    color: var(--Nice_Blue);
+    width: 70%;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75vh;
+    word-break: break-all;
+}
+
+.iconContainer{
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.checkIcon,
+.deleteIcon,
+.editIcon{
+    width: 18%;
+    object-fit: contain;
+    margin-left: 0.5vw;
+}
+
+.checkIcon:hover,
+.deleteIcon:hover,
+.editIcon:hover{
+    cursor: pointer;
+}
+
+.meaningText{
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: var(--Off_White);
+    font: 600 0.9rem 'Lato';
+    letter-spacing: 0.25px;
+    resize: none;
+    height: auto;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.meaningText:focus{
+    border: none;
+    outline: none;
+}

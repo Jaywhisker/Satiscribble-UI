@@ -17,7 +17,7 @@
     color: var(--Dark_Grey);
     font-weight: 600;
     /* font-size: 2vmin; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.25px;
 }
 
@@ -41,7 +41,7 @@
     color: var(--Off_White);
     font-weight: 600;
     /* font-size: 2vmin; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.25px;
 }
 
@@ -57,7 +57,7 @@
     color: var(--Off_White);
     font-weight: 600;
     /* font-size: 2vmin; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.25px;
     margin-bottom: 1vh;
 }
@@ -72,7 +72,7 @@
     font-family: 'Lato';
     font-weight: 600;
     /* font-size: 1.75vmin; */
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     letter-spacing: 0.25px;
     margin: 0.5vh 0;
 }
