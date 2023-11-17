@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef} from "react";
+import axios from 'axios';
+
 import rightBar from '@/styles/components/rightSideBar.module.css';
 import SirLogo from "./chatContainer/sirLogos";
 
@@ -6,10 +8,12 @@ import UserChat from "./chatContainer/userInput";
 import AssistantResponse from "./chatContainer/assistantResponse";
 import GlossaryModal from "./glossary/glossaryModal";
 
+import { readID } from "@/functions/IDHelper";
+import { fetchChatHistory, fetchGlossary } from "@/functions/api/fetchRightSideBar";
+
 import glosaryJSON from '@/data/glossaryData.json'
 import documentJson from '@/data/documentChatHistory.json'
 import webJson from '@/data/webChatHistory.json'
-
 
 export default function RightSideBar() {
 
@@ -18,6 +22,9 @@ export default function RightSideBar() {
     const [queryMode, setQueryMode] = useState('document')
     const [query, setQuery] = useState('')
     const [showMore, setShowMore] = useState(false)
+
+    const [minutesID, setMinutesID] = useState(null)
+    const [chatHistoryID, setChatHistoryID] = useState(null)
     
     const [documentChatHistory, setDocumentChatHistory] = useState(documentJson.document)
     const [webChatHistory, setWebChatHistory] = useState(webJson.web)
@@ -29,10 +36,20 @@ export default function RightSideBar() {
     //props
     const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development'])
 
-    //useEffect to get document and web history 
-    //useEffect to get glossary data
+    useEffect(() => {
+        const fetchData = async () => {
+            if (minutesID != null) {
+                await fetchChatHistory(minutesID, chatHistoryID, setDocumentChatHistory, setWebChatHistory)
+                const glosaryLength = await fetchGlossary(minutesID, chatHistoryID, setGlossaryData)
+                setGlossaryMode(Array(glosaryLength).fill('default'))
+            }
+        }
+        fetchData()
+    }, [minutesID])
+
 
     useEffect(() => {
+        readID(setMinutesID, setChatHistoryID)
         window.addEventListener('click', closeModal)
         return () => {
             window.removeEventListener('click', closeModal)
@@ -116,9 +133,21 @@ export default function RightSideBar() {
         console.log('submit')
     }
 
-    function handleClearChat() {
-        console.log('clear chat')
+
+    async function handleClearChat() {
+        try {
+            var requestData = {
+                "type": queryMode,
+                "minutesID": minutesID,
+                "chatHistoryID": chatHistoryID
+            }
+            await axios.post('/api/clear', requestData)
+            await fetchChatHistory(minutesID, chatHistoryID, setDocumentChatHistory, setWebChatHistory)
+        } catch (error){
+            console.log(error)
+        }
     }
+
 
     function closeModal(event) {
         if (event.target.id == 'showMore') {
