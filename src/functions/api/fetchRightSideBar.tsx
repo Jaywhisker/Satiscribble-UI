@@ -20,6 +20,18 @@ export async function fetchGlossary(minutesID:string, chatHistoryID:string, setG
     }
 
     const response = await axios.post('/api/read', reqData)
-    setGlossaryData(response.data.glossary)
-    return response.data.glossary.length
+    const sortedGlossary = response.data.glossary.sort((a, b) => {
+        const abbreviationA = a.abbreviation.toUpperCase();
+        const abbreviationB = b.abbreviation.toUpperCase();
+      
+        if (abbreviationA < abbreviationB) {
+          return -1;
+        }
+        if (abbreviationA > abbreviationB) {
+          return 1;
+        }
+        return 0;
+      });
+    setGlossaryData(sortedGlossary)
+    return sortedGlossary.length
 }

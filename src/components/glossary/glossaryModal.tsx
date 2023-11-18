@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
 import glossary from '@/styles/components/glossary.module.css'
+import { updateGlossaryEntry, deleteGlossaryEntry } from '@/functions/api/glossaryActions'
 
 export interface glossaryDetails {
     type: string
@@ -10,6 +11,8 @@ export interface glossaryDetails {
     setGlossaryType: any
     glossaryData: any[]
     setGlossaryData: any
+    minutesID: string
+    chatHistoryID: string
 }
 
 
@@ -18,28 +21,51 @@ export default function GlossaryModal(props: glossaryDetails ) {
     const [glossaryMeaning, setGlossaryMeaning] = useState(null)
     const meaningTextArea = useRef(null)
 
+    useEffect(() => {
+        if (props.type == 'edit') {
+            const textarea = meaningTextArea.current;
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+      }, [glossaryMeaning, props.type]);
+
+    useEffect(() => {
+        setGlossaryMeaning(props.meaning)
+    }, [props.meaning])
+
+
     function handleEdit(index) {
         var newGlossaryType = [...props.glossaryType]
         newGlossaryType[index] = 'edit'
         props.setGlossaryType(newGlossaryType)
     }
 
-    function handleSave(index)  {
-        //send data to backend to update data
-        var newGlossaryType = [...props.glossaryType]
-        newGlossaryType[index] = 'default'
-        props.setGlossaryType(newGlossaryType)
+    async function handleSave(index)  {
+        var response = await updateGlossaryEntry(props.minutesID, props.chatHistoryID, props.abbreviation, glossaryMeaning)
+        if (response === undefined) {
+            var newGlossaryType = [...props.glossaryType]
+            newGlossaryType[index] = 'default'
+            props.setGlossaryType(newGlossaryType)
+        } else {
+            //error handling code
+            console.log('error')
+        }
     }
 
-    function handleDelete(index) {
-        //send data to backend to delete data
-        var newGlossaryType = [...props.glossaryType]
-        newGlossaryType.splice(index, 1)
-        props.setGlossaryType(newGlossaryType)
-
-        var newGlossaryData = [...props.glossaryData]
-        newGlossaryData.splice(index, 1)
-        props.setGlossaryData(newGlossaryData)
+    async function handleDelete(index) {
+        var response = await deleteGlossaryEntry(props.minutesID, props.chatHistoryID, props.abbreviation, props.meaning)
+        if (response === undefined) {
+            var newGlossaryType = [...props.glossaryType]
+            newGlossaryType.splice(index, 1)
+            props.setGlossaryType(newGlossaryType)
+    
+            var newGlossaryData = [...props.glossaryData]
+            newGlossaryData.splice(index, 1)
+            props.setGlossaryData(newGlossaryData)
+        } else {
+            //error handling code
+            console.log('error')
+        }
     }
 
     function handleEditMeaning(event) {
@@ -56,17 +82,6 @@ export default function GlossaryModal(props: glossaryDetails ) {
         }
       }
 
-    useEffect(() => {
-        if (props.type == 'edit') {
-            const textarea = meaningTextArea.current;
-            textarea.style.height = 'auto';
-            textarea.style.height = `${textarea.scrollHeight}px`;
-        }
-      }, [glossaryMeaning, props.type]);
-
-    useEffect(() => {
-        setGlossaryMeaning(props.meaning)
-    }, [props.meaning])
 
 
     return(

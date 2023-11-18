@@ -407,6 +407,8 @@ export default function RightSideBar() {
                                     setGlossaryType={setGlossaryMode}
                                     glossaryData={glossaryData}
                                     setGlossaryData={setGlossaryData}
+                                    minutesID={minutesID}
+                                    chatHistoryID={chatHistoryID}
                                 />
                             ))}
                         </div>
