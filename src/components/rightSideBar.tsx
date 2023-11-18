@@ -11,9 +11,6 @@ import GlossaryModal from "./glossary/glossaryModal";
 import { readID } from "@/functions/IDHelper";
 import { fetchChatHistory, fetchGlossary } from "@/functions/api/fetchRightSideBar";
 
-import glosaryJSON from '@/data/glossaryData.json'
-import documentJson from '@/data/documentChatHistory.json'
-import webJson from '@/data/webChatHistory.json'
 
 export default function RightSideBar() {
 
