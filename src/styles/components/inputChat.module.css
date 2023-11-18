@@ -25,7 +25,7 @@
     margin: auto;
     margin-left: 0;
     width: 65%;
-    padding: 0;
+    padding: 2vh 0 1vh 0;
     background-color: var(--Dark_Purple_Blue);
     border-radius: 8px;
     margin-bottom: 2vh;
@@ -37,7 +37,7 @@
     text-align: left;
     width: 84%;
     margin-left: 8%;
-    padding: 2vh 0;
+    padding: 0 0 2vh 0;
     color: var(--Off_White);
     font-weight: 600;
     /* font-size: 2vmin; */
@@ -78,10 +78,29 @@
 }
 
 .source:last-child{
-    padding-bottom: 2vh;
+    padding-bottom: 1vh;
 }
 
 .source:hover{
     text-decoration: underline;
     cursor: pointer;
 }
+
+.responseLoadingAnimation{
+    background-color: var(--Off_White);
+    width: 0.15vw;
+    height: 2vh;
+    margin-left: 8%;
+    opacity: 1;
+    animation: 1s blink step-end infinite;
+}
+
+
+@keyframes blink {
+    from, to {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--Off_White);
+    }
+  }

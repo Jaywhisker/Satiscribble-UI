@@ -8,7 +8,7 @@ export interface userInput {
 
 export default function UserChat(props: userInput ) {
     return(
-    <div key={props.id} className={inputChat.userContainer}>
-        <p className={inputChat.userText}>{props.text}</p>
-    </div>
+        <div key={props.id} className={inputChat.userContainer}>
+            <p className={inputChat.userText}>{props.text}</p>
+        </div>
 )}

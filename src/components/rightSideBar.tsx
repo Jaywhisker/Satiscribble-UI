@@ -19,22 +19,39 @@ export default function RightSideBar() {
 
     const [expanded, setExpanded] = useState(true)
     const [selected, setSelected] = useState('CuriousCat')
-    const [queryMode, setQueryMode] = useState('document')
+    const [queryMode, setQueryMode] = useState(null)
     const [query, setQuery] = useState('')
     const [showMore, setShowMore] = useState(false)
 
     const [minutesID, setMinutesID] = useState(null)
     const [chatHistoryID, setChatHistoryID] = useState(null)
     
-    const [documentChatHistory, setDocumentChatHistory] = useState(documentJson.document)
-    const [webChatHistory, setWebChatHistory] = useState(webJson.web)
-    const [glossaryData, setGlossaryData] = useState(glosaryJSON.glossary)
-    const [glossaryMode, setGlossaryMode] =  useState(Array(glossaryData.length).fill('default'))
+    const [documentChatHistory, setDocumentChatHistory] = useState([])
+    const [webChatHistory, setWebChatHistory] = useState([])
+    const [gptResponse, setGPTResponse] = useState('')
+    const [loadingResponse, setLoadingResponse] = useState(false)
+    const [waitingResponse, setWaitingResponse] = useState(false)
+
+    const [glossaryData, setGlossaryData] = useState([])
+    const [glossaryMode, setGlossaryMode] =  useState([])
 
     const queryInputArea = useRef(null)
+    const chatResponse = useRef(null)
 
     //props
-    const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development'])
+    const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development', 'Iteration Docs'])
+
+
+    useEffect(() => {
+        setGPTResponse('')
+        readID(setMinutesID, setChatHistoryID)
+        setQueryMode(localStorage.getItem('queryMode') || 'document')
+        window.addEventListener('click', closeModal)
+        return () => {
+            window.removeEventListener('click', closeModal)
+        }
+    }, [])
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,15 +64,11 @@ export default function RightSideBar() {
         fetchData()
     }, [minutesID])
 
-
     useEffect(() => {
-        readID(setMinutesID, setChatHistoryID)
-        window.addEventListener('click', closeModal)
-        return () => {
-            window.removeEventListener('click', closeModal)
+        if (loadingResponse) {
+            fetchQueryResponse()
         }
-    }, [])
-
+    }, [loadingResponse])
 
     useEffect(() => {
         if (selected === 'CuriousCat') {
@@ -72,6 +85,20 @@ export default function RightSideBar() {
             //insert scrolling logic if desired
         }
     }, [query, selected])
+
+    useEffect(() => {
+        if (gptResponse != '' && chatResponse.current) {
+            chatResponse.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        }
+      }, [gptResponse])
+
+    function closeModal(event) {
+        if (event.target.id == 'showMore') {
+            setShowMore(!showMore)
+        } else {
+            setShowMore(false)
+        }
+    }
 
 
     function handleExpand() {
@@ -101,7 +128,10 @@ export default function RightSideBar() {
     }
 
     function handleQueryChange(queryMode){
-        setQueryMode(queryMode)
+        if (!loadingResponse) {
+            setQueryMode(queryMode)
+            localStorage.setItem('queryMode', queryMode)
+        }
     }
 
     function handleKeyDown(event) {
@@ -110,7 +140,6 @@ export default function RightSideBar() {
             insertLineBreak();
         } else if (event.key ==='Enter') {
             event.preventDefault();
-            setQuery('')
             handleSubmitQuery()
         }
       }
@@ -129,8 +158,19 @@ export default function RightSideBar() {
         setQuery(event.target.value)
     }
 
+
     function handleSubmitQuery() {
-        console.log('submit')
+        if (queryMode == 'document') {
+            var newDocumentHistory = [...documentChatHistory]
+            newDocumentHistory.push({'user': query})
+            setDocumentChatHistory(newDocumentHistory)
+        } else if (queryMode == 'web') {
+            var newWebHistory = [...webChatHistory]
+            newWebHistory.push({'user': query})
+            setWebChatHistory(newWebHistory)
+        }
+        setLoadingResponse(true)
+        setWaitingResponse(true)
     }
 
 
@@ -148,15 +188,67 @@ export default function RightSideBar() {
         }
     }
 
+    
+    async function fetchQueryResponse() {
+        var requestData = {
+            "type": queryMode,
+            "query":  query,
+            "minutesID": minutesID,
+            "chatHistoryID": chatHistoryID
+        }
+        setQuery('')
+        try {
 
-    function closeModal(event) {
-        if (event.target.id == 'showMore') {
-            setShowMore(!showMore)
-        } else {
-            setShowMore(false)
+            let res = await fetch('/api/query', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({requestData})
+            })
+
+            if (res.ok) {
+                setWaitingResponse(false)
+                const reader = res.body.getReader()
+                const processStream = async () => {
+                    let fullResponse;
+
+                    while(true) {
+                        // .read() returns 2 properties
+                        const {done, value} = await reader.read()
+                    
+                        if (done) {
+                            console.log('stream completed')
+                            console.log(fullResponse)
+                            setLoadingResponse(false)
+                            if (queryMode == 'web') {
+                                var newWebChat = [...webChatHistory]
+                                newWebChat.push({'assistant': fullResponse.slice(9)})
+                                setWebChatHistory(newWebChat)
+                                setGPTResponse('')
+                            } else if (queryMode =='document') {
+                                var newDocumentChat = [...documentChatHistory]
+                                var sourceIDs = res.headers.get('sourceID')
+                                const sourceIDsList = sourceIDs.slice(1, -1).split(', ').map(value => value.slice(1, -1))
+                                newDocumentChat.push({'assistant': fullResponse.slice(9), 'sourceID': sourceIDsList})
+                                setDocumentChatHistory(newDocumentChat)
+                                setGPTResponse('')
+                            }
+                            break;
+                        }
+                        let chunk = new TextDecoder('utf-8').decode(value)
+                
+                        // append to the response
+                        setGPTResponse((prev) => prev + chunk);
+                        fullResponse += chunk
+                    }
+                }
+                processStream().catch(err => console.log('--stream error--', err))
+            } 
+        } catch (error) {
+            console.log(error)
         }
     }
-
 
     return(
         <div className={rightBar.overallContainer} id='rightSideBar'>
@@ -216,6 +308,17 @@ export default function RightSideBar() {
                                 )
                             ))}
 
+                            {queryMode === 'document' && loadingResponse ? (
+                                <div ref={chatResponse}>
+                                    <AssistantResponse
+                                        text={gptResponse}
+                                        copyable={true}
+                                        id={documentChatHistory.length + 1}
+                                        waiting = {waitingResponse}
+                                    />
+                                </div>
+                            ) : (null)}
+
                             {queryMode === 'web' && webChatHistory.map((chatDetail, index) => (
                                 chatDetail.hasOwnProperty("user") ? (
                                     <UserChat 
@@ -230,11 +333,22 @@ export default function RightSideBar() {
                                     />
                                 )
                             ))}
+
+                            {queryMode === 'web' && loadingResponse ? (
+                                <div ref={chatResponse} style={{scrollMarginBottom: '5vh'}}>
+                                    <AssistantResponse
+                                        text={gptResponse}
+                                        copyable={true}
+                                        id={webChatHistory.length + 1}
+                                        waiting = {waitingResponse}
+                                    />
+                                </div>
+                            ) : (null)}
                             
                         </div>
                         
                         <div className={rightBar.inputContainer} id="bottomTab">
-                            <div className={rightBar.buttonContainer}>
+                            <div className={rightBar.buttonContainer} style={{opacity: loadingResponse ? '0.5': '1'}}>
                                 <div className={rightBar.button}  onClick={() => handleQueryChange('document')} style={{backgroundColor: queryMode == 'document' ? `var(--Nice_Blue)` : `var(--Dark_Blue)`}}>
                                     <p className={rightBar.buttonText} style={{color: queryMode == 'document' ? `var(--Dark_Blue)` : `var(--Nice_Blue)`}}>DOCUMENT QUERY</p>
                                 </div>
@@ -254,10 +368,21 @@ export default function RightSideBar() {
                                     onChange = {handleInputChange}
                                     onKeyDown = {handleKeyDown}
                                     rows = {1}
+                                    disabled = {loadingResponse}
                                     />
-                                <svg onClick={handleSubmitQuery} className = {rightBar.sendIcon} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2.18675 24.505L23.7099 13.9249C23.9324 13.8162 24.1222 13.6349 24.2555 13.4036C24.3889 13.1722 24.46 12.901 24.46 12.6236C24.46 12.3463 24.3889 12.0751 24.2555 11.8437C24.1222 11.6123 23.9324 11.431 23.7099 11.3223L2.18675 0.742227C2.00038 0.649007 1.79671 0.610461 1.5941 0.630065C1.3915 0.64967 1.19633 0.726809 1.02622 0.854523C0.85611 0.982238 0.716399 1.15651 0.619695 1.36162C0.52299 1.56672 0.472333 1.79621 0.472295 2.02938L0.459961 8.55001C0.459961 9.25723 0.916326 9.86545 1.53304 9.95031L18.9613 12.6236L1.53304 15.2828C0.916326 15.3818 0.459961 15.99 0.459961 16.6973L0.472295 23.2179C0.472295 24.2221 1.37269 24.9152 2.18675 24.505Z" fill="#B1B1B1"/>
-                                </svg>
+
+                                { loadingResponse ? (
+                                    <div className={rightBar.loadingAnimation}>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                ) : (
+                                    
+                                    <svg onClick={handleSubmitQuery} className = {rightBar.sendIcon} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.18675 24.505L23.7099 13.9249C23.9324 13.8162 24.1222 13.6349 24.2555 13.4036C24.3889 13.1722 24.46 12.901 24.46 12.6236C24.46 12.3463 24.3889 12.0751 24.2555 11.8437C24.1222 11.6123 23.9324 11.431 23.7099 11.3223L2.18675 0.742227C2.00038 0.649007 1.79671 0.610461 1.5941 0.630065C1.3915 0.64967 1.19633 0.726809 1.02622 0.854523C0.85611 0.982238 0.716399 1.15651 0.619695 1.36162C0.52299 1.56672 0.472333 1.79621 0.472295 2.02938L0.459961 8.55001C0.459961 9.25723 0.916326 9.86545 1.53304 9.95031L18.9613 12.6236L1.53304 15.2828C0.916326 15.3818 0.459961 15.99 0.459961 16.6973L0.472295 23.2179C0.472295 24.2221 1.37269 24.9152 2.18675 24.505Z" fill="#B1B1B1"/>
+                                    </svg>
+                                )}
                                 
                             </div>
 

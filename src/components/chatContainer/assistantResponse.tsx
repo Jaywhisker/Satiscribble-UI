@@ -4,6 +4,7 @@ import inputChat from '@/styles/components/inputChat.module.css'
 export interface assistantResponse {
     text: string
     sourceID?: any[]
+    waiting?: boolean
     copyable: boolean
     id: number
 }
@@ -11,12 +12,13 @@ export interface assistantResponse {
 
 export default function AssistantResponse(props: assistantResponse ) {
 
-    useEffect(() => {
-        console.log(props.sourceID)
-    })
-
     return(
     <div key={props.id} className={inputChat.assistantContainer}>
+
+        { props.waiting && (
+            <div className={inputChat.responseLoadingAnimation}></div>
+        )}
+
         <div>
             <p className={inputChat.assistantText}>{props.text}</p>
         </div>
