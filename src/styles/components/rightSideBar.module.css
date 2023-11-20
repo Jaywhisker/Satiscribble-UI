@@ -64,6 +64,7 @@
     margin: 1.5vh 0;
 }
 
+.errorContainer,
 .tabDetailsContainer{
     width: 100%;
 }
@@ -249,7 +250,8 @@
 
 .warningText{
     width: 84%;
-    font: 400 1.5vmin 'Lato';
+    /* font: 400 1.5vmin 'Lato'; */
+    font: 400 0.7rem 'Lato';
     color: var(--Off_White);
     text-align: center;
 }

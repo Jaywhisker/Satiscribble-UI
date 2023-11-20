@@ -44,7 +44,8 @@
     align-items: center;
 }
 
-.checkIcon,
+.saveIcon,
+.cancelIcon,
 .deleteIcon,
 .editIcon{
     width: 18%;
@@ -52,7 +53,8 @@
     margin-left: 0.5vw;
 }
 
-.checkIcon:hover,
+.saveIcon:hover,
+.cancelIcon:hover,
 .deleteIcon:hover,
 .editIcon:hover{
     cursor: pointer;

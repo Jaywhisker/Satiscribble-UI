@@ -5,14 +5,6 @@ export default function Home() {
   const [name, setName] = useState(null);
   const [pythonMsg, setPythonMsg] = useState(null);
 
-  useEffect(() => {
-    async function getPythonMsg() {
-      const response = await axios.get("/api/testpython");
-      console.log(response);
-      setPythonMsg(response.data.message);
-    }
-    getPythonMsg();
-  }, []);
 
   return (
     <>

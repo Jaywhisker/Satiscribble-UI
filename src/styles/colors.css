@@ -12,7 +12,12 @@
     --Off_White_50: rgb(209,209,209,0.5);
     --Blue: rgb(174,201,229);
     --Lighter_Grey: rgb(217,217,217,0.1);
+
     --Orange: rgb(255,206,133);
+    --Red: rgb(222, 92, 100);
+    --Alert_Red: rgb(171, 41, 41);
+    --Alert_Red_75: rgb(171, 41, 41, 0.75);
+    --Dark_Red: rgb(67, 41, 43);
 
     /* Unnamed Colors */
     --Pure_White: rgb(255,255,255);

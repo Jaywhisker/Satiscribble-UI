@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef} from "react";
 import axios from 'axios';
 
 import rightBar from '@/styles/components/rightSideBar.module.css';
-import SirLogo from "./chatContainer/sirLogos";
 
+import SirLogo from "./chatContainer/sirLogos";
 import UserChat from "./chatContainer/userInput";
 import AssistantResponse from "./chatContainer/assistantResponse";
 import GlossaryModal from "./glossary/glossaryModal";
+import ResponseError from "./chatContainer/responseError";
 
 import { readID } from "@/functions/IDHelper";
 import { fetchChatHistory, fetchGlossary } from "@/functions/api/fetchRightSideBar";
@@ -28,6 +29,8 @@ export default function RightSideBar() {
     const [gptResponse, setGPTResponse] = useState('')
     const [loadingResponse, setLoadingResponse] = useState(false)
     const [waitingResponse, setWaitingResponse] = useState(false)
+    const [responseError, setResponseError] = useState([false, false])
+    const [errorHeight, setErroHeight] = useState(null)
 
     const [glossaryData, setGlossaryData] = useState([])
     const [glossaryMode, setGlossaryMode] =  useState([])
@@ -61,11 +64,24 @@ export default function RightSideBar() {
         fetchData()
     }, [minutesID])
 
+
+    // useEffect(() => {
+    //     if (loadingResponse && !(queryMode === 'document' ? responseError[0] : responseError[1])) {
+    //         //loading true and error is false
+    //         fetchQueryResponse(query)
+    //     } else if (loadingResponse && (queryMode === 'document' ? responseError[0] : responseError[1]) && query.length > 0) {
+    //         //send a new query instead of retrying
+    //         //need to remove old query that failed
+    //         fetchQueryResponse(query)
+    //     }
+    // }, [loadingResponse])
+
     useEffect(() => {
         if (loadingResponse) {
-            fetchQueryResponse()
+            fetchQueryResponse(query)
         }
     }, [loadingResponse])
+
 
     useEffect(() => {
         if (selected === 'CuriousCat') {
@@ -75,19 +91,28 @@ export default function RightSideBar() {
     
             var inputHeight = Math.min(textarea.scrollHeight, window.innerHeight * 0.25)
             const bottomTabElement = document.querySelector('#bottomTab') as HTMLElement
-            bottomTabElement.style.top = `${window.innerHeight * 0.86 - inputHeight}px`
+            var buttonElementHeight = window.innerHeight * 0.86 - inputHeight
+            bottomTabElement.style.top = `${buttonElementHeight}px`
+            setErroHeight(window.innerHeight - buttonElementHeight)
 
             const chatContainerElement = document.querySelector('#chatContainer') as HTMLElement
-            chatContainerElement.style.height = `${window.innerHeight * 0.69 - inputHeight}px`
+            if (queryMode === 'document' ? responseError[0] : responseError[1]) {
+                //if error, chatContainer height is smaller
+                chatContainerElement.style.height = `${window.innerHeight * 0.64 - inputHeight}px`
+            } else {
+                chatContainerElement.style.height = `${window.innerHeight * 0.69 - inputHeight}px`
+            }
             //insert scrolling logic if desired
         }
-    }, [query, selected])
+    }, [query, selected, queryMode])
+
 
     useEffect(() => {
-        if (gptResponse != '' && chatResponse.current) {
+        if (loadingResponse && chatResponse.current) {
             chatResponse.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
         }
-      }, [gptResponse])
+      }, [gptResponse, loadingResponse])
+
 
     function closeModal(event) {
         if (event.target.id == 'showMore') {
@@ -131,6 +156,7 @@ export default function RightSideBar() {
         }
     }
 
+    
     function handleKeyDown(event) {
         if (event.shiftKey && event.key === 'Enter') {
             event.preventDefault();
@@ -140,6 +166,7 @@ export default function RightSideBar() {
             handleSubmitQuery()
         }
       }
+      
 
     function insertLineBreak() {
         const textarea = document.getElementById('queryInput') as HTMLTextAreaElement;
@@ -151,6 +178,7 @@ export default function RightSideBar() {
         setQuery(textarea.value)
     }
 
+
     function handleInputChange(event) {
         setQuery(event.target.value)
     }
@@ -159,10 +187,16 @@ export default function RightSideBar() {
     function handleSubmitQuery() {
         if (queryMode == 'document') {
             var newDocumentHistory = [...documentChatHistory]
+            if (responseError[0]) {
+                newDocumentHistory.pop() //remove old user query that failed
+            }
             newDocumentHistory.push({'user': query})
             setDocumentChatHistory(newDocumentHistory)
         } else if (queryMode == 'web') {
             var newWebHistory = [...webChatHistory]
+            if (responseError[1]) {
+                newWebHistory.pop() //remove old user query that failed
+            }
             newWebHistory.push({'user': query})
             setWebChatHistory(newWebHistory)
         }
@@ -186,16 +220,25 @@ export default function RightSideBar() {
     }
 
     
-    async function fetchQueryResponse() {
+    async function fetchQueryResponse(query) {
         var requestData = {
             "type": queryMode,
             "query":  query,
             "minutesID": minutesID,
             "chatHistoryID": chatHistoryID
         }
+        let errorIndex;
+        const updatedResponseError = [...responseError]; 
+        if (queryMode === 'document') {
+            errorIndex = 0;
+        } else if (queryMode === 'web') {
+            errorIndex = 1;
+        }
+        updatedResponseError[errorIndex] = false
+        setResponseError(updatedResponseError)        
         setQuery('')
+        
         try {
-
             let res = await fetch('/api/query', {
                 method: 'POST',
                 headers: {
@@ -203,7 +246,6 @@ export default function RightSideBar() {
                 },
                 body: JSON.stringify({requestData})
             })
-
             if (res.ok) {
                 setWaitingResponse(false)
                 const reader = res.body.getReader()
@@ -215,15 +257,14 @@ export default function RightSideBar() {
                         const {done, value} = await reader.read()
                     
                         if (done) {
-                            console.log('stream completed')
                             console.log(fullResponse)
                             setLoadingResponse(false)
-                            if (queryMode == 'web') {
+                            if (queryMode === 'web') {
                                 var newWebChat = [...webChatHistory]
                                 newWebChat.push({'assistant': fullResponse.slice(9)})
                                 setWebChatHistory(newWebChat)
                                 setGPTResponse('')
-                            } else if (queryMode =='document') {
+                            } else if (queryMode ==='document') {
                                 var newDocumentChat = [...documentChatHistory]
                                 var sourceIDs = res.headers.get('sourceID')
                                 const sourceIDsList = sourceIDs.slice(1, -1).split(', ').map(value => value.slice(1, -1))
@@ -242,10 +283,32 @@ export default function RightSideBar() {
                 }
                 processStream().catch(err => console.log('--stream error--', err))
             } 
+            else {
+                setLoadingResponse(false)
+                setWaitingResponse(false)
+                updatedResponseError[errorIndex] = true
+                setResponseError(updatedResponseError)
+                console.log('ERROR')
+            }
         } catch (error) {
             console.log(error)
         }
     }
+
+    // function retryQuery() {
+    //     setQuery('')
+    //     setWaitingResponse(true)
+    //     setLoadingResponse(true)
+    //     if (queryMode == 'document') {
+    //         //submit query already added the userQuery to the document chat history
+    //         var lastQuery = documentChatHistory[documentChatHistory.length - 1]
+    //         var userQuery = lastQuery.user
+    //     } else if (queryMode == 'web') {
+    //         var lastQuery = webChatHistory[webChatHistory.length -1]
+    //         var userQuery = lastQuery.user
+    //     }
+    //     fetchQueryResponse(userQuery)
+    // }
 
     return(
         <div className={rightBar.overallContainer} id='rightSideBar'>
@@ -305,8 +368,8 @@ export default function RightSideBar() {
                                 )
                             ))}
 
-                            {queryMode === 'document' && loadingResponse ? (
-                                <div ref={chatResponse}>
+                            {queryMode === 'document' && loadingResponse && (
+                                <div ref={chatResponse} style={{scrollMarginBottom: '5vh'}}>
                                     <AssistantResponse
                                         text={gptResponse}
                                         copyable={true}
@@ -314,7 +377,7 @@ export default function RightSideBar() {
                                         waiting = {waitingResponse}
                                     />
                                 </div>
-                            ) : (null)}
+                            )}
 
                             {queryMode === 'web' && webChatHistory.map((chatDetail, index) => (
                                 chatDetail.hasOwnProperty("user") ? (
@@ -331,7 +394,7 @@ export default function RightSideBar() {
                                 )
                             ))}
 
-                            {queryMode === 'web' && loadingResponse ? (
+                            {queryMode === 'web' && loadingResponse && (
                                 <div ref={chatResponse} style={{scrollMarginBottom: '5vh'}}>
                                     <AssistantResponse
                                         text={gptResponse}
@@ -340,8 +403,22 @@ export default function RightSideBar() {
                                         waiting = {waitingResponse}
                                     />
                                 </div>
-                            ) : (null)}
-                            
+                            )}
+                        </div>
+
+                        <div className = {rightBar.errorContainer}>
+                            {queryMode === 'document' && responseError[0] && (
+                                <ResponseError
+                                    // retryFunction={() => retryQuery()}
+                                    height = {errorHeight}
+                                />
+                            )}
+                            {queryMode === 'web' && responseError[1] && (
+                                <ResponseError
+                                    // retryFunction={() => retryQuery()}
+                                    height = {errorHeight}
+                                />
+                            )}
                         </div>
                         
                         <div className={rightBar.inputContainer} id="bottomTab">
@@ -366,7 +443,7 @@ export default function RightSideBar() {
                                     onKeyDown = {handleKeyDown}
                                     rows = {1}
                                     disabled = {loadingResponse}
-                                    />
+                                />
 
                                 { loadingResponse ? (
                                     <div className={rightBar.loadingAnimation}>
@@ -415,7 +492,6 @@ export default function RightSideBar() {
                 )
             }
         </div>
-
 
     )
 }

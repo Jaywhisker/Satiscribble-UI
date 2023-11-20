@@ -37,7 +37,7 @@
     text-align: left;
     width: 84%;
     margin-left: 8%;
-    padding: 0 0 2vh 0;
+    padding: 0 0 1vh 0;
     color: var(--Off_White);
     font-weight: 600;
     /* font-size: 2vmin; */
@@ -49,6 +49,7 @@
     border-top: 1.5px solid var(--Off_White_10);
     width: 88%;
     margin-left: 6%;
+    margin-top: 1vh;
 }
 
 .sourceText{
