@@ -1,3 +1,11 @@
+@import './colors.css';
+
 body{
   background-color: #333;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
