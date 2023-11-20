@@ -12,6 +12,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   hasText?: boolean; 
   hasRightIcon?: boolean;
   swapIcon?: ReactNode;
+  colorVariant?: 'purple' | 'white' | 'red';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -25,15 +26,30 @@ const Button: React.FC<ButtonProps> = ({
   hasText = true,
   hasRightIcon = false,
   swapIcon,
+  colorVariant = 'purple',
   children,
   ...rest
 }) => {
-    const getButtonClass = () => `${styles[buttonType]} ${styles[buttonType]}-${size} ${styles[fillBorderVariant]}`;
+  const getButtonClass = () => {
+    const sizeClass = styles[buttonType + '-' + size];
+    const colorStyle = fillBorderVariant === 'no-background' ? styles['no-background'] : styles[colorVariant + '-' + fillBorderVariant];
+    return `${styles[buttonType]} ${sizeClass} ${colorStyle}`;
+  };
+
+    const getTextColorClass = () => {
+      if (colorVariant === 'white') {
+        return styles['white-text'];
+      } else if (colorVariant === 'red') {
+        return styles['white-text'];
+      }
+      return '';
+    };
+    
 
   return (
-    <button className={getButtonClass()} {...rest}>
+    <button className={`${getButtonClass()}`} {...rest}>
       {hasLeftIcon && leftIcon && <span className="left-icon">{leftIcon}</span>}
-      {hasText && children && <span className={`${styles['button-text']} ${styles[fillBorderVariant + '-text']}`}>{children}</span>}
+      {hasText && children && <span className={`${styles['button-text']} ${styles[fillBorderVariant + '-text']} ${getTextColorClass()}`}>{children}</span>}
       {hasRightIcon && rightIcon && <span className="right-icon">{rightIcon}</span>}
       {swapIcon && <span className={`swap-icon-${size}`}>{swapIcon}</span>}
     </button>

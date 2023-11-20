@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { Button } from '../buttons';
+import Icons from '../icons/icons';
+import styles from '@/styles/popups.module.css';
 
-interface Popup1Props {
+interface PopupProps {
+//   isOpen?: boolean;
   onClose: () => void;
 }
 
-const Popup1: React.FC<Popup1Props> = ({ onClose }) => {
+const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+//   if (!isOpen) {
+//     return null;
+//   }
+
   return (
-    <div className="popup">
-      <h2>Popup 1</h2>
-      {/* Add your content and styling here */}
-      <button onClick={onClose}>Close</button>
+    <div className={`${styles.Notif} ${styles.greyNotif}`}>
+        <span className={styles.topRow}>
+            <span className={styles.titleCol} >
+                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.NotificationIcon alt="Notification Icon"/>}></Button> {/* pop up icon button */}
+                <p className={styles.messageHeader} style={{ color: "var(--Orange, #FFCE85)" }} >Are you still there?</p>
+            </span>
+            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close"/>}onClick={onClose}></Button> 
+        </span> 
+        <p className={styles.messageContent}> It's been 5 minutes since the last update to meeting minutes. Please review and update to stay on track with the agenda.</p>
+        <span className={styles.actionButtons}>
+          <Button size="small" fillBorderVariant="border" colorVariant = 'white' onClick={onClose}>
+              Snooze 15 minutes
+          </Button>
+        </span>
     </div>
   );
 };
 
-export default Popup1;
+export default InactivityAlert;

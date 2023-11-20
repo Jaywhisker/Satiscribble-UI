@@ -1,0 +1,66 @@
+.Notif{
+    display: flex;
+    width: 23vw;
+    padding: 1rem 1rem;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1 0 0;
+    border-radius: 5px;
+}
+
+.greyNotif{
+    border: 1px solid var(--Light-Grey, #B1B1B1);
+    background: var(--Grey, #323233);
+}
+
+.redNotif{
+    border: 1px solid var(--Red, #DE5C64);
+    background: var(--Dark-Red, rgba(67, 41, 43));
+}
+
+.topRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.titleCol{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.messageHeader{
+    font-family: 'Lato';
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.25rem;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.messageContent{
+    align-self: stretch;
+    color: var(--Off-white, #D1D1D1);
+
+    /* Pop-up body text */
+    font-family: 'Lato';
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25rem;
+    letter-spacing: -0.00938rem;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.actionButtons{
+    display: flex;
+    padding-top: 8px;
+    align-items: flex-start;
+    gap: 1.875rem; 
+}
