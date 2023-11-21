@@ -1,13 +1,43 @@
 // pages/index.js
-import React, { useState } from "react";
-import MyEditor from "@/components/centerArea/ReactQuill";
+import React, { useState, useRef, useEffect } from "react";
+import MyEditor from "@/components/centerArea/MyEditor";
+import DynamicTextarea from "@/components/centerArea/DynamicTextArea";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
-function TextAreaQuill() {
+function TextAreaQuill({ id, shouldFocus }) {
   const [editorContent, setEditorContent] = useState("");
+  const [topic, setTopic] = useState("");
+  const editorRef = useRef(null);
+  const topicRef = useRef(null);
+
+  useEffect(() => {
+    // If shouldFocus is true, focus the topic input field
+    if (shouldFocus && topicRef.current) {
+      topicRef.current.focus();
+    }
+  }, [shouldFocus]);
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      // Prevent the default Enter key action
+      event.preventDefault();
+      console.log("enter pressed");
+
+      // Check if the editorRef and the editor within it are accessible
+      if (editorRef.current && editorRef.current.getEditor) {
+        // Focus the editor
+        const editor = editorRef.current.getEditor();
+        editor.focus();
+      }
+    }
+  };
 
   const handleContentChange = (content) => {
     setEditorContent(content);
+  };
+
+  const handleTopicChange = (event) => {
+    setTopic(event.target.value); // Update the topic state
   };
 
   const handleSubmit = () => {
@@ -17,11 +47,19 @@ function TextAreaQuill() {
 
   return (
     <div className={styles.container}>
-      {/* Make this into a textarea so that topic title can be changed */}
-      <h1 className={styles.blockHeader}>Topic</h1>
+      {/* <DynamicTextarea /> */}
+      <input
+        ref={topicRef}
+        type="text"
+        value={topic}
+        placeholder="Enter Topic"
+        onChange={handleTopicChange}
+        onKeyPress={handleKeyPress}
+        className={`${styles.meetingBlockTextArea} ${styles.titleTextStyle}`}
+      />
       {/* Reduce the amount of tab spacing */}
-      <MyEditor onContentChange={handleContentChange} />
-      <button onClick={handleSubmit}>Submit</button>
+      <MyEditor onContentChange={handleContentChange} id={id} />
+      {/* <button onClick={handleSubmit}>Submit</button> */}
     </div>
   );
 }

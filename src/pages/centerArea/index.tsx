@@ -1,23 +1,26 @@
 import React, { useState } from "react";
-import DynamicTextarea from "@/components/centerArea/DynamicTextArea";
 import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
+import DynamicTextarea from "@/components/centerArea/DynamicTextArea";
 
 function App() {
-  const [textareas, setTextareas] = useState([{}]);
+  const [topicAreas, setTopicareas] = useState([]);
 
-  const handleAddTextarea = () => {
-    setTextareas((prevTextareas) => [...prevTextareas, {}]);
+  const handleAddTopicArea = () => {
+    setTopicareas((prevTopicAreas) => [...prevTopicAreas, {}]);
   };
 
   return (
     <div style={{ display: "flex", "flex-direction": "column", gap: 20 }}>
-      {/* {textareas.map((_, index) => (
-        <DynamicTextarea key={index} id={index} />
-      ))}
-      <button onClick={handleAddTextarea}>Add Textarea</button>{" "} */}
       <MeetingDetailBlocks />
-      <TextAreaQuill />
+      {topicAreas.map((_, index) => (
+        <TextAreaQuill
+          id={index}
+          key={index}
+          shouldFocus={index === topicAreas.length - 1}
+        />
+      ))}
+      <button onClick={handleAddTopicArea}>Add TopicArea</button>{" "}
     </div>
   );
 }

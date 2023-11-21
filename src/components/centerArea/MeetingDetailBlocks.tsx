@@ -46,7 +46,7 @@ function MeetingDetailBlocks() {
 
   return (
     <div ref={containerRef} className={styles.container}>
-      <h1 className={styles.blockHeader}>Meeting Details</h1>
+      <p className={styles.titleTextStyle}>Meeting Details</p>
       <ModularTextField
         label="Date"
         placeholder="Enter date here"

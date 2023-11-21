@@ -2,14 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   isAbbreviation,
   adjustHeight,
-  handleFocus,
-  handleBlur,
+  setDefaultHeight,
 } from "@/functions/centerArea/helpers";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 let typingTimer;
 
-function DynamicTextarea({ id }) {
+function DynamicTextarea() {
   const [text, setText] = useState("");
   const textareaRef = useRef(null);
 
@@ -31,7 +30,6 @@ function DynamicTextarea({ id }) {
     }
 
     setText(newValue);
-    adjustHeight(textareaRef);
 
     clearTimeout(typingTimer);
 
@@ -44,17 +42,19 @@ function DynamicTextarea({ id }) {
     adjustHeight(textareaRef);
   }, [text]);
 
+  useEffect(() => {
+    setDefaultHeight(textareaRef);
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <h1 className={styles.containerHeader}>Some Header</h1>
+    <>
       <textarea
         ref={textareaRef}
         value={text}
         onChange={handleChange}
-        onFocus={() => handleFocus(id)} // Added onFocus handler
-        onBlur={() => handleBlur(id, textareaRef.current.value)} // Added onBlur handler
+        className={styles.meetingBlockTextArea}
       ></textarea>
-    </div>
+    </>
   );
 }
 
