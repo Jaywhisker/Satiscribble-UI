@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from '@/components/buttons';
-import { InactivityAlert, AgendaAlert, TopicChangeAlert } from '@/components/popup';
+import PopUp from '@/components/popup';
+
 
 
 export default function Home() {
@@ -36,9 +37,13 @@ export default function Home() {
         </Button>
       </div>
       
-      <InactivityAlert isOpen={true} onClose={() => {}} />
-      <AgendaAlert isOpen={true} onClose={() => {}} />
-      <TopicChangeAlert isOpen={true} onClose={() => {}} />
+      <PopUp.InactivityAlert isOpen={true} onClose={() => {}} />
+      <PopUp.AgendaAlert isOpen={true} onClose={() => {}} />
+      <PopUp.TopicChangeAlert isOpen={true} onClose={() => {}} />
+      <PopUp.DetectAlert isOpen={true} onClose={() => {}} />
+      <PopUp.ClearChat isOpen={true} onClose={() => {}} />
+      <PopUp.DeleteTopic isOpen={true} onClose={() => {}} />
+      <PopUp.BasicAlert isOpen={true} onClose={() => {}} />
     </div>
   );
 }

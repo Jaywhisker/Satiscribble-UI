@@ -9,6 +9,17 @@
     border-radius: 5px;
 }
 
+.confirmPopup{
+    display: flex;
+    width: 23vw;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    border-radius: 5px;
+    gap: 0.75rem;
+}
+
 .greyNotif{
     border: 1px solid var(--Light-Grey, #B1B1B1);
     background: var(--Grey, #323233);

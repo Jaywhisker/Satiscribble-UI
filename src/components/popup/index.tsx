@@ -1,20 +1,27 @@
-export { default as AgendaAlert } from './agendaAlert';
-export { default as AutoaddAlert } from './autoaddAlert';
-export { default as DetectAlert } from './detectAlert';
-export { default as FailtopicAlert } from './failtopicAlert';
-export { default as InactivityAlert } from './inactivityAlert';
-export { default as TopicChangeAlert } from './topicchangeAlert';
-export { default as TopiclengthAlert } from './topiclengthAlert';
+import AgendaAlert from './agendaAlert';
+import AutoaddAlert from './autoaddAlert';
+import DetectAlert from './detectAlert';
+import FailtopicAlert from './failtopicAlert';
+import InactivityAlert from './inactivityAlert';
+import TopicChangeAlert from './topicchangeAlert';
+import TopiclengthAlert from './topiclengthAlert';
+import ClearChat from './clearChat';
+import DeleteTopic from './deleteTopic';
+import BasicAlert from './basicAlert';
 
 
-// const Popup = {
-//     Agendaalert,
-//     AutoaddAlert,
-//     DetectAlert,
-//     FailtopicAlert,
-//     InactivityAlert,
-//     TopicChangeAlert,
-//     TopiclengthAlert
-// };
+const PopUp = {
+  AgendaAlert: AgendaAlert,
+  AutoaddAlert: AutoaddAlert,
+  DetectAlert: DetectAlert,
+  FailtopicAlert: FailtopicAlert,
+  InactivityAlert: InactivityAlert,
+  TopicChangeAlert: TopicChangeAlert,
+  TopiclengthAlert: TopiclengthAlert,
+  ClearChat: ClearChat,
+  DeleteTopic: DeleteTopic,
+  BasicAlert: BasicAlert,
+};
 
-// export default Popup;
+
+export default PopUp;

@@ -48,9 +48,9 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button className={`${getButtonClass()}`} {...rest}>
-      {hasLeftIcon && leftIcon && <span className="left-icon">{leftIcon}</span>}
+      {hasLeftIcon && leftIcon && <span>{leftIcon}</span>}
       {hasText && children && <span className={`${styles['button-text']} ${styles[fillBorderVariant + '-text']} ${getTextColorClass()}`}>{children}</span>}
-      {hasRightIcon && rightIcon && <span className="right-icon">{rightIcon}</span>}
+      {hasRightIcon && rightIcon && <span>{rightIcon}</span>}
       {swapIcon && <span className={`swap-icon-${size}`}>{swapIcon}</span>}
     </button>
   );
