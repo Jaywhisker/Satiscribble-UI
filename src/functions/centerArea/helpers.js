@@ -18,7 +18,7 @@ export const setDefaultHeight = (textareaRef) => {
   }
 };
   
-  export const handleFocus = (id, setActive, value, setValue) => {
+  export const handleFocus = (id, setActive, quillValue, setQuillValue) => {
     console.log(`Textarea with ID ${id} is focused.`);
     // if (!value.endsWith("<br></li></ul>")){
     //   console.log('triggered')
