@@ -1,0 +1,87 @@
+.userContainer{
+    margin: auto;
+    margin-right: 0;
+    width: 65%;
+    padding: 0;
+    background-color: var(--Nice_Blue);
+    border-radius: 8px;
+    margin-bottom: 2vh;
+}
+
+.userText{
+    margin: 0;
+    text-align: left;
+    width: 84%;
+    margin-left: 8%;
+    padding: 1.75vh 0;
+    color: var(--Dark_Grey);
+    font-weight: 600;
+    /* font-size: 2vmin; */
+    font-size: 1rem;
+    letter-spacing: 0.25px;
+}
+
+.assistantContainer{
+    margin: auto;
+    margin-left: 0;
+    width: 65%;
+    padding: 0;
+    background-color: var(--Dark_Purple_Blue);
+    border-radius: 8px;
+    margin-bottom: 2vh;
+}
+
+
+.assistantText{
+    margin: 0;
+    text-align: left;
+    width: 84%;
+    margin-left: 8%;
+    padding: 2vh 0;
+    color: var(--Off_White);
+    font-weight: 600;
+    /* font-size: 2vmin; */
+    font-size: 1rem;
+    letter-spacing: 0.25px;
+}
+
+.sourceContainer{
+    border-top: 1.5px solid var(--Off_White_10);
+    width: 88%;
+    margin-left: 6%;
+}
+
+.sourceText{
+    margin: 0;
+    margin-top: 1vh;
+    color: var(--Off_White);
+    font-weight: 600;
+    /* font-size: 2vmin; */
+    font-size: 1rem;
+    letter-spacing: 0.25px;
+    margin-bottom: 1vh;
+}
+
+.listIndex{
+    margin: 0;
+    padding: 0 8%;
+}
+
+.source{
+    color: var(--Nice_Blue);
+    font-family: 'Lato';
+    font-weight: 600;
+    /* font-size: 1.75vmin; */
+    font-size: 0.75rem;
+    letter-spacing: 0.25px;
+    margin: 0.5vh 0;
+}
+
+.source:last-child{
+    padding-bottom: 2vh;
+}
+
+.source:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}

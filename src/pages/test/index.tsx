@@ -65,7 +65,7 @@ export default function Home() {
     <div>
       <p>Testing page works!</p>
       <button onClick={handleSubmit}>Test</button>
-      <p>{response}</p>
+      <p style={{color: 'white'}}>{response}</p>
     </div>
   )
 }

@@ -1,8 +1,5 @@
 import React from 'react';
-import Agenda from './components/agenda'; 
-import Outline from './components/outline';
-import LeftSidebar from './components/leftsidebar';
-import ContainerWithBorder from './components/containerwithborder';
+import LeftSidebar from './leftArea/leftsidebar';
 
 const TestPage: React.FC = () => {
 
