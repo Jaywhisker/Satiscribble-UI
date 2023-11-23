@@ -1,10 +1,13 @@
 // pages/index.js
 import React, { useState, useRef, useEffect } from "react";
-import MyEditor from "@/components/centerArea/MyEditor";
 import dynamic from "next/dynamic";
 import DynamicTextarea from "@/components/centerArea/DynamicTextArea";
 import styles from "@/styles/components/DynamicTextArea.module.css";
-import { handleFocus, handleBlur } from "@/functions/centerArea/helpers";
+import {
+  handleBlur,
+  deltaToHTML,
+  updateListItems,
+} from "@/functions/centerArea/helpers";
 
 const ReactQuill = dynamic(
   async () => {
@@ -18,36 +21,14 @@ const ReactQuill = dynamic(
 );
 
 function TextAreaQuill2({ id, shouldFocus }) {
-  const [quillValue, setQuillValue] = useState("<ul><li><br></li></ul>");
+  const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
-  const [quillActive, setQuillActive] = useState("");
   const topicRef = useRef(null);
   const quillRef = useRef();
 
   const handleTopicChange = (event) => {
     setTopic(event.target.value); // Update the topic state
   };
-
-  useEffect(() => {
-    // If shouldFocus is true, focus the topic input field
-    if (shouldFocus && topicRef.current) {
-      topicRef.current.focus();
-    }
-  }, [shouldFocus]);
-
-  useEffect(() => {
-    if (quillActive) {
-      if (quillValue.endsWith("<br></li></ul>")) {
-        console.log("enter/illegal delete was pressed?");
-      }
-      if (quillValue.endsWith("<p><br></p>")) {
-        // If the content ends with <p><br></p>, append the <ul><li><br></li></ul>
-        setQuillValue((currentValue) =>
-          currentValue.replace(/<p><br><\/p>$/, "<ul><li><br></li></ul>")
-        );
-      }
-    }
-  }, [quillValue]);
 
   function handleChange(event) {
     if (event.key === "Enter") {
@@ -56,13 +37,130 @@ function TextAreaQuill2({ id, shouldFocus }) {
     }
   }
 
-  const handleQuillFocus = () => {
-    handleFocus(id, setQuillActive, quillValue, setQuillValue); // Your existing focus logic
+  useEffect(() => {
+    if (shouldFocus && topicRef.current) {
+      topicRef.current.focus();
+    }
+  }, [shouldFocus]);
 
-    // Set cursor position to the end of the editor content
-    const quillEditor = quillRef.current.getEditor(); // Access the Quill editor instance
-    const length = quillEditor.getLength(); // Get the length of the editor content
-    quillEditor.setSelection(length, 0); // Set the cursor to the end
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      const quillEditor = quillRef.current.getEditor();
+      const range = quillEditor.getSelection();
+      if (range) {
+        const contentUpToCursor = quillEditor.getContents(0, range.index);
+        const processedDelta = deltaToHTML(contentUpToCursor);
+        const { updatedProcessedDelta, lastQuillItemClass } = updateListItems(
+          processedDelta,
+          quillValue
+        );
+        console.log(contentUpToCursor);
+        console.log("updatedProcessDelta :" + "\n" + updatedProcessedDelta);
+        console.log("quillvalue:" + "\n" + quillValue);
+        const result = quillValue.replace(updatedProcessedDelta, "");
+        // console.log(result);
+
+        const previousCursorPosition = range.index;
+
+        if (result.startsWith("</ul><p><br></p>")) {
+          const indexOfSubstring =
+            result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
+          let textAfter = result.substring(indexOfSubstring);
+          if (textAfter.includes("<ul>") && textAfter.includes("</ul>")) {
+            // Strip the <ul></ul> part from textAfter
+            textAfter = textAfter.replace(/<ul>|<\/ul>/g, "").trim();
+          }
+          const classAttribute = lastQuillItemClass
+            ? ` class="${lastQuillItemClass}"`
+            : "";
+          const newLiElements = `<li${classAttribute}><br></li><li${classAttribute}><br></li>`;
+          // Currently Just chops off, need to slice off this part conditionally and readd
+          setQuillValue(
+            updatedProcessedDelta + newLiElements + textAfter + "</ul>"
+          );
+          setTimeout(() => {
+            const quillEditor = quillRef.current.getEditor();
+            const position = quillEditor.getLength();
+            quillEditor.setSelection(previousCursorPosition + 1, 0);
+          }, 0);
+        } else if (result.startsWith("<p><br></p>")) {
+          setQuillValue("<ul><li></li></ul>");
+        }
+      }
+    }
+    if (event.key === "Backspace") {
+      console.log("Backspace");
+      const quillEditor = quillRef.current.getEditor();
+      const range = quillEditor.getSelection();
+      if (range && range.index !== 0) {
+        const contentUpToCursor = quillEditor.getContents(0, range.index);
+        // console.log(contentUpToCursor);
+        const processedDelta = deltaToHTML(contentUpToCursor);
+        // console.log(processedDelta);
+        // console.log(quillValue);
+        let { updatedProcessedDelta, lastQuillItemClass } = updateListItems(
+          processedDelta,
+          quillValue
+        );
+        const result = quillValue.replace(updatedProcessedDelta, "");
+        console.log(result);
+        const previousCursorPosition = range.index;
+        const pattern = /<\/ul><p>(.*?)<\/p>([\s\S]*)/;
+        const match = result.match(pattern);
+        if (result.startsWith("</ul><p><br></p>")) {
+          const indexOfSubstring =
+            result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
+          let textAfter = result.substring(indexOfSubstring);
+          if (textAfter.includes("<ul>") && textAfter.includes("</ul>")) {
+            // Strip the <ul></ul> part from textAfter
+            textAfter = textAfter.replace(/<ul>|<\/ul>/g, "").trim();
+          }
+          setQuillValue(updatedProcessedDelta + textAfter + "</ul>");
+          setTimeout(() => {
+            const quillEditor = quillRef.current.getEditor();
+            quillEditor.setSelection(previousCursorPosition, 0);
+          }, 0);
+        } else if (match) {
+          //ie someone deleted a bullet point with tet there to move it up?
+          console.log("do the thing");
+          const pContent = match[1]; // Content inside the <p> tag
+          let remainingContent = match[2]; // Remaining content after the </p> tag
+          if (
+            remainingContent.includes("<ul>") &&
+            remainingContent.includes("</ul>")
+          ) {
+            // Strip the <ul></ul> part from textAfter
+            remainingContent = remainingContent
+              .replace(/<ul>|<\/ul>/g, "")
+              .trim();
+          }
+          console.log(updatedProcessedDelta);
+
+          const lastLiRegex =
+            /(<li[^>]*>)(<br>|.*?)(<\/li>)(?![\s\S]*<li[^>]*>)/;
+          const lastLiMatch = updatedProcessedDelta.match(lastLiRegex);
+
+          if (lastLiMatch) {
+            const updatedLi =
+              lastLiMatch[1] +
+              (lastLiMatch[2].trim() === "<br>" ? "" : lastLiMatch[2]) +
+              pContent +
+              lastLiMatch[3];
+            updatedProcessedDelta = updatedProcessedDelta.replace(
+              lastLiRegex,
+              updatedLi
+            );
+          }
+
+          // Find the last <li> before the pattern and concatenate the pContent
+          setQuillValue(updatedProcessedDelta + remainingContent + "</ul>");
+          setTimeout(() => {
+            const quillEditor = quillRef.current.getEditor();
+            quillEditor.setSelection(previousCursorPosition, 0);
+          }, 0);
+        }
+      }
+    }
   };
 
   return (
@@ -78,15 +176,14 @@ function TextAreaQuill2({ id, shouldFocus }) {
       />
 
       <ReactQuill
-        className={
-          quillActive ? styles.activeQuillStyles : styles.inactiveQuillStyles
-        }
+        className={styles.activeQuillStyles}
         forwardedRef={quillRef}
         theme="bubble"
         value={quillValue}
-        onChange={setQuillValue}
-        onFocus={handleQuillFocus}
-        onBlur={() => handleBlur(id, setQuillActive, quillValue, setQuillValue)} // Added onBlur handler
+        onChange={setQuillValue} // Use the modified handler
+        // onFocus={handleQuillFocus}
+        onKeyDown={handleKeyDown} // Add the onKeyUp prop here
+        onBlur={() => handleBlur(id, quillValue, setQuillValue)} // Added onBlur handler
       />
     </div>
   );
