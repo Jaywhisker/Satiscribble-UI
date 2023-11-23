@@ -7,6 +7,7 @@ import {
   handleBlur,
   deltaToHTML,
   updateListItems,
+  deltaToBackend,
 } from "@/functions/centerArea/helpers";
 
 const ReactQuill = dynamic(
@@ -46,6 +47,9 @@ function TextAreaQuill2({ id, shouldFocus }) {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
+      const rawText = quillEditor.getText();
+      const backendDelta = deltaToBackend(rawText);
+      console.log(backendDelta);
       const range = quillEditor.getSelection();
       if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
@@ -54,9 +58,9 @@ function TextAreaQuill2({ id, shouldFocus }) {
           processedDelta,
           quillValue
         );
-        console.log(contentUpToCursor);
-        console.log("updatedProcessDelta :" + "\n" + updatedProcessedDelta);
-        console.log("quillvalue:" + "\n" + quillValue);
+        // console.log(contentUpToCursor);
+        // console.log("updatedProcessDelta :" + "\n" + updatedProcessedDelta);
+        // console.log("quillvalue:" + "\n" + quillValue);
         const result = quillValue.replace(updatedProcessedDelta, "");
         // console.log(result);
 
@@ -89,7 +93,7 @@ function TextAreaQuill2({ id, shouldFocus }) {
       }
     }
     if (event.key === "Backspace") {
-      console.log("Backspace");
+      // console.log("Backspace");
       const quillEditor = quillRef.current.getEditor();
       const range = quillEditor.getSelection();
       if (range && range.index !== 0) {
@@ -103,7 +107,7 @@ function TextAreaQuill2({ id, shouldFocus }) {
           quillValue
         );
         const result = quillValue.replace(updatedProcessedDelta, "");
-        console.log(result);
+        // console.log(result);
         const previousCursorPosition = range.index;
         const pattern = /<\/ul><p>(.*?)<\/p>([\s\S]*)/;
         const match = result.match(pattern);
@@ -122,7 +126,6 @@ function TextAreaQuill2({ id, shouldFocus }) {
           }, 0);
         } else if (match) {
           //ie someone deleted a bullet point with tet there to move it up?
-          console.log("do the thing");
           const pContent = match[1]; // Content inside the <p> tag
           let remainingContent = match[2]; // Remaining content after the </p> tag
           if (
@@ -134,8 +137,6 @@ function TextAreaQuill2({ id, shouldFocus }) {
               .replace(/<ul>|<\/ul>/g, "")
               .trim();
           }
-          console.log(updatedProcessedDelta);
-
           const lastLiRegex =
             /(<li[^>]*>)(<br>|.*?)(<\/li>)(?![\s\S]*<li[^>]*>)/;
           const lastLiMatch = updatedProcessedDelta.match(lastLiRegex);
@@ -156,7 +157,7 @@ function TextAreaQuill2({ id, shouldFocus }) {
           setQuillValue(updatedProcessedDelta + remainingContent + "</ul>");
           setTimeout(() => {
             const quillEditor = quillRef.current.getEditor();
-            quillEditor.setSelection(previousCursorPosition, 0);
+            quillEditor.setSelection(previousCursorPosition - 1, 0);
           }, 0);
         }
       }

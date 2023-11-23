@@ -98,6 +98,11 @@ export const updateListItems = (processedDelta, quillValue) => {
   return { updatedProcessedDelta, lastQuillItemClass };
 }
 
-//                             this from where
-{/* <ul><li>The error</li><li><br></li><li><br></li><li><br></li><li><br></li><li class="ql-indent-1">Seems</li><li class="ql-indent-1">TO be</li><li>that</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>After tabbing twice</li><li class="ql-indent-1">Then</li><li class="ql-indent-1">Something</li><li class="ql-indent-2">Goes</li><li class="ql-indent-2">Wron</li><li class="ql-indent-1">I mean that's fine</li><li>Hmm</li><li><br></li><li><br></li><li>okay</li><li class="ql-indent-1">dah</li><li><br></li> */}
-{/* <ul><li>The error</li><li><br></li><li><br></li><li><br></li><li><br></li><li class="ql-indent-1">Seems</li><li class="ql-indent-1">TO be</li><li>that</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>After tabbing twice</li><li class="ql-indent-1">Then</li><li class="ql-indent-1">Something</li><li class="ql-indent-2">Goes</li><li class="ql-indent-2">Wron</li><li class="ql-indent-1">I mean that's fine</li><li>Hmm</li><li><br></li><li><br></li><li>okay</li><li class="ql-indent-1">dah</li><li class="ql-indent-1"><br></li></ul><p><br></p> */}
+export const deltaToBackend = (rawText) => {
+  const multipleNewlineRegex = /(\n{2,})/g;
+  
+  // Replace multiple newline characters with a single newline
+  const cleanedText = rawText.replace(multipleNewlineRegex, '\n');
+
+  return cleanedText
+}
