@@ -11,7 +11,7 @@ function App() {
   };
 
   return (
-    <div style={{ display: "flex", "flex-direction": "column", gap: 20 }}>
+    <div style={{ display: "flex", "flex-direction": "column", gap: 20, width:'60vw' }}>
       <MeetingDetailBlocks />
       {topicAreas.map((_, index) => (
         <TextAreaQuill
