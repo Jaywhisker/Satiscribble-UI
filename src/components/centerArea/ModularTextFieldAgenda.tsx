@@ -2,20 +2,23 @@ import React, { forwardRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 const ModularTextFieldAgenda = forwardRef((props, ref) => {
-  const { label, placeholder, onChange, onKeyDown } = props; // Use onKeyDown
+  const { label, placeholder, onChange, onKeyDown, readOnly } = props; // Include readOnly in props
 
   return (
     <div className={styles.agendaBlockTextFieldHolder}>
-      <p className={`${styles.meetingBlockTextFieldLabel} ${styles.meetingBlockTextFieldText}`}>
-        {label}
-      </p>
+      {label && ( // Render label only if it exists
+        <p className={`${styles.meetingBlockTextFieldLabel} ${styles.meetingBlockTextFieldText}`}>
+          {label}
+        </p>
+      )}
       <input
         ref={ref}
         type="text"
         className={`${styles.meetingBlockTextField} ${styles.meetingBlockTextFieldText}`}
         placeholder={placeholder}
         onChange={onChange}
-        onKeyDown={onKeyDown} 
+        onKeyDown={onKeyDown}
+        readOnly={readOnly}
       />
     </div>
   );

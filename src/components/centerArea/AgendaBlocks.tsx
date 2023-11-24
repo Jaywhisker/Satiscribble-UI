@@ -1,62 +1,106 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import styles from "@/styles/components/DynamicTextArea.module.css";
+import stylo from "@/styles/components/AgendaBlock.module.css"
 import ModularTextFieldAgenda from './ModularTextFieldAgenda';
 
-const checkedImage = '/CheckboxTicked.svg'; // Path to the checked (ticked) image
-const uncheckedImage = '/Checkbox.svg'; // Path to the unchecked image
+const checkedImage = '/CheckboxTicked.svg';
+const uncheckedImage = '/Checkbox.svg';
+const editIcon = '/Edit.svg';
+const tickIcon = '/Check.svg';
+const deleteIcon = '/Cancellation.svg';
 
-const CheckboxImage = styled.img`
-  cursor: pointer;
-  width: 24px;  
-  height: 24px; 
-`;
 
-const AgendaBlock = () => {
-  const [agendaItems, setAgendaItems] = useState([{ name: '', completed: false }]);
+const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
+  const [internalAgendaItems, setInternalAgendaItems] = useState([{ id: 0, name: '', completed: false }]);  // State for internally managed agenda items and next ID for new items
+  const [nextId, setNextId] = useState(1);
+  const [isEditMode, setIsEditMode] = useState(false); // Track whether the component is in edit mode
+  const agendaItems = externalAgendaItems || internalAgendaItems;
 
-  const handleCheckboxChange = (index) => {
-    const newAgendaItems = [...agendaItems];
-    newAgendaItems[index].completed = !newAgendaItems[index].completed;
-    setAgendaItems(newAgendaItems);
-  };
-
-  const handleAgendaChange = (value, index) => {
-    const newAgendaItems = [...agendaItems];
-    newAgendaItems[index].name = value;
-    setAgendaItems(newAgendaItems);
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === 'Enter' && agendaItems[index].name.trim() !== '') {
-      e.preventDefault(); 
-      addNewAgendaItem(); 
+  const updateAgendaItems = (newAgendaItems) => { // Function to update agenda items
+    if (onAgendaChange) {
+      onAgendaChange(newAgendaItems);
+    } else {
+      setInternalAgendaItems(newAgendaItems);
     }
   };
 
-  const addNewAgendaItem = () => {
-    setAgendaItems([...agendaItems, { name: '', completed: false }]);
+  const handleCheckboxChange = (index) => {
+    if (!isEditMode) return;
+
+    const newAgendaItems = [...agendaItems];
+    newAgendaItems[index].completed = !newAgendaItems[index].completed;
+    updateAgendaItems(newAgendaItems);
   };
 
+  const handleAgendaChange = (value, index) => { // Handles changes to the text of an agenda item
+    const newAgendaItems = [...agendaItems];
+    newAgendaItems[index].name = value;
+    updateAgendaItems(newAgendaItems);
+  };
+
+  const canAddNewItem = () => { // Determines if a new agenda item can be added
+    return agendaItems.length === 0 || agendaItems[agendaItems.length - 1].name.trim() !== '';
+  };
+
+  const addNewAgendaItem = () => { // Adds a new agenda item to the list
+    if (canAddNewItem()) {
+      const newAgendaItems = [...agendaItems, { id: nextId, name: '', completed: false }];
+      updateAgendaItems(newAgendaItems);
+      setNextId(nextId + 1);
+    }
+  };
+
+  const deleteAgendaItem = (idToDelete) => {
+    const newAgendaItems = agendaItems.filter(item => item.id !== idToDelete);
+    updateAgendaItems(newAgendaItems);
+  };
+
+  const toggleEditMode = () => { // Toggle edit mode
+    setIsEditMode(!isEditMode);
+  };
+
+  // Connect functionality to backend
+  // Update agenda function
+  // Retrieve agenda function
+  
   return (
     <div className={styles.container}>
-      <h1 className={styles.titleTextStyle}>Agenda</h1>
+      <div className={stylo.titleContainer}>
+        <h1 className={styles.titleTextStyle}>Agenda</h1>
+        <img
+          src={isEditMode ? tickIcon : editIcon} 
+          onClick={toggleEditMode} 
+          alt={isEditMode ? "Confirm" : "Edit"}
+          className={stylo.editButton}
+        />
+      </div>
       {agendaItems.map((item, index) => (
-        <div key={index} className={styles.agendaBlockTextFieldHolder}>
-          <CheckboxImage
+        <div key={item.id} className={styles.agendaBlockTextFieldHolder}>
+          <img
             src={item.completed ? checkedImage : uncheckedImage}
             alt={item.completed ? 'Checked' : 'Unchecked'}
             onClick={() => handleCheckboxChange(index)}
+            className={stylo.checkboxImage}
           />
           <ModularTextFieldAgenda
             value={item.name}
             placeholder="Enter agenda item"
             onChange={(e) => handleAgendaChange(e.target.value, index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
+            readOnly={!isEditMode}
           />
+          {isEditMode && (
+            <img 
+              src={deleteIcon} 
+              onClick={() => deleteAgendaItem(item.id)} 
+              alt="Delete"
+              className={stylo.deleteButton}
+            />
+          )}
         </div>
       ))}
-      <button onClick={addNewAgendaItem} className={styles.addAgendaButton}>Add Agenda Item</button>
+      {isEditMode && (
+        <button onClick={addNewAgendaItem} disabled={!canAddNewItem()} className={styles.addAgendaButton}>Add Agenda Item</button>
+      )}
     </div>
   );
 };

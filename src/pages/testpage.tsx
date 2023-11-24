@@ -1,5 +1,5 @@
 import React from 'react';
-import LeftSidebar from './leftArea/leftsidebar';
+import LeftSidebar from '@/components/leftArea/leftsidebar';
 
 const TestPage: React.FC = () => {
 

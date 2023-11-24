@@ -1,0 +1,32 @@
+
+  .titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  
+  .checkboxImage {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .editButton {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+  }
+  
+  .deleteButton {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+  }
+
+  .margin {
+    margin-bottom: 20px
+  }
+  

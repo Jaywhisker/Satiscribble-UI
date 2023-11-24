@@ -1,0 +1,122 @@
+.agendaContainer {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  
+.agendaContent {
+    background-color: var(--Grey);
+  }
+  
+.agendaButtonBar {
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    background-color: var(--Dark_Grey);
+    color: var(--Nice_Blue);
+    font-size: 16px;
+    border-bottom: 2px solid var(--Nice_Blue); 
+  }
+  
+.agendaItemStyle {
+    display: flex;
+    align-items: center;
+    padding: 2px 12px;
+    color: var(--Pure_White);
+    font-size: 16px;
+    border-bottom: 0px;
+  }
+  
+.checkboxImage {
+    cursor: pointer;
+    margin-right: 12px;
+    width: 24px;
+    height: 24px;
+  }
+
+.wrapper {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  
+.styledContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    padding: 2px 12px; 
+    margin: 20px 0; 
+    border: 2px solid var(--Nice_Blue); 
+    border-radius: 5px; 
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    color: var(--Nice_Blue); 
+    font-size: 15px; 
+    box-sizing: border-box; 
+    background-color: var(--Dark_Grey); 
+  }
+
+.dropdownContainer {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  
+.dropdownButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+    background-color: var(--Dark_Grey);
+    color: var(--Nice_Blue);
+    cursor: pointer;
+    font-size: 16px;
+    border-bottom: 2px solid var(--Nice_Blue);
+    position: relative;
+  }
+  
+.dropdownButton p {
+    margin: 0;
+    line-height: 1;
+  }
+  
+.dropdownButton img {
+    position: absolute;
+    right: 0px; 
+    height: 100%;
+    transition: transform 0.3s ease;
+  }
+  
+.dropdownContent {
+    display: none; /* Initial state, modified dynamically */
+    background-color: var(--Grey);
+    padding: 0 12px;
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+  }
+  
+.dropdownOption {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    background-color: var(--Grey);
+    color: var(--Pure_White);
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+.dropdownOption p {
+    margin: 0;
+    line-height: 1; 
+  }
+
+.dropdownSvg {
+    width: 20px; 
+    height: 20px; 
+    transition: transform 0.3s ease;
+  }
