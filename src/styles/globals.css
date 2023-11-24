@@ -13,3 +13,9 @@ p{
 :root{
   font-size: 16px;
 }
+
+li{
+  font-family: lato;
+  font-size: var(--psize);
+
+}
