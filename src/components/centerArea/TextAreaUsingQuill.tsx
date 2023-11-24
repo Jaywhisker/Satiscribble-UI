@@ -21,7 +21,7 @@ const ReactQuill = dynamic(
   }
 );
 
-function TextAreaQuill2({ id, shouldFocus }) {
+function TextAreaQuill({ id, shouldFocus }) {
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
   const topicRef = useRef(null);
@@ -190,4 +190,4 @@ function TextAreaQuill2({ id, shouldFocus }) {
   );
 }
 
-export default TextAreaQuill2;
+export default TextAreaQuill;
