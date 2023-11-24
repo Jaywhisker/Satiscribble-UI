@@ -74,18 +74,50 @@ function TextAreaQuill({ id, shouldFocus }) {
             // Strip the <ul></ul> part from textAfter
             textAfter = textAfter.replace(/<ul>|<\/ul>/g, "").trim();
           }
-          const classAttribute = lastQuillItemClass
+          let classAttribute = lastQuillItemClass
             ? ` class="${lastQuillItemClass}"`
             : "";
-          const newLiElements = `<li${classAttribute}><br></li><li${classAttribute}><br></li>`;
-          // Currently Just chops off, need to slice off this part conditionally and readd
-          setQuillValue(
-            updatedProcessedDelta + newLiElements + textAfter + "</ul>"
-          );
+          let offset = 1;
+          let newLiElements = "";
+          if (classAttribute == "") {
+            newLiElements = `<li${classAttribute}><br></li><li${classAttribute}><br></li>`;
+          } else {
+            console.log(classAttribute);
+            newLiElements = `<li><br></li>`;
+            offset = 0;
+            // The unholy mess of trying to figure how to make it go down by one
+            //  {
+            //   let currentIndentLevel = classAttribute.match(/ql-indent-(\d+)/);
+            //   let newIndentLevel = currentIndentLevel
+            //     ? parseInt(currentIndentLevel[1], 10) - 1
+            //     : 0;
+            //   // Ensure that the indent level is not less than zero
+            //   newIndentLevel = Math.max(newIndentLevel, 0);
+
+            //   // Construct new class attribute with the decremented indent level
+            //   classAttribute =
+            //     newIndentLevel > 0
+            //       ? ` class="ql-indent-${newIndentLevel}"`
+            //       : "";
+
+            //   if (newIndentLevel === 0) {
+            //     // If indent level is 0, we don't need a class for indent
+            //     newLiElements = `<li><br></li><li><br></li>`;
+            //   } else {
+            //     // Otherwise, add the updated classAttribute to the new elements
+            //     newLiElements = `<li${classAttribute}><br></li>`;
+            //   }
+            // }
+          }
+          // Currently Just chops off, need to slice off this part conditionally and read
+          const something =
+            updatedProcessedDelta + newLiElements + textAfter + "</ul>";
+          console.log(something);
+          setQuillValue(something);
           setTimeout(() => {
             const quillEditor = quillRef.current.getEditor();
             const position = quillEditor.getLength();
-            quillEditor.setSelection(previousCursorPosition + 1, 0);
+            quillEditor.setSelection(previousCursorPosition + offset, 0);
           }, 0);
         } else if (result.startsWith("<p><br></p>")) {
           setQuillValue("<ul><li></li></ul>");
