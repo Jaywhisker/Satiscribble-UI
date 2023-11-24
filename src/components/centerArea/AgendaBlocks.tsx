@@ -9,9 +9,8 @@ const editIcon = '/Edit.svg';
 const tickIcon = '/Check.svg';
 const deleteIcon = '/Cancellation.svg';
 
-
 const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
-  const [internalAgendaItems, setInternalAgendaItems] = useState([{ id: 0, name: '', completed: false }]);  // State for internally managed agenda items and next ID for new items
+  const [internalAgendaItems, setInternalAgendaItems] = useState([{ id: 0, name: '', completed: false }]);
   const [nextId, setNextId] = useState(1);
   const [isEditMode, setIsEditMode] = useState(false); // Track whether the component is in edit mode
   const agendaItems = externalAgendaItems || internalAgendaItems;
@@ -50,15 +49,20 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
     }
   };
 
-  const deleteAgendaItem = (idToDelete) => {
+  const deleteAgendaItem = (idToDelete) => { // Deletes an agenda item from the list
     const newAgendaItems = agendaItems.filter(item => item.id !== idToDelete);
     updateAgendaItems(newAgendaItems);
   };
 
   const toggleEditMode = () => { // Toggle edit mode
+    if (isEditMode) { // Filter out empty agenda items before exiting edit mode
+      const filteredAgendaItems = agendaItems.filter(item => item.name.trim() !== '');
+      updateAgendaItems(filteredAgendaItems);
+    }
     setIsEditMode(!isEditMode);
   };
 
+  // TO DO:
   // Connect functionality to backend
   // Update agenda function
   // Retrieve agenda function
