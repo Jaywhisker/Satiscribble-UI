@@ -20,7 +20,7 @@ class LeftSidebar extends React.Component {
 
     return (
       <div style={sidebarStyle}>
-        <ContainerWithBorder text="HCI MEETING ON 23/10" />
+        <ContainerWithBorder text="HCI MEETING ON 23/10" /> 
         <Agenda />
         <div style={{ width: '100%', marginTop: '20px' }}>
         <Outline />
@@ -31,3 +31,9 @@ class LeftSidebar extends React.Component {
 }
 
 export default LeftSidebar;
+
+
+// We can also pass just the subject and the date if we want to
+// Provided we make the necessary changes to ContainerWithBorder.tsx
+// <ContainerWithBorder title="HCI" date="23/10" />
+
