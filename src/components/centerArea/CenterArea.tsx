@@ -7,14 +7,25 @@ function CenterArea() {
   const [topicAreas, setTopicareas] = useState([]);
 
   const handleAddTopicArea = () => {
-    setTopicareas((prevTopicAreas) => [...prevTopicAreas, {}]);
+    setTopicareas((prevTopicAreas) => [...prevTopicAreas, { title: "" }]);
   };
+
+  const handleDeleteTopicArea = (index) => {
+    setTopicareas((currentAreas) =>
+      currentAreas.filter((_, idx) => idx !== index)
+    );
+  };
+
+  useEffect(() => {
+    console.log("Updated topicAreas:", topicAreas);
+  }, [topicAreas]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
       // Check if Control and Enter keys are pressed
       if (event.ctrlKey && event.key === "Enter") {
         handleAddTopicArea();
+        console.log(topicAreas);
       }
     };
 
@@ -30,11 +41,20 @@ function CenterArea() {
   return (
     <div className={styles.mainAreaContainer}>
       <MeetingDetailBlocks />
-      {topicAreas.map((_, index) => (
+      {topicAreas.map((area, index) => (
         <TextAreaQuill
           key = {index}
           id={index}
           shouldFocus={index === topicAreas.length - 1}
+          title={area.title}
+          updateTitle={(newTitle) => {
+            setTopicareas((currentAreas) => {
+              const updatedAreas = [...currentAreas];
+              updatedAreas[index].title = newTitle;
+              return updatedAreas;
+            });
+          }}
+          onDelete={() => handleDeleteTopicArea(index)}
         />
       ))}
 
