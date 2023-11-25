@@ -113,6 +113,14 @@
 .topicBlockMinutesContainer{
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+}
+
+.topicBlockMinutesContainer{
+  display: flex;
+  flex-direction: row;
   align-items: flex-end;
   /* Oso contains animated transitions */
   overflow: hidden;

@@ -28,7 +28,10 @@ function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
   const [summaryContent, setSummaryContent] = useState(
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
   );
+  const [quillRefHeight, setQuillRefHeight] = useState(null);
   const topicRef = useRef(null);
+  const fullMinutesRef = useRef(null);
+  const minutesRef = useRef(null);
   const quillRef = useRef();
 
   const toggleSummaryVisibility = () => {
@@ -59,6 +62,34 @@ function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
       topicRef.current.focus();
     }
   }, [shouldFocus]);
+
+  useEffect(() => {
+    if (minutesRef.current) {
+      var currentReactQuillHeight = minutesRef.current.clientHeight;
+      if (currentReactQuillHeight > 0) {
+        setQuillRefHeight(currentReactQuillHeight);
+      }
+    }
+  }, [quillValue]);
+
+  useEffect(() => {
+    if (isSummaryVisible && fullMinutesRef.current) {
+      if (quillDisplayed) {
+        fullMinutesRef.current.style.transition = "height 0.5s ease-in-out";
+        fullMinutesRef.current.style.height = `${quillRefHeight}px`;
+        setTimeout(() => {
+          fullMinutesRef.current.style.transition = "none";
+          fullMinutesRef.current.style.height = "auto";
+        }, 500);
+      } else {
+        fullMinutesRef.current.style.height = `${quillRefHeight}px`;
+        setTimeout(() => {
+          fullMinutesRef.current.style.transition = "height 0.5s ease-in-out";
+          fullMinutesRef.current.style.height = "0px";
+        }, 50);
+      }
+    }
+  }, [isSummaryVisible, quillDisplayed]);
 
   useEffect(() => {
     setTopic(title);
@@ -249,8 +280,11 @@ function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
         <p className={styles.topicBlockSummaryText}>{summaryContent}</p>
       </div>
 
-      <div className={`${styles.topicBlockMinutesContainer}`}>
-        <div className={styles.topicBlockReactQuillHolder}>
+      <div
+        className={`${styles.topicBlockMinutesContainer}`}
+        ref={fullMinutesRef}
+      >
+        <div className={styles.topicBlockReactQuillHolder} ref={minutesRef}>
           <ReactQuill
             className={styles.genericPText}
             forwardedRef={quillRef}
