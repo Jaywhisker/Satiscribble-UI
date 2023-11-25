@@ -32,8 +32,8 @@ function CenterArea() {
       <MeetingDetailBlocks />
       {topicAreas.map((_, index) => (
         <TextAreaQuill
+          key = {index}
           id={index}
-          key={index}
           shouldFocus={index === topicAreas.length - 1}
         />
       ))}

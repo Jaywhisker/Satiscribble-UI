@@ -28,7 +28,10 @@ function TextAreaQuill({ id, shouldFocus }) {
   const [summaryContent, setSummaryContent] = useState(
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
   );
+  const [quillRefHeight, setQuillRefHeight] = useState(null)
   const topicRef = useRef(null);
+  const fullMinutesRef = useRef(null)
+  const minutesRef = useRef(null)
   const quillRef = useRef();
 
   const toggleSummaryVisibility = () => {
@@ -58,6 +61,36 @@ function TextAreaQuill({ id, shouldFocus }) {
     }
   }, [shouldFocus]);
 
+  useEffect(() => {
+    if (minutesRef.current) {
+      var currentReactQuillHeight = minutesRef.current.clientHeight
+      if (currentReactQuillHeight > 0) {
+        setQuillRefHeight(currentReactQuillHeight)
+      } 
+    }
+  }, [quillValue])
+
+
+  useEffect(() => {
+    if (isSummaryVisible && fullMinutesRef.current) {
+      if (quillDisplayed) { 
+        fullMinutesRef.current.style.transition = 'height 0.5s ease-in-out'
+        fullMinutesRef.current.style.height = `${quillRefHeight}px`
+        setTimeout(() => {
+          fullMinutesRef.current.style.transition = 'none'
+          fullMinutesRef.current.style.height = 'auto'
+        }, 500)
+      } else {
+        fullMinutesRef.current.style.height = `${quillRefHeight}px`
+        setTimeout(() => {
+          fullMinutesRef.current.style.transition = 'height 0.5s ease-in-out'
+          fullMinutesRef.current.style.height = '0px'
+        }, 50)
+      }
+    }
+  }, [isSummaryVisible, quillDisplayed])
+
+  
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
@@ -122,6 +155,7 @@ function TextAreaQuill({ id, shouldFocus }) {
             //   }
             // }
           }
+          
           // Currently Just chops off, need to slice off this part conditionally and read
           const something =
             updatedProcessedDelta + newLiElements + textAfter + "</ul>";
@@ -211,8 +245,10 @@ function TextAreaQuill({ id, shouldFocus }) {
     }
   };
 
+
+
   return (
-    <div className={styles.genericBlock}>
+    <div className={styles.genericBlock} key={id}>
       <input
         ref={topicRef}
         type="text"
@@ -223,12 +259,11 @@ function TextAreaQuill({ id, shouldFocus }) {
         className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}
       />
 
+
       <div
         className={`${styles.topicBlockColumnContainer}`}
-        style={{
-          maxHeight: isSummaryVisible ? "10000px" : "0",
-          transition: "max-height 1s ease-in-out, opacity 1s ease-in-out",
-        }}
+        id = 'summaryContainer'
+        style ={{display: isSummaryVisible ? 'flex' : 'none'}}
       >
         <button
           className={styles.topicBlockToggleSummaryButton}
@@ -245,13 +280,10 @@ function TextAreaQuill({ id, shouldFocus }) {
       </div>
 
       <div
-        className={`${styles.topicBlockColumnContainer}`}
-        style={{
-          maxHeight: quillDisplayed ? "10000px" : "0",
-          transition: "max-height 1s ease-in-out, opacity 1s ease-in-out",
-        }}
+        className={`${styles.topicBlockMinutesContainer}`}
+        ref = {fullMinutesRef}
       >
-        <div className={styles.topicBlockReactQuillHolder}>
+        <div className={styles.topicBlockReactQuillHolder} ref={minutesRef}>
           <ReactQuill
             className={styles.genericPText}
             forwardedRef={quillRef}

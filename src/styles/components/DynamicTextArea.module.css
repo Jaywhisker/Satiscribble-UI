@@ -80,8 +80,15 @@
 .topicBlockColumnContainer{
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+}
+
+.topicBlockMinutesContainer{
+  display: flex;
+  flex-direction: row;
   align-items: flex-end;
-  align-items: center;
   /* Oso contains animated transitions */
   overflow: hidden;
 }
