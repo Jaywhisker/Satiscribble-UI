@@ -65,10 +65,13 @@
 }
 
 .topicBlockSummariserButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none; /* Removes the border */
   cursor: pointer; /* Changes the cursor on hover */
   padding: 0;
-  width: 4vh;
+  width: var(--summariserButtonWidth);
   background: none
 }
 
@@ -84,7 +87,7 @@
   border: none; /* Removes the border */
   cursor: pointer; /* Changes the cursor on hover */
   padding: 0;
-  width: 4vh;
+  width: var(--summariserButtonWidth);
   background: none
 }
 

@@ -264,7 +264,10 @@ function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
         </button>
       </div>
 
-      <div className={`${styles.topicBlockSummaryContainer}`}>
+      <div
+        className={`${styles.topicBlockSummaryContainer}`}
+        style={{ display: isSummaryVisible ? "flex" : "none" }}
+      >
         <button
           className={
             styles.topicBlockTooooooooooooooooooooooooggleSummaryButton
