@@ -17,10 +17,10 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     <div className={`${styles.Notif} ${styles.greyNotif}`}>
         <span className={styles.topRow}>
             <span className={styles.titleCol} >
-                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.NotificationIcon alt="Notification Icon"/>}></Button> {/* pop up icon button */}
+                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.NotificationIcon alt="Notification Icon" color="orange" size="small"/>}></Button> {/* pop up icon button */}
                 <p className={styles.messageHeader} style={{ color: "var(--Orange, #FFCE85)" }} >Are you still there?</p>
             </span>
-            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close"/>}onClick={onClose}></Button> 
+            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close" color="white" size="small"/>}onClick={onClose}></Button> 
         </span> 
         <p className={styles.messageContent}> It's been 5 minutes since the last update to meeting minutes. Please review and update to stay on track with the agenda.</p>
         <span className={styles.actionButtons}>

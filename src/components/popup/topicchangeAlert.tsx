@@ -17,10 +17,10 @@ return (
     <div className={`${styles.Notif} ${styles.redNotif}`} style={{ alignItems: 'center'}}>
         <span className={styles.topRow}>
             <span className={styles.titleCol} >
-                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.ExclamationIcon alt="Exclamation Icon"/>}></Button> {/* pop up icon button */}
+                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.ExclamationIcon alt="Exclamation Icon" color="red" size="small"/>}></Button> {/* pop up icon button */}
                 <p className={styles.messageHeader} style={{ color: "var(--Red, #DE5C64)" }}>Topic Change Alert</p>
             </span>
-            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close"/>}onClick={onClose}></Button> 
+            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close" color="white" size="small"/>}onClick={onClose}></Button> 
         </span> 
         <p className={styles.messageContent}> A topic change has been detected. Please select one of the following actions:</p>
         <span className={styles.actionButtons}>

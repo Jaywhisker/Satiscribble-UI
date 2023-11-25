@@ -17,10 +17,10 @@ const DetectAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     <div className={`${styles.Notif} ${styles.greyNotif}`}>
         <span className={styles.topRow}>
             <span className={styles.titleCol} >
-                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CheckIcon alt="Check Icon"/>}></Button> {/* pop up icon button */}
+                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CheckIcon alt="Check Icon" color="purple" size="small" />}></Button> {/* pop up icon button */}
                 <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }} >We've detected an abbreviation</p>
             </span>
-            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close"/>}onClick={onClose}></Button> 
+            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close" color="white" size="small"/>}onClick={onClose}></Button> 
         </span>
         <span className={styles.messageContent}>
           <p style={{ marginBlock: "0"  }}>Abbreviation will be added with no response:</p>

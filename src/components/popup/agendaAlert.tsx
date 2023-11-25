@@ -17,10 +17,10 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     <div className={`${styles.Notif} ${styles.redNotif}`}>
         <span className={styles.topRow}>
             <span className={styles.titleCol} >
-                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.ExclamationIcon alt="Exclamation Icon"/>}></Button> {/* pop up icon button */}
+                <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.ExclamationIcon alt="Exclamation Icon" color="red" size="small"/>}></Button> {/* pop up icon button */}
                 <p className={styles.messageHeader} style={{ color: "var(--Red, #DE5C64)" }}>Agenda Alert</p>
             </span>
-            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close"/>}onClick={onClose}></Button> 
+            <Button buttonType = 'icon-button' size="small" fillBorderVariant="no-background" leftIcon={<Icons.CancelIcon alt="Close" color="white" size="small"/>}onClick={onClose}></Button> 
         </span> 
         <p className={styles.messageContent}> It appears we may have deviated from the agenda. Please review and update to stay on track with the agenda.</p>
         <span className={styles.actionButtons}>

@@ -52,6 +52,8 @@
     line-height: 1.25rem;
     margin-block-start: 0;
     margin-block-end: 0;
+    max-width: 90%;
+    text-wrap: wrap;
 }
 
 .messageContent{

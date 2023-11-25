@@ -18,6 +18,7 @@
     --Alert-Red-75: rgba(171, 41, 41, 0.75);
     --Dark-Red:rgba(67, 41, 43) ;
     --Red: rgba(222, 92, 100);
+    --Green: rgb(76, 175, 80);
 
     /* Unnamed Colors */
     --Pure_White: rgb(255,255,255);
@@ -27,7 +28,5 @@
     --Not_Nice_Blue: rgb(156,165,216);
     --Not_Dark_Grey: rgb(32,33,35);
     --Not_Lighter_Grey: rgb(217,217,217,0.1);
-
-
 
 }
