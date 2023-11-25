@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
+import EmptyBlock from "@/components/centerArea/EmptyBlock";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 function CenterArea() {
@@ -40,10 +41,11 @@ function CenterArea() {
 
   return (
     <div className={styles.mainAreaContainer}>
+      <EmptyBlock />
       <MeetingDetailBlocks />
       {topicAreas.map((area, index) => (
         <TextAreaQuill
-          key = {index}
+          key={index}
           id={index}
           shouldFocus={index === topicAreas.length - 1}
           title={area.title}
