@@ -1,32 +1,29 @@
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .titleContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  
-  .checkboxImage {
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-  }
-  
-  .editButton {
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-  }
-  
-  .deleteButton {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-    margin-left: 10px;
-  }
+.checkboxImage {
+  cursor: pointer;
+  width: 2.2vw; 
+  height: 3.8vh; 
+}
 
-  .margin {
-    margin-bottom: 20px
-  }
-  
+.editButton {
+  cursor: pointer;
+  width: 1.8vw; 
+  height: 3.2vh; 
+  margin-left: 0.78vw;
+}
+
+.deleteButton {
+  cursor: pointer;
+  width: 1.5vw; 
+  height: 2.6vh; 
+  margin-left: 0.78vw;
+}
+
+.margin {
+  margin-bottom: 2.78vh;
+}
