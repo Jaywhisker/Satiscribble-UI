@@ -1,6 +1,6 @@
 .errorBackground{
     width: 25vw;
-    position: fixed;
+    position: absolute;
     z-index: 2;
     background-color: var(--Dark_Grey);
     padding: 1vh 0 0 0;

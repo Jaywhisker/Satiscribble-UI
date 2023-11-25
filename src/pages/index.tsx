@@ -24,7 +24,7 @@ export default function Home() {
       </div>
       
       <CenterArea/>
-
+      
       <RightSideBar
         minutesID={minutesID}
         chatHistoryID={chatHistoryID}

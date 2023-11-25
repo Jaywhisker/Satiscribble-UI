@@ -41,6 +41,7 @@
 .dropDownIcon{
     height: 1.2vh;
     object-fit: contain;
+    transition: transform 0.75s ease-in-out;
 }
 
 .tabOverallContainer{
@@ -295,4 +296,12 @@
     } 75% {
         transform: translateY(0);
       }
+}
+
+.errorText{
+    color: var(--Red);
+    font: 400 0.7rem 'Lato';
+    text-align: center;
+    margin: 0;
+    margin-bottom: 2vh;
 }
