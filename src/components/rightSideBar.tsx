@@ -9,20 +9,21 @@ import AssistantResponse from "./chatContainer/assistantResponse";
 import GlossaryModal from "./glossary/glossaryModal";
 import ResponseError from "./chatContainer/responseError";
 
-import { readID } from "@/functions/IDHelper";
 import { fetchChatHistory, fetchGlossary } from "@/functions/api/fetchRightSideBar";
 
+interface rightSideBarProps {
+    minutesID: string
+    chatHistoryID: string
+    topicTitles: string[]
+}
 
-export default function RightSideBar() {
+export default function RightSideBar(props:rightSideBarProps) {
 
     const [expanded, setExpanded] = useState(true)
     const [selected, setSelected] = useState('CuriousCat')
     const [queryMode, setQueryMode] = useState(null)
     const [query, setQuery] = useState('')
     const [showMore, setShowMore] = useState(false)
-
-    const [minutesID, setMinutesID] = useState(null)
-    const [chatHistoryID, setChatHistoryID] = useState(null)
     
     const [documentChatHistory, setDocumentChatHistory] = useState([])
     const [webChatHistory, setWebChatHistory] = useState([])
@@ -38,13 +39,9 @@ export default function RightSideBar() {
     const queryInputArea = useRef(null)
     const chatResponse = useRef(null)
 
-    //props
-    const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development', 'Iteration Docs'])
-
 
     useEffect(() => {
         setGPTResponse('')
-        readID(setMinutesID, setChatHistoryID)
         setQueryMode(localStorage.getItem('queryMode') || 'document')
         window.addEventListener('click', closeModal)
         return () => {
@@ -55,14 +52,14 @@ export default function RightSideBar() {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (minutesID != null) {
-                await fetchChatHistory(minutesID, chatHistoryID, setDocumentChatHistory, setWebChatHistory)
-                const glosaryLength = await fetchGlossary(minutesID, chatHistoryID, setGlossaryData)
+            if (props.minutesID != null) {
+                await fetchChatHistory(props.minutesID, props.chatHistoryID, setDocumentChatHistory, setWebChatHistory)
+                const glosaryLength = await fetchGlossary(props.minutesID, props.chatHistoryID, setGlossaryData)
                 setGlossaryMode(Array(glosaryLength).fill('default'))
             }
         }
         fetchData()
-    }, [minutesID])
+    }, [props.minutesID])
 
 
     // useEffect(() => {
@@ -209,11 +206,11 @@ export default function RightSideBar() {
         try {
             var requestData = {
                 "type": queryMode,
-                "minutesID": minutesID,
-                "chatHistoryID": chatHistoryID
+                "minutesID": props.minutesID,
+                "chatHistoryID": props.chatHistoryID
             }
             await axios.post('/api/clear', requestData)
-            await fetchChatHistory(minutesID, chatHistoryID, setDocumentChatHistory, setWebChatHistory)
+            await fetchChatHistory(props.minutesID, props.chatHistoryID, setDocumentChatHistory, setWebChatHistory)
         } catch (error){
             console.log(error)
         }
@@ -224,8 +221,8 @@ export default function RightSideBar() {
         var requestData = {
             "type": queryMode,
             "query":  query,
-            "minutesID": minutesID,
-            "chatHistoryID": chatHistoryID
+            "minutesID": props.minutesID,
+            "chatHistoryID": props.chatHistoryID
         }
         let errorIndex;
         const updatedResponseError = [...responseError]; 
@@ -361,7 +358,7 @@ export default function RightSideBar() {
                                 ) : (
                                     <AssistantResponse
                                         text={chatDetail.assistant}
-                                        sourceID={chatDetail.sourceID.map(data => topicTitles[parseInt(data, 10)])}
+                                        sourceID={chatDetail.sourceID.map(data => props.topicTitles[parseInt(data, 10)])}
                                         copyable={false}
                                         id={index}
                                     />
@@ -481,8 +478,8 @@ export default function RightSideBar() {
                                     setGlossaryType={setGlossaryMode}
                                     glossaryData={glossaryData}
                                     setGlossaryData={setGlossaryData}
-                                    minutesID={minutesID}
-                                    chatHistoryID={chatHistoryID}
+                                    minutesID={props.minutesID}
+                                    chatHistoryID={props.chatHistoryID}
                                 />
                             ))}
                         </div>
