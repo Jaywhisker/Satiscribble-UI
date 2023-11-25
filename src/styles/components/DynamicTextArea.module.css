@@ -1,20 +1,15 @@
-.container {
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 32px;
-    padding-right:32px;
-    margin-right: 20px;
-    margin-left:20px;
-    /* width: 100%; */
-    display: flex;
-    flex-direction: column;
-    gap:12px;
-    background-color: var(--Dark_Grey);
-    border-radius:10px;
+/*  */
+/* generic */
+/*  */
+
+.genericPText{
+  padding: 0;
+  color: var(--Off_White);
+  font-family: lato;
+  font-size: var(--psize);
 }
 
-/* Formally blockHeader */
-.titleTextStyle{
+.genericTitleText{
   font-size: var(--headersize);
   font-family: Lato;
   margin: 0;
@@ -22,8 +17,76 @@
   font-weight: 700;
 }
 
+.genericBlock {
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  padding-left: 4vh;
+  padding-right: 4vh;
+  margin-right: 2vh;
+  margin-left: 2vh;
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  gap:1vh;
+  background-color: var(--Dark_Grey);
+  border-radius:10px;
+  margin-top: 2vh;
+}
 
-.meetingBlockTextArea {
+
+/*  */
+/* topicBlock */
+/*  */
+
+.topicBlockSummaryText{
+  padding: 0;
+  color: var(--Off_White);
+  font-family: lato;
+  font-size: var(--psize);
+  margin:0;
+}
+
+.topicBlockSummariserButton {
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  height: 4vh;
+  background: none
+}
+
+.topicBlockSummariserButton img {
+  height: 100%; /* Set the width as needed */
+  width: auto; /* Maintain aspect ratio */
+}
+
+.topicBlockReactQuillHolder{
+  width:100%;
+  min-height: 4vh;
+}
+
+.topicBlockToggleSummaryButton{
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  height: 3vh;
+  background: none
+}
+
+.topicBlockToggleSummaryButton img{
+  height: 100%;
+  width: auto;
+}
+
+.topicBlockColumnContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  align-items: center;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+}
+
+.topicBlockTopicInput {
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
@@ -32,20 +95,33 @@
   border:none;
 }
 
-.meetingBlockTextArea:focus {
+.topicBlockTopicInput:focus {
   outline:none;
   border:none;
 }
 
-.meetingBlockTextFieldHolder{
+/*  */
+/* detailBlock */
+/*  */
+
+.detailBlockMain{
   width:100%;
-  gap:20px;
+  gap:2vh;
   display:flex;
   flex-direction: row;
   margin:0;
 }
 
-.meetingBlockTextField{
+.detailBlockText{
+  margin:auto;
+  height:fit-content; 
+  color: var(--Off_White);
+  font-family: lato;
+  font-size: var(--psize);
+}
+
+
+.detailBlockInput{
   width:100%;
   background: transparent;
   resize:none;
@@ -53,29 +129,40 @@
   height: var(--headersize);
   border: none; 
   outline: none; 
-  padding-top: calc(var(--psize)/8)
-}
-
-.meetingBlockTextFieldLabel{
-  margin:auto;
-  height:fit-content; 
-}
-
-.meetingBlockTextFieldText{
-  color: var(--Off_White);
-  font-family: lato;
-  font-size: var(--psize);
-}
-.activeQuillStyles{
-  padding: 0;
+  padding-top: calc(var(--psize)/8);
   color: var(--Off_White);
   font-family: lato;
   font-size: var(--psize);
 }
 
-.inactiveQuillStyles{
-  padding: 0;
-  color: var(--Off_White_50);
-  font-family: lato;
-  font-size: var(--psize);
+/*  */
+/* mainArea */
+/*  */
+
+.mainAreaContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  width: 60vw;
+}
+
+.mainAreaAddNewBlockButton{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  padding-left: 4vh;
+  padding-right: 4vh;
+  margin-right: 2vh;
+  margin-left: 2vh;
+  /* width: 100%; */
+  gap:2vh;
+  background-color: var(--Dark_Grey);
+  border-radius:10px;
+  margin-top: 2vh;
 }

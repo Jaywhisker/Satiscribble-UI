@@ -1,7 +1,6 @@
 // pages/index.js
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import DynamicTextarea from "@/components/centerArea/DynamicTextArea";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 import {
   handleBlur,
@@ -22,10 +21,25 @@ const ReactQuill = dynamic(
 );
 
 function TextAreaQuill({ id, shouldFocus }) {
+  const [quillDisplayed, setQuillDisplayed] = useState(true);
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
+  const [isSummaryVisible, setIsSummaryVisible] = useState(false);
+  const [summaryContent, setSummaryContent] = useState(
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+  );
   const topicRef = useRef(null);
   const quillRef = useRef();
+
+  const toggleSummaryVisibility = () => {
+    setIsSummaryVisible(true);
+    setQuillDisplayed(false);
+    // Some function to summarise and set summary Content
+  };
+
+  const toggleQuillVisibility = () => {
+    setQuillDisplayed(!quillDisplayed);
+  };
 
   const handleTopicChange = (event) => {
     setTopic(event.target.value); // Update the topic state
@@ -82,7 +96,6 @@ function TextAreaQuill({ id, shouldFocus }) {
           if (classAttribute == "") {
             newLiElements = `<li${classAttribute}><br></li><li${classAttribute}><br></li>`;
           } else {
-            console.log(classAttribute);
             newLiElements = `<li><br></li>`;
             offset = 0;
             // The unholy mess of trying to figure how to make it go down by one
@@ -112,7 +125,7 @@ function TextAreaQuill({ id, shouldFocus }) {
           // Currently Just chops off, need to slice off this part conditionally and read
           const something =
             updatedProcessedDelta + newLiElements + textAfter + "</ul>";
-          console.log(something);
+          // console.log(something);
           setQuillValue(something);
           setTimeout(() => {
             const quillEditor = quillRef.current.getEditor();
@@ -128,7 +141,7 @@ function TextAreaQuill({ id, shouldFocus }) {
       // console.log("Backspace");
       const quillEditor = quillRef.current.getEditor();
       const range = quillEditor.getSelection();
-      if (range && range.index !== 0) {
+      if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
         // console.log(contentUpToCursor);
         const processedDelta = deltaToHTML(contentUpToCursor);
@@ -156,6 +169,8 @@ function TextAreaQuill({ id, shouldFocus }) {
             const quillEditor = quillRef.current.getEditor();
             quillEditor.setSelection(previousCursorPosition, 0);
           }, 0);
+        } else if (result.startsWith("<p><br></p>")) {
+          setQuillValue("<ul><li></li></ul>");
         } else if (match) {
           //ie someone deleted a bullet point with tet there to move it up?
           const pContent = match[1]; // Content inside the <p> tag
@@ -197,7 +212,7 @@ function TextAreaQuill({ id, shouldFocus }) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.genericBlock}>
       <input
         ref={topicRef}
         type="text"
@@ -205,19 +220,56 @@ function TextAreaQuill({ id, shouldFocus }) {
         placeholder="Enter Topic"
         onChange={handleTopicChange}
         onKeyPress={handleChange}
-        className={`${styles.meetingBlockTextArea} ${styles.titleTextStyle}`}
+        className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}
       />
 
-      <ReactQuill
-        className={styles.activeQuillStyles}
-        forwardedRef={quillRef}
-        theme="bubble"
-        value={quillValue}
-        onChange={setQuillValue} // Use the modified handler
-        // onFocus={handleQuillFocus}
-        onKeyDown={handleKeyDown} // Add the onKeyUp prop here
-        onBlur={() => handleBlur(id, quillValue, setQuillValue)} // Added onBlur handler
-      />
+      <div
+        className={`${styles.topicBlockColumnContainer}`}
+        style={{
+          maxHeight: isSummaryVisible ? "10000px" : "0",
+          transition: "max-height 1s ease-in-out, opacity 1s ease-in-out",
+        }}
+      >
+        <button
+          className={styles.topicBlockToggleSummaryButton}
+          onClick={toggleQuillVisibility}
+          style={{
+            transform: quillDisplayed ? "rotate(90deg)" : "none",
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
+          <img src="/SummuriserArrow.svg" alt="Summarise" />
+        </button>
+        {/* Render the summary content here */}
+        <p className={styles.topicBlockSummaryText}>{summaryContent}</p>
+      </div>
+
+      <div
+        className={`${styles.topicBlockColumnContainer}`}
+        style={{
+          maxHeight: quillDisplayed ? "10000px" : "0",
+          transition: "max-height 1s ease-in-out, opacity 1s ease-in-out",
+        }}
+      >
+        <div className={styles.topicBlockReactQuillHolder}>
+          <ReactQuill
+            className={styles.genericPText}
+            forwardedRef={quillRef}
+            theme="bubble"
+            value={quillValue}
+            onChange={setQuillValue} // Use the modified handler
+            // onFocus={handleQuillFocus}
+            onKeyDown={handleKeyDown} // Add the onKeyUp prop here
+            onBlur={() => handleBlur(id, quillValue, setQuillValue)} // Added onBlur handler
+          />
+        </div>
+        <button
+          onClick={toggleSummaryVisibility}
+          className={styles.topicBlockSummariserButton}
+        >
+          <img src="/SummuriserButton.svg" alt="Summarise" />
+        </button>
+      </div>
     </div>
   );
 }

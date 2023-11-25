@@ -1,8 +1,12 @@
 :root{
-    --psize: 16px;
-    --headersize:30px;
+    --psize: 2vh;
+    --headersize:3vh;
 }
 
 .ql-editor {
   padding: 0px!important;
+}
+
+.ql-editor ul li{
+  padding-left: 0!important;
 }
