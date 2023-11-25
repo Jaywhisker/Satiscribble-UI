@@ -11,11 +11,15 @@ docker compose up
 Afterwhich, enter the docker container terminal and run `npm run dev` to start the server on http://localhost:8000
 
 # Setting up the endpoint
-This Satiscribble UI has 1 main endpoint to hit:
+This Satiscribble UI requires 3 main containers to be running:
 
+```
 Satiscribe Python AI service
+Satiscribe Mongo DB service
+Satiscribe Chroma DB service
+```
 
-Ensure that this service is running in the same docker network as the UI container. Once done, edit the .env file in the root folder (not the .env file in the build folder) to define the correct endpoints URL for the next.js server to call to.
+Ensure that these 3 services is running in the same docker network as the UI container. Once done, edit the .env file in the root folder (not the .env file in the build folder) to define the correct endpoints URL for the next.js server to call to.
 
 # File structure
 This section will explain the file structure of the current Next.js file as well as a quick explanation of how should you structure / edit the files if required.
