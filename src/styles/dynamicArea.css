@@ -1,3 +1,19 @@
 :root{
-    --summariserButtonWidth:4vh;
+    /* Button Sizes */
+    --magicWandButtonSize: 4vh;
+    --deleteButtonSize: 2.5vh;
+    --toggleQuillButtonSize: 3vh;
+
+    /* Individual Block */
+    --summaryButtonGap: 1vh;
+    --verticalGap: 2vh;
+    --horizontalGap: 2vh;
+    --internalVerticalPadding: 2vh;
+    --internalHorizontalPadding: 5vh;
+
+    /* Overall Style */
+    --firstBlockMarginFromTop: 2vh;
+    --overallWidth: 60vw;
+    --betweenBlockGap: 2vh;
+    --blockSideMargin: 2vh;
 }
