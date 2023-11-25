@@ -20,7 +20,7 @@ const ReactQuill = dynamic(
   }
 );
 
-function TextAreaQuill({ id, shouldFocus }) {
+function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
   const [quillDisplayed, setQuillDisplayed] = useState(true);
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
@@ -42,7 +42,9 @@ function TextAreaQuill({ id, shouldFocus }) {
   };
 
   const handleTopicChange = (event) => {
-    setTopic(event.target.value); // Update the topic state
+    const newTitle = event.target.value;
+    setTopic(newTitle);
+    updateTitle(newTitle); // Update the title in the parent component
   };
 
   function handleChange(event) {
@@ -58,7 +60,12 @@ function TextAreaQuill({ id, shouldFocus }) {
     }
   }, [shouldFocus]);
 
+  useEffect(() => {
+    setTopic(title);
+  }, [title]);
+
   const handleKeyDown = (event) => {
+    // console.log(event.key);
     if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
       const rawText = quillEditor.getText();
@@ -122,7 +129,6 @@ function TextAreaQuill({ id, shouldFocus }) {
             //   }
             // }
           }
-          // Currently Just chops off, need to slice off this part conditionally and read
           const something =
             updatedProcessedDelta + newLiElements + textAfter + "</ul>";
           // console.log(something);
@@ -136,8 +142,7 @@ function TextAreaQuill({ id, shouldFocus }) {
           setQuillValue("<ul><li></li></ul>");
         }
       }
-    }
-    if (event.key === "Backspace") {
+    } else if (event.key === "Backspace") {
       // console.log("Backspace");
       const quillEditor = quillRef.current.getEditor();
       const range = quillEditor.getSelection();
@@ -213,29 +218,29 @@ function TextAreaQuill({ id, shouldFocus }) {
 
   return (
     <div className={styles.genericBlock}>
-      <input
-        ref={topicRef}
-        type="text"
-        value={topic}
-        placeholder="Enter Topic"
-        onChange={handleTopicChange}
-        onKeyPress={handleChange}
-        className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}
-      />
+      <div className={`${styles.topicBlockHeaderContainer}`}>
+        <input
+          ref={topicRef}
+          type="text"
+          value={topic}
+          placeholder="Enter Topic"
+          onChange={handleTopicChange}
+          onKeyPress={handleChange}
+          className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}
+        />
+        <button onClick={onDelete} className={styles.topicBlockDeleteButton}>
+          <img src="/Trash.svg" alt="Trash" />
+        </button>
+      </div>
 
-      <div
-        className={`${styles.topicBlockColumnContainer}`}
-        style={{
-          maxHeight: isSummaryVisible ? "10000px" : "0",
-          transition: "max-height 1s ease-in-out, opacity 1s ease-in-out",
-        }}
-      >
+      <div className={`${styles.topicBlockSummaryContainer}`}>
         <button
-          className={styles.topicBlockToggleSummaryButton}
+          className={
+            styles.topicBlockTooooooooooooooooooooooooggleSummaryButton
+          }
           onClick={toggleQuillVisibility}
           style={{
             transform: quillDisplayed ? "rotate(90deg)" : "none",
-            transition: "transform 0.3s ease-in-out",
           }}
         >
           <img src="/SummuriserArrow.svg" alt="Summarise" />
@@ -244,13 +249,7 @@ function TextAreaQuill({ id, shouldFocus }) {
         <p className={styles.topicBlockSummaryText}>{summaryContent}</p>
       </div>
 
-      <div
-        className={`${styles.topicBlockColumnContainer}`}
-        style={{
-          maxHeight: quillDisplayed ? "10000px" : "0",
-          transition: "max-height 1s ease-in-out, opacity 1s ease-in-out",
-        }}
-      >
+      <div className={`${styles.topicBlockMinutesContainer}`}>
         <div className={styles.topicBlockReactQuillHolder}>
           <ReactQuill
             className={styles.genericPText}

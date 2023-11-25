@@ -46,25 +46,12 @@
   margin:0;
 }
 
-.topicBlockSummariserButton {
-  border: none; /* Removes the border */
-  cursor: pointer; /* Changes the cursor on hover */
-  padding: 0;
-  height: 4vh;
-  background: none
-}
-
-.topicBlockSummariserButton img {
-  height: 100%; /* Set the width as needed */
-  width: auto; /* Maintain aspect ratio */
-}
-
 .topicBlockReactQuillHolder{
   width:100%;
   min-height: 4vh;
 }
 
-.topicBlockToggleSummaryButton{
+.topicBlockTooooooooooooooooooooooooggleSummaryButton{
   border: none; /* Removes the border */
   cursor: pointer; /* Changes the cursor on hover */
   padding: 0;
@@ -72,16 +59,61 @@
   background: none
 }
 
-.topicBlockToggleSummaryButton img{
+.topicBlockTooooooooooooooooooooooooggleSummaryButton img{
   height: 100%;
   width: auto;
 }
 
-.topicBlockColumnContainer{
+.topicBlockSummariserButton {
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  width: 4vh;
+  background: none
+}
+
+.topicBlockSummariserButton img {
+  height: auto; /* Set the width as needed */
+  width: 100%; /* Maintain aspect ratio */
+}
+
+.topicBlockDeleteButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  width: 4vh;
+  background: none
+}
+
+.topicBlockDeleteButton img{
+  height: 2.5vh;
+  width: auto;
+}
+
+.topicBlockHeaderContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+}
+
+.topicBlockSummaryContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+  width: calc(100% - 4vw)
+}
+
+.topicBlockMinutesContainer{
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  align-items: center;
   /* Oso contains animated transitions */
   overflow: hidden;
 }
