@@ -21,23 +21,23 @@ function CenterArea() {
     console.log("Updated topicAreas:", topicAreas);
   }, [topicAreas]);
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      // Check if Control and Enter keys are pressed
-      if (event.ctrlKey && event.key === "Enter") {
-        handleAddTopicArea();
-        console.log(topicAreas);
-      }
-    };
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     // Check if Control and Enter keys are pressed
+  //     if (event.ctrlKey && event.key === "Enter") {
+  //       handleAddTopicArea();
+  //       console.log(topicAreas);
+  //     }
+  //   };
 
-    // Add event listener
-    window.addEventListener("keydown", handleKeyDown);
+  //   // Add event listener
+  //   window.addEventListener("keydown", handleKeyDown);
 
-    // Clean up event listener
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   // Clean up event listener
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   return (
     <div className={styles.mainAreaContainer}>
@@ -57,6 +57,7 @@ function CenterArea() {
             });
           }}
           onDelete={() => handleDeleteTopicArea(index)}
+          onAddTopicArea={handleAddTopicArea}
         />
       ))}
 

@@ -20,7 +20,14 @@ const ReactQuill = dynamic(
   }
 );
 
-function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
+function TextAreaQuill({
+  id,
+  shouldFocus,
+  title,
+  updateTitle,
+  onDelete,
+  onAddTopicArea,
+}) {
   const [quillDisplayed, setQuillDisplayed] = useState(true);
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
@@ -97,7 +104,10 @@ function TextAreaQuill({ id, shouldFocus, title, updateTitle, onDelete }) {
 
   const handleKeyDown = (event) => {
     // console.log(event.key);
-    if (event.key === "Enter") {
+    if (event.ctrlKey && event.key === "Enter") {
+      console.log("yes");
+      onAddTopicArea();
+    } else if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
       const rawText = quillEditor.getText();
       const backendDelta = deltaToBackend(rawText);
