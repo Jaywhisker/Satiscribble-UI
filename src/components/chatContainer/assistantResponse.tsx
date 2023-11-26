@@ -28,7 +28,7 @@ export default function AssistantResponse(props: assistantResponse ) {
                 <p className={inputChat.sourceText}>Sources</p>
                 <ul className={inputChat.listIndex}>
                     {props.sourceID.map((topicTitle, index) => (
-                        <li className={inputChat.source} key={index}>{topicTitle}</li>
+                        <li className={inputChat.source} key={index}>{topicTitle.title}</li>
                     ))}
                 </ul>
             </div>

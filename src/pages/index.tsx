@@ -10,7 +10,7 @@ export default function Home() {
   const [minutesID, setMinutesID] = useState(null)
   const [chatHistoryID, setChatHistoryID] = useState(null)
   
-  const [topicTitles, setTopicTitles] = useState(['Web Experiment','Frontend Development', 'Iteration Docs'])
+  const [topicTitles, setTopicTitles] = useState([])
 
   useEffect(() => {
     readID(setMinutesID, setChatHistoryID)
@@ -23,7 +23,11 @@ export default function Home() {
         <p>Left Hand Side</p>
       </div>
       
-      <CenterArea/>
+      <CenterArea
+        minutesID={minutesID}
+        chatHistoryID={chatHistoryID}
+        topicTitles={topicTitles}
+        setTopicTitles={setTopicTitles}/>
       
       <RightSideBar
         minutesID={minutesID}

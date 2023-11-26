@@ -4,29 +4,36 @@ import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 import EmptyBlock from "@/components/centerArea/EmptyBlock";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
-function CenterArea() {
-  const [topicAreas, setTopicareas] = useState([]);
+interface centerAreaProps {
+  minutesID: string
+  chatHistoryID: string
+  topicTitles: any[]
+  setTopicTitles: any
+}
+
+function CenterArea(props: centerAreaProps) {
 
   const handleAddTopicArea = () => {
-    setTopicareas((prevTopicAreas) => [...prevTopicAreas, { title: "" }]);
+    props.setTopicTitles((prevTopicAreas) => [...prevTopicAreas, { title: "" }]);
   };
 
   const handleDeleteTopicArea = (index) => {
-    setTopicareas((currentAreas) =>
+    props.setTopicTitles((currentAreas) =>
       currentAreas.filter((_, idx) => idx !== index)
     );
   };
 
   useEffect(() => {
-    console.log("Updated topicAreas:", topicAreas);
-  }, [topicAreas]);
+    console.log("Updated topicAreas:", props.topicTitles);
+  }, [props.topicTitles]);
+
 
   useEffect(() => {
     const handleKeyDown = (event) => {
       // Check if Control and Enter keys are pressed
       if (event.ctrlKey && event.key === "Enter") {
         handleAddTopicArea();
-        console.log(topicAreas);
+        console.log(props.topicTitles);
       }
     };
 
@@ -39,18 +46,19 @@ function CenterArea() {
     };
   }, []);
 
+  
   return (
     <div className={styles.mainAreaContainer}>
       <EmptyBlock />
       <MeetingDetailBlocks />
-      {topicAreas.map((area, index) => (
+      {props.topicTitles.map((area, index) => (
         <TextAreaQuill
           key={index}
           id={index}
-          shouldFocus={index === topicAreas.length - 1}
+          shouldFocus={index === props.topicTitles.length - 1}
           title={area.title}
           updateTitle={(newTitle) => {
-            setTopicareas((currentAreas) => {
+            props.setTopicTitles((currentAreas) => {
               const updatedAreas = [...currentAreas];
               updatedAreas[index].title = newTitle;
               return updatedAreas;
