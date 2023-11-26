@@ -29,7 +29,8 @@
   flex-direction: column;
   gap:var(--verticalGap);
   background-color: var(--Dark_Grey);
-  border-radius:10px;
+  border-radius:8px;
+  min-height: 1.5vh;
 }
 
 .genericBlock:first-child{
@@ -191,6 +192,7 @@
   flex-direction: column;
   gap: var(--betweenBlockGap);
   width: var(--overallWidth);
+  margin-bottom: 75vh;
 }
 
 .mainAreaAddNewBlockButton{
@@ -210,5 +212,5 @@
   /* width: 100%; */
   gap:var(--horizontalGap);
   background-color: var(--Dark_Grey);
-  border-radius:10px;
+  border-radius:8px;
 }
