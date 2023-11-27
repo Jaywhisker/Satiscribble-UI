@@ -25,6 +25,7 @@ export async function updateMeetingDetails(minutesID:string, chatHistoryID:strin
             participantList = []
         } else {
             participantList = attendees.split(",")
+            participantList = participantList.map(str => str.trim())
         }
 
         let currentDateTime = new Date()
@@ -35,8 +36,8 @@ export async function updateMeetingDetails(minutesID:string, chatHistoryID:strin
             "chatHistoryID": chatHistoryID,
             "data" : {
                 "location": location,
-                "time": formattedDateTime,
-                "attendees": attendees
+                "date": formattedDateTime,
+                "attendees": participantList
             }
 
         }
