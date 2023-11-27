@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 import EmptyBlock from "@/components/centerArea/EmptyBlock";
@@ -66,6 +66,7 @@ function CenterArea(props: centerAreaProps) {
           }}
           onDelete={() => handleDeleteTopicArea(index)}
           onAddTopicArea={handleAddTopicArea}
+          topicTitlesLength={props.topicTitles.length}
         />
       ))}
 

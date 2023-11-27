@@ -27,6 +27,7 @@ function TextAreaQuill({
   updateTitle,
   onDelete,
   onAddTopicArea,
+  topicTitlesLength,
 }) {
   const [quillDisplayed, setQuillDisplayed] = useState(true);
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
@@ -40,6 +41,7 @@ function TextAreaQuill({
   const fullMinutesRef = useRef(null);
   const minutesRef = useRef(null);
   const quillRef = useRef();
+  const prevTopicTitlesLength = useRef(topicTitlesLength);
 
   const toggleSummaryVisibility = () => {
     setIsSummaryVisible(true);
@@ -65,9 +67,12 @@ function TextAreaQuill({
   }
 
   useEffect(() => {
-    if (shouldFocus && topicRef.current) {
+    console.log(topicTitlesLength);
+    console.log(prevTopicTitlesLength);
+    if (shouldFocus && topicTitlesLength == prevTopicTitlesLength.current) {
       topicRef.current.focus();
     }
+    prevTopicTitlesLength.current = topicTitlesLength;
   }, [shouldFocus]);
 
   useEffect(() => {

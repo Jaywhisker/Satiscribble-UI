@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 import ModularTextField from "@/components/centerArea/ModularTextField";
 
+interface meetingDetailBlockProps {
+  minutesID: string;
+  chatHistoryID: string;
+}
+
 function MeetingDetailBlocks() {
   const containerRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
