@@ -8,6 +8,7 @@ import {
   updateListItems,
   deltaToBackend,
 } from "@/functions/centerArea/helpers";
+import { updateMinutes } from "@/functions/api/updateMinutes";
 
 const ReactQuill = dynamic(
   async () => {
@@ -20,15 +21,21 @@ const ReactQuill = dynamic(
   }
 );
 
-function TextAreaQuill({
-  id,
-  shouldFocus,
-  title,
-  updateTitle,
-  onDelete,
-  onAddTopicArea,
-  topicTitlesLength,
-}) {
+interface TextAreaQuillProps {
+  minutesID: string;
+  chatHistoryID: string;
+  id: number;
+  shouldFocus: boolean;
+  title: string;
+  updateTitle: (newTitle: string) => void;
+  onDelete: () => void;
+  onAddTopicArea: () => void;
+  topicTitlesLength: number;
+  content: string;
+  updateBlockContent: (newContent: string) => void;
+}
+
+function TextAreaQuill(props: TextAreaQuillProps) {
   const [quillDisplayed, setQuillDisplayed] = useState(true);
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
@@ -41,7 +48,7 @@ function TextAreaQuill({
   const fullMinutesRef = useRef(null);
   const minutesRef = useRef(null);
   const quillRef = useRef();
-  const prevTopicTitlesLength = useRef(topicTitlesLength);
+  const prevTopicTitlesLength = useRef(props.topicTitlesLength);
 
   const toggleSummaryVisibility = () => {
     setIsSummaryVisible(true);
@@ -56,7 +63,7 @@ function TextAreaQuill({
   const handleTopicChange = (event) => {
     const newTitle = event.target.value;
     setTopic(newTitle);
-    updateTitle(newTitle); // Update the title in the parent component
+    props.updateTitle(newTitle); // Update the title in the parent component
   };
 
   function handleChange(event) {
@@ -67,13 +74,23 @@ function TextAreaQuill({
   }
 
   useEffect(() => {
-    console.log(topicTitlesLength);
-    console.log(prevTopicTitlesLength);
-    if (shouldFocus && topicTitlesLength == prevTopicTitlesLength.current) {
+    setQuillValue(props.content);
+  }, [props.content]);
+
+  const handleQuillValueChange = (newValue) => {
+    setQuillValue(newValue);
+    props.updateBlockContent(newValue);
+  };
+
+  useEffect(() => {
+    if (
+      props.shouldFocus &&
+      props.topicTitlesLength == prevTopicTitlesLength.current
+    ) {
       topicRef.current.focus();
     }
-    prevTopicTitlesLength.current = topicTitlesLength;
-  }, [shouldFocus]);
+    prevTopicTitlesLength.current = props.topicTitlesLength;
+  }, [props.shouldFocus]);
 
   useEffect(() => {
     if (minutesRef.current) {
@@ -104,19 +121,39 @@ function TextAreaQuill({
   }, [isSummaryVisible, quillDisplayed]);
 
   useEffect(() => {
-    setTopic(title);
-  }, [title]);
+    setTopic(props.title);
+  }, [props.title]);
+
+  const handleBlurring = () => {
+    const quillEditor = quillRef.current.getEditor();
+    const rawText = quillEditor.getText();
+    const backendDelta = deltaToBackend(rawText);
+    handleBlur(
+      props.id,
+      backendDelta,
+      quillValue,
+      setQuillValue,
+      props.minutesID,
+      props.chatHistoryID
+    );
+    updateMinutes(
+      props.minutesID,
+      props.chatHistoryID,
+      props.id,
+      props.title,
+      backendDelta,
+      null
+    );
+  };
 
   const handleKeyDown = (event) => {
     // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
-      console.log("yes");
-      onAddTopicArea();
+      // console.log("yes");
+      props.onAddTopicArea();
     } else if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
-      const rawText = quillEditor.getText();
-      const backendDelta = deltaToBackend(rawText);
-      console.log(backendDelta);
+      // console.log(backendDelta);
       const range = quillEditor.getSelection();
       if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
@@ -274,7 +311,10 @@ function TextAreaQuill({
           onKeyPress={handleChange}
           className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}
         />
-        <button onClick={onDelete} className={styles.topicBlockDeleteButton}>
+        <button
+          onClick={props.onDelete}
+          className={styles.topicBlockDeleteButton}
+        >
           <img src="/Trash.svg" alt="Trash" />
         </button>
       </div>
@@ -308,10 +348,10 @@ function TextAreaQuill({
             forwardedRef={quillRef}
             theme="bubble"
             value={quillValue}
-            onChange={setQuillValue} // Use the modified handler
+            onChange={handleQuillValueChange}
             // onFocus={handleQuillFocus}
             onKeyDown={handleKeyDown} // Add the onKeyUp prop here
-            onBlur={() => handleBlur(id, quillValue, setQuillValue)} // Added onBlur handler
+            onBlur={handleBlurring} // Added onBlur handler
           />
         </div>
         <button

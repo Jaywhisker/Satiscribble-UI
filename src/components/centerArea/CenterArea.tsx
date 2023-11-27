@@ -9,6 +9,8 @@ interface centerAreaProps {
   chatHistoryID: string;
   topicTitles: any[];
   setTopicTitles: any;
+  topicContent: any[];
+  setTopicContent: any;
 }
 
 function CenterArea(props: centerAreaProps) {
@@ -17,17 +19,31 @@ function CenterArea(props: centerAreaProps) {
       ...prevTopicAreas,
       { title: "" },
     ]);
+    props.setTopicContent((prevTopicContent) => [
+      ...prevTopicContent,
+      { content: "<ul><li></li></ul>" },
+    ]);
   };
+
+  function updateBlockContent(id, newContent) {
+    props.setTopicContent((prevContent) => {
+      return prevContent.map((content, idx) => {
+        if (idx === id) {
+          return { ...content, content: newContent };
+        }
+        return content;
+      });
+    });
+  }
 
   const handleDeleteTopicArea = (index) => {
     props.setTopicTitles((currentAreas) =>
       currentAreas.filter((_, idx) => idx !== index)
     );
+    props.setTopicContent((currentAreas) =>
+      currentAreas.filter((_, idx) => idx !== index)
+    );
   };
-
-  useEffect(() => {
-    console.log("Updated topicAreas:", props.topicTitles);
-  }, [props.topicTitles]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -50,9 +66,14 @@ function CenterArea(props: centerAreaProps) {
   return (
     <div className={styles.mainAreaContainer}>
       <EmptyBlock />
-      <MeetingDetailBlocks />
+      <MeetingDetailBlocks
+        minutesID={props.minutesID}
+        chatHistoryID={props.chatHistoryID}
+      />
       {props.topicTitles.map((area, index) => (
         <TextAreaQuill
+          minutesID={props.minutesID}
+          chatHistoryID={props.chatHistoryID}
           key={index}
           id={index}
           shouldFocus={index === props.topicTitles.length - 1}
@@ -66,7 +87,10 @@ function CenterArea(props: centerAreaProps) {
           }}
           onDelete={() => handleDeleteTopicArea(index)}
           onAddTopicArea={handleAddTopicArea}
-          topicTitlesLength={props.topicTitles.length}
+          content={props.topicContent[index].content}
+          updateBlockContent={(newContent) =>
+            updateBlockContent(index, newContent)
+          }
         />
       ))}
 

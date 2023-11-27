@@ -23,8 +23,9 @@ export const setDefaultHeight = (textareaRef) => {
     setActive(true);
   };
   
-  export const handleBlur = (id, value, setValue) => {
-    console.log(`Textarea with ID ${id} has lost focus, with text: ${value}`);
+  export const handleBlur = (id, textValue, value, setValue, minutesID, chatHistoryID) => {
+    // console.log(minutesID, chatHistoryID, textValue)
+      // console.log(`Textarea with ID ${id} has lost focus, with text: ${textValue}`);
     if (value.endsWith("<br></li></ul>")){
       const newValue = value.slice(0, -14) + "</ul>";
       setValue(newValue); // Update the state with the new value

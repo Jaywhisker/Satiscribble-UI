@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         }
     }
 
-    else if (requestData.hasOwnProperty('topic_id')) {
+    else if (requestData.hasOwnProperty('topicID')) {
         try {
             const response = await axios.post(`${process.env.PYTHON_BACKEND_AI_URI}/track_minutes`, requestData)
             res.status(200).json(response.data)
@@ -39,6 +39,7 @@ export default async function handler(req, res) {
     }
 
     else{
+        console.log("Non acceptable data")
         res.status(500).json({"error": "Non acceptable data"})
     }
   }

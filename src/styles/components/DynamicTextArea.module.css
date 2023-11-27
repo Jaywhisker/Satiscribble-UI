@@ -95,6 +95,10 @@
   background: none
 }
 
+.topicBlockDeleteButton:focus{
+  outline:none;
+}
+
 .topicBlockDeleteButton img{
   height: var(--deleteButtonSize);
   width: auto;

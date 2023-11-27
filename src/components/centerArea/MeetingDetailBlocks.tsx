@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 import ModularTextField from "@/components/centerArea/ModularTextField";
+import { updateMeetingDetails } from "@/functions/api/updateMinutes";
 
 interface meetingDetailBlockProps {
   minutesID: string;
   chatHistoryID: string;
 }
 
-function MeetingDetailBlocks() {
+function MeetingDetailBlocks(props: meetingDetailBlockProps) {
   const containerRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -38,6 +39,12 @@ function MeetingDetailBlocks() {
       console.log("Location: " + locationValue);
 
       setIsEditing(false);
+      updateMeetingDetails(
+        props.minutesID,
+        props.chatHistoryID,
+        locationValue,
+        participantsValue
+      );
     }
   };
 
