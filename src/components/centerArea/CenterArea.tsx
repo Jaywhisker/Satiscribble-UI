@@ -93,7 +93,7 @@ function CenterArea(props: centerAreaProps) {
           onAddTopicArea={handleAddTopicArea}
           content={props.topicContent[index].content}
           updateBlockContent={(newContent) =>
-            updateBlockContent(index, newContent)
+            updateBlockContent(area.id, newContent)
           }
         />
       ))}
