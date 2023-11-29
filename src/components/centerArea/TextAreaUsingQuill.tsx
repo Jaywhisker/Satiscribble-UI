@@ -7,6 +7,7 @@ import {
   deltaToHTML,
   updateListItems,
   deltaToBackend,
+  detectLastAbbreviation,
 } from "@/functions/centerArea/helpers";
 import { updateMinutes } from "@/functions/api/updateMinutes";
 
@@ -128,6 +129,8 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     const quillEditor = quillRef.current.getEditor();
     const rawText = quillEditor.getText();
     const backendDelta = deltaToBackend(rawText);
+    const lastAbbreviation = detectLastAbbreviation(backendDelta);
+
     handleBlur(
       props.id,
       backendDelta,
@@ -142,7 +145,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       props.id,
       props.title,
       backendDelta,
-      null
+      lastAbbreviation
     );
   };
 

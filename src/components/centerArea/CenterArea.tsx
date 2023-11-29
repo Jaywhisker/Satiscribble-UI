@@ -3,7 +3,7 @@ import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 import EmptyBlock from "@/components/centerArea/EmptyBlock";
 import styles from "@/styles/components/DynamicTextArea.module.css";
-
+import { deleteTopic } from "@/functions/api/deleteTopic";
 interface centerAreaProps {
   minutesID: string;
   chatHistoryID: string;
@@ -43,6 +43,7 @@ function CenterArea(props: centerAreaProps) {
     props.setTopicContent((currentAreas) =>
       currentAreas.filter((_, idx) => idx !== index)
     );
+    deleteTopic(props.minutesID, props.chatHistoryID, index);
   };
 
   useEffect(() => {
