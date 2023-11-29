@@ -109,6 +109,7 @@ export const deltaToBackend = (rawText) => {
     cleanedText = cleanedText.slice(0, -1);
   }
 
+  //sir help remove the \n at the end, can just return cleanedText.slice(0, -2)
   return cleanedText
 }
 

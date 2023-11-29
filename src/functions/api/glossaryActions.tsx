@@ -51,3 +51,18 @@ export async function deleteGlossaryEntry(minutesID:string, chatHistoryID:string
         return {"ERROR": `Unable to delete glossary entry, ${error.code}`}
     }
 }
+
+
+export async function readGlossary(minutesID:string, chatHistoryID:string) {
+    //reads glossary and essentially returns the abbreviation in caps and the meaning in lower case
+    var reqData = {
+        "minutesID" : minutesID,
+        "chatHistoryID": chatHistoryID,
+        "type": "glossary"
+    }
+
+    const response = await axios.post('/api/read', reqData)
+    const formattedGlossary = response.data.glossary.map((data) => {data.meaning.toLowerCase();
+                                                                data.abbreviation.toUpperCase()})
+    return formattedGlossary
+}

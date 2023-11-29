@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 import EmptyBlock from "@/components/centerArea/EmptyBlock";
+
 import styles from "@/styles/components/DynamicTextArea.module.css";
-import { deleteTopic } from "@/functions/api/deleteTopic";
+
+import { deleteTopic } from "@/functions/api/topicActions";
+
 interface centerAreaProps {
   minutesID: string;
   chatHistoryID: string;
@@ -39,14 +42,22 @@ function CenterArea(props: centerAreaProps) {
     });
   }
 
-  const handleDeleteTopicArea = (id) => {
+  const handleDeleteTopicArea = async (id) => {
     props.setTopicTitles((currentAreas) =>
       currentAreas.filter((topic) => topic.id !== id)
     );
     props.setTopicContent((currentAreas) =>
       currentAreas.filter((content) => content.id !== id)
     );
-    deleteTopic(props.minutesID, props.chatHistoryID, id);
+    var response = await deleteTopic(
+      props.minutesID,
+      props.chatHistoryID,
+      index
+    );
+    if (response != undefined) {
+      // call alert to showcase error
+      console.log(response.ERROR);
+    }
   };
 
   useEffect(() => {
@@ -58,8 +69,8 @@ function CenterArea(props: centerAreaProps) {
       }
     };
 
-    //   // Add event listener
-    //   window.addEventListener("keydown", handleKeyDown);
+    // Add event listener
+    window.addEventListener("keydown", handleKeyDown);
 
     // Clean up event listener
     return () => {
@@ -99,7 +110,7 @@ function CenterArea(props: centerAreaProps) {
       ))}
 
       <button
-        className={`${styles.mainAreaAddNewBlockButton}`}
+        className={styles.mainAreaAddNewBlockButton}
         onClick={handleAddTopicArea}
       >
         <img src="/plus.svg" alt="add" />

@@ -21,7 +21,7 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
     setIsEditing(true);
   };
 
-  const handleContainerClick = (e) => {
+  const handleContainerClick = async (e) => {
     if (containerRef.current && containerRef.current.contains(e.target)) {
       return;
     }
@@ -39,12 +39,16 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
       console.log("Location: " + locationValue);
 
       setIsEditing(false);
-      updateMeetingDetails(
-        props.minutesID,
-        props.chatHistoryID,
-        locationValue,
-        participantsValue
-      );
+      var response = await updateMeetingDetails(
+                            props.minutesID,
+                            props.chatHistoryID,
+                            locationValue,
+                            participantsValue
+                          );
+      if (response !== undefined) {
+        //handle error
+        console.log("Meeting Details Error:", response.ERROR)
+      }
     }
   };
 
