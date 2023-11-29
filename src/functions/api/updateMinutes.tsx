@@ -89,7 +89,6 @@ export async function updateMinutes(
     };
 
     const glossary = await axios.post("/api/read", gloReqData);
-    console.log(glossary.data.glossary);
 
     if (!response.data.agenda) {
       //update agenda error

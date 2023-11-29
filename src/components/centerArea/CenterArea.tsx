@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 import EmptyBlock from "@/components/centerArea/EmptyBlock";
@@ -14,21 +14,24 @@ interface centerAreaProps {
 }
 
 function CenterArea(props: centerAreaProps) {
+  const [topicCount, setTopCount] = useState(0);
+
   const handleAddTopicArea = () => {
     props.setTopicTitles((prevTopicAreas) => [
       ...prevTopicAreas,
-      { title: "" },
+      { title: "", id: topicCount },
     ]);
     props.setTopicContent((prevTopicContent) => [
       ...prevTopicContent,
-      { content: "<ul><li></li></ul>" },
+      { content: "<ul><li></li></ul>", id: topicCount },
     ]);
+    setTopCount(topicCount + 1);
   };
 
   function updateBlockContent(id, newContent) {
     props.setTopicContent((prevContent) => {
-      return prevContent.map((content, idx) => {
-        if (idx === id) {
+      return prevContent.map((content) => {
+        if (content.id === id) {
           return { ...content, content: newContent };
         }
         return content;
@@ -36,14 +39,14 @@ function CenterArea(props: centerAreaProps) {
     });
   }
 
-  const handleDeleteTopicArea = (index) => {
+  const handleDeleteTopicArea = (id) => {
     props.setTopicTitles((currentAreas) =>
-      currentAreas.filter((_, idx) => idx !== index)
+      currentAreas.filter((topic) => topic.id !== id)
     );
     props.setTopicContent((currentAreas) =>
-      currentAreas.filter((_, idx) => idx !== index)
+      currentAreas.filter((content) => content.id !== id)
     );
-    deleteTopic(props.minutesID, props.chatHistoryID, index);
+    deleteTopic(props.minutesID, props.chatHistoryID, id);
   };
 
   useEffect(() => {
@@ -75,8 +78,8 @@ function CenterArea(props: centerAreaProps) {
         <TextAreaQuill
           minutesID={props.minutesID}
           chatHistoryID={props.chatHistoryID}
-          key={index}
-          id={index}
+          key={area.id}
+          id={area.id}
           shouldFocus={index === props.topicTitles.length - 1}
           title={area.title}
           updateTitle={(newTitle) => {
@@ -86,7 +89,7 @@ function CenterArea(props: centerAreaProps) {
               return updatedAreas;
             });
           }}
-          onDelete={() => handleDeleteTopicArea(index)}
+          onDelete={() => handleDeleteTopicArea(area.id)}
           onAddTopicArea={handleAddTopicArea}
           content={props.topicContent[index].content}
           updateBlockContent={(newContent) =>

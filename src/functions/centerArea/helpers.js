@@ -103,14 +103,18 @@ export const deltaToBackend = (rawText) => {
   const multipleNewlineRegex = /(\n{2,})/g;
   
   // Replace multiple newline characters with a single newline
-  const cleanedText = rawText.replace(multipleNewlineRegex, '\n');
+  let cleanedText = rawText.replace(multipleNewlineRegex, '\n');
+
+  if (cleanedText.endsWith('\n')) {
+    cleanedText = cleanedText.slice(0, -1);
+  }
 
   return cleanedText
 }
 
 export const detectLastAbbreviation = (text) => {
   // Regular expression to match the abbreviations as per the new rules
-  const abbreviationRegex = /\b(?:[A-Z]{2,}|(?:[A-Z]\.?)+)\b/g;
+  const abbreviationRegex = /\b(?:[A-Z]{3,}|(?:[A-Z]\.[A-Z])+)\b/g;
 
   // Match all occurrences of the new abbreviation pattern in the text
   const matches = text.match(abbreviationRegex);

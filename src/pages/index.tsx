@@ -16,9 +16,9 @@ export default function Home() {
     readID(setMinutesID, setChatHistoryID);
   });
 
-  // useEffect(() => {
-  //   console.log(topicContent);
-  // }, [topicContent]);
+  useEffect(() => {
+    console.log(topicContent);
+  }, [topicContent]);
 
   return (
     <div style={{ display: "flex", "flex-direction": "row" }}>
