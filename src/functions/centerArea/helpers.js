@@ -105,6 +105,7 @@ export const deltaToBackend = (rawText) => {
   // Replace multiple newline characters with a single newline
   const cleanedText = rawText.replace(multipleNewlineRegex, '\n');
 
+  //sir help remove the \n at the end, can just return cleanedText.slice(0, -2)
   return cleanedText
 }
 

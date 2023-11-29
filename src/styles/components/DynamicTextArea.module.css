@@ -41,13 +41,36 @@
 /*  */
 /* topicBlock */
 /*  */
-
+.topicBlockLoadingSummaryText,
 .topicBlockSummaryText{
   padding: 0;
   color: var(--Off_White);
   font-family: lato;
   font-size: var(--psize);
   margin:0;
+}
+
+
+.topicBlockLoadingSummaryText:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 1.5s infinite;      
+  animation: ellipsis steps(4,end) 1.5s infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1vw;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1vw;    
+  }
 }
 
 .topicBlockReactQuillHolder{
@@ -206,7 +229,6 @@
   align-items: center;
   justify-content: center;
   border: none; /* Removes the border */
-  cursor: pointer; /* Changes the cursor on hover */
   padding-top: var(--internalVerticalPadding);
   padding-bottom: var(--internalVerticalPadding);
   padding-left: var(--internalHorizontalPadding);
@@ -217,4 +239,36 @@
   gap:var(--horizontalGap);
   background-color: var(--Dark_Grey);
   border-radius:8px;
+}
+
+.mainAreaAddNewBlockButton:hover{
+  background-color: var(--Dark_Grey_50);
+  cursor: pointer; /* Changes the cursor on hover */
+}
+
+.topicBlockSummariserButton:disabled{
+  cursor: wait;
+  border: 0.5px solid var(--Nice_Blue);
+  width: var(--magicWandButtonSize);
+  height: var(--magicWandButtonSize);
+  border-radius: 50%;
+}
+
+.loadingCursor {
+  width: 1.25vh;
+  height: 1.25vh;
+  border: 2px solid transparent;
+  border-top-color: var(--Off_White);
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
 }

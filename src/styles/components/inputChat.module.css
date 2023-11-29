@@ -19,6 +19,7 @@
     /* font-size: 2vmin; */
     font-size: 0.9rem;
     letter-spacing: 0.25px;
+    white-space: pre-line;
 }
 
 .assistantContainer{
@@ -43,6 +44,7 @@
     /* font-size: 2vmin; */
     font-size: 0.9rem;
     letter-spacing: 0.25px;
+    white-space: pre-line;
 }
 
 .sourceContainer{

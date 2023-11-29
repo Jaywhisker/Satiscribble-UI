@@ -58,7 +58,7 @@ export default function GlossaryModal(props: glossaryDetails ) {
                 props.setGlossaryType(newGlossaryType)
             } else {
                 //error handling code
-                console.log('error')
+                console.log('Update glossary error', response.ERROR)
             }
         }
     }
@@ -75,7 +75,7 @@ export default function GlossaryModal(props: glossaryDetails ) {
             props.setGlossaryData(newGlossaryData)
         } else {
             //error handling code
-            console.log('error')
+            console.log('Delete glossary error', response.ERROR)
         }
     }
 

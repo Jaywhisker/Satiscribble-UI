@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import MeetingDetailBlocks from "@/components/centerArea/MeetingDetailBlocks";
 import TextAreaQuill from "@/components/centerArea/TextAreaUsingQuill";
 import EmptyBlock from "@/components/centerArea/EmptyBlock";
+
 import styles from "@/styles/components/DynamicTextArea.module.css";
-import { deleteTopic } from "@/functions/api/deleteTopic";
+
+import { deleteTopic } from "@/functions/api/topicActions";
+
 interface centerAreaProps {
   minutesID: string;
   chatHistoryID: string;
@@ -14,6 +17,7 @@ interface centerAreaProps {
 }
 
 function CenterArea(props: centerAreaProps) {
+  
   const handleAddTopicArea = () => {
     props.setTopicTitles((prevTopicAreas) => [
       ...prevTopicAreas,
@@ -36,14 +40,18 @@ function CenterArea(props: centerAreaProps) {
     });
   }
 
-  const handleDeleteTopicArea = (index) => {
+  const handleDeleteTopicArea = async (index) => {
     props.setTopicTitles((currentAreas) =>
       currentAreas.filter((_, idx) => idx !== index)
     );
     props.setTopicContent((currentAreas) =>
       currentAreas.filter((_, idx) => idx !== index)
     );
-    deleteTopic(props.minutesID, props.chatHistoryID, index);
+    var response = await deleteTopic(props.minutesID, props.chatHistoryID, index);
+    if (response != undefined) {
+      // call alert to showcase error
+      console.log(response.ERROR)
+    }
   };
 
   useEffect(() => {
@@ -55,8 +63,8 @@ function CenterArea(props: centerAreaProps) {
       }
     };
 
-    //   // Add event listener
-    //   window.addEventListener("keydown", handleKeyDown);
+    // Add event listener
+      window.addEventListener("keydown", handleKeyDown);
 
     // Clean up event listener
     return () => {
@@ -96,7 +104,7 @@ function CenterArea(props: centerAreaProps) {
       ))}
 
       <button
-        className={`${styles.mainAreaAddNewBlockButton}`}
+        className={styles.mainAreaAddNewBlockButton}
         onClick={handleAddTopicArea}
       >
         <img src="/plus.svg" alt="add" />

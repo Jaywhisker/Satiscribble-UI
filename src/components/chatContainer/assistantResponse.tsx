@@ -11,7 +11,6 @@ export interface assistantResponse {
 
 
 export default function AssistantResponse(props: assistantResponse ) {
-
     return(
     <div key={props.id} className={inputChat.assistantContainer}>
 

@@ -18,3 +18,22 @@ export async function deleteTopic(
     return { ERROR: `Unable to delete topic, ${error.code}` };
   }
 }
+
+
+export async function summariseTopic(
+  minutesID: string,
+  chatHistoryID: string,
+  topicID: string
+) {
+  try{
+    var reqData = {
+      minutesID: minutesID,
+      chatHistoryID: chatHistoryID,
+      topicID: topicID,
+    };
+    const response = await axios.post("/api/summarise", reqData);
+    return response.data.summary
+  } catch (error) {
+    return { ERROR: `Unable to summarise topic, ${error.code}` };
+  }
+}

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { readGlossary } from "./glossaryActions";
 
 export async function updateAgenda(
   minutesID: string,
@@ -73,68 +74,42 @@ export async function updateMinutes(
       minutes: minutes,
     };
 
-    // Insert the update agenda below
-
-    // Why are we calling the update agenda?
     console.log(reqData);
     const response = await axios.post("/api/update", reqData);
     console.log(response);
 
-    // After getting the responses do something with it
-
-    var gloReqData = {
-      type: "glossary",
-      minutesID: minutesID,
-      chatHistoryID: chatHistoryID,
-    };
-
-    const glossary = await axios.post("/api/read", gloReqData);
-    console.log(glossary.data.glossary);
-
     if (!response.data.agenda) {
       //update agenda error
-      // Honestly what are we suppose to do if false hahaha
-      // call alert?
+      //call alert
       null;
     }
 
     if (!response.data.topic) {
       //update topic error
-      // Honestly what are we suppose to do if false hahaha
-      // call alert?
+      //call alert
       null;
     }
-    console.log("Hmmm");
+
     if (response.data.abbreviation != null) {
-      //update glossary
-      console.log("gloosary thing");
-      const splitString = response.data.abbreviation
-        .split(":")
-        .map((part) => part.trim());
-      console.log(splitString);
+      //check if glossary is in current glossary, if not get existing glossary
+      //if abbreviation alr exist in glossary, ignore (or whatever we plan to do)
+      //if abbreviation doesnt exist, call alert
+      var formattedGlossary = await readGlossary(minutesID, chatHistoryID)
+      var respAbbMeaning = response.data.abbreviation.split(":")
+      var respAbbreviation = respAbbMeaning[0].trim().toUpperCase()
+      var respMeaning = respAbbMeaning[1].trim().toLowerCase()
 
-      const isNotAbbreviation = glossary.data.glossary.every(
-        (item) => item.abbreviation !== splitString[0]
-      );
+      console.log(respAbbreviation, respMeaning)
+      const exists = formattedGlossary.some(item => item.meaning === respMeaning && item.abbreviation === respAbbreviation);
 
-      if (isNotAbbreviation) {
-        var newGlossaryData = {
-          minutesID: minutesID,
-          chatHistoryID: chatHistoryID,
-          abbreviation: splitString[0],
-          meaning: splitString[1],
-          type: "new",
-        };
-
-        const responseOnG = await axios.post("/api/glossary", newGlossaryData);
-        console.log(responseOnG);
-        // Add it
+      if (exists){
+        //ignore if exist? or are we gna js alert
       } else {
-        // Idk what to do honestly?
-        // overwrite?
+        //call alert notification
       }
+
     }
   } catch (error) {
-    return { ERROR: `Unable to delete glossary entry, ${error.code}` };
+    return { ERROR: `Unable to update minutes, ${error.code}` };
   }
 }
