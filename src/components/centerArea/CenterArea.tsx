@@ -49,11 +49,7 @@ function CenterArea(props: centerAreaProps) {
     props.setTopicContent((currentAreas) =>
       currentAreas.filter((content) => content.id !== id)
     );
-    var response = await deleteTopic(
-      props.minutesID,
-      props.chatHistoryID,
-      index
-    );
+    var response = await deleteTopic(props.minutesID, props.chatHistoryID, id);
     if (response != undefined) {
       // call alert to showcase error
       console.log(response.ERROR);
