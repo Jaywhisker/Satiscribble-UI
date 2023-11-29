@@ -85,13 +85,13 @@ function CenterArea(props: centerAreaProps) {
           updateTitle={(newTitle) => {
             props.setTopicTitles((currentAreas) => {
               const updatedAreas = [...currentAreas];
-              updatedAreas[area.id].title = newTitle;
+              updatedAreas[index].title = newTitle;
               return updatedAreas;
             });
           }}
           onDelete={() => handleDeleteTopicArea(area.id)}
           onAddTopicArea={handleAddTopicArea}
-          content={props.topicContent[area.id].content}
+          content={props.topicContent[index].content}
           updateBlockContent={(newContent) =>
             updateBlockContent(area.id, newContent)
           }

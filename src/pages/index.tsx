@@ -20,6 +20,9 @@ export default function Home() {
     console.log(topicContent);
   }, [topicContent]);
 
+  useEffect(() => {
+    console.log(topicTitles);
+  }, topicTitles);
   return (
     <div style={{ display: "flex", "flex-direction": "row" }}>
       <div
