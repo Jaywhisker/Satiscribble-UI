@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from '@/components/buttons';
-import PopUp from '@/components/popup';
-
+import * as PopUp from '@/components/popup';
 
 
 export default function Home() {
@@ -74,7 +73,6 @@ export default function Home() {
         messageHeaderColor="Green"
         onClose={() => {}}
       />
-
     </div>
   );
 }
