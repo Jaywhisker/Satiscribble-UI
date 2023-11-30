@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import styles from "@/styles/components/DynamicTextArea.module.css";
-import stylo from "@/styles/components/AgendaBlock.module.css"
+import stylo from "@/styles/components/AgendaBlock.module.css";
 import ModularTextFieldAgenda from './ModularTextFieldAgenda';
 
 const checkedImage = '/CheckboxTicked.svg';
 const uncheckedImage = '/Checkbox.svg';
-const editIcon = '/Edit.svg';
-const tickIcon = '/Check.svg';
 const deleteIcon = '/Cancellation.svg';
 
 const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
   const [internalAgendaItems, setInternalAgendaItems] = useState([{ id: 0, name: '', completed: false }]);
   const [nextId, setNextId] = useState(1);
-  const [isEditMode, setIsEditMode] = useState(false); // Track whether the component is in edit mode
   const agendaItems = externalAgendaItems || internalAgendaItems;
 
   const updateAgendaItems = (newAgendaItems) => { // Function to update agenda items
@@ -23,9 +20,7 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
     }
   };
 
-  const handleCheckboxChange = (index) => {
-    if (!isEditMode) return;
-
+  const handleCheckboxChange = (index) => { // Handles changes to content of agenda item
     const newAgendaItems = [...agendaItems];
     newAgendaItems[index].completed = !newAgendaItems[index].completed;
     updateAgendaItems(newAgendaItems);
@@ -37,46 +32,40 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
     updateAgendaItems(newAgendaItems);
   };
 
-  const canAddNewItem = () => { // Determines if a new agenda item can be added
-    return agendaItems.length === 0 || agendaItems[agendaItems.length - 1].name.trim() !== '';
+  const handleKeyDown = (e, index) => { // Handles keyboard events like "Enter" and "Backspace"
+    if (e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      addNewAgendaItem();
+    } else if (e.key === 'Backspace' && agendaItems[index].name === '') {
+      e.preventDefault();
+      if (agendaItems.length > 1) {
+        deleteAgendaItem(agendaItems[index].id);
+      }
+    }
   };
 
   const addNewAgendaItem = () => { // Adds a new agenda item to the list
-    if (canAddNewItem()) {
-      const newAgendaItems = [...agendaItems, { id: nextId, name: '', completed: false }];
-      updateAgendaItems(newAgendaItems);
-      setNextId(nextId + 1);
-    }
-  };
-
-  const deleteAgendaItem = (idToDelete) => { // Deletes an agenda item from the list
-    const newAgendaItems = agendaItems.filter(item => item.id !== idToDelete);
+    const newAgendaItems = [...agendaItems, { id: nextId, name: '', completed: false }];
     updateAgendaItems(newAgendaItems);
+    setNextId(nextId + 1);
   };
 
-  const toggleEditMode = () => { // Toggle edit mode
-    if (isEditMode) { // Filter out empty agenda items before exiting edit mode
-      const filteredAgendaItems = agendaItems.filter(item => item.name.trim() !== '');
-      updateAgendaItems(filteredAgendaItems);
+  const deleteAgendaItem = (idToDelete) => { // Deletes agenda item
+    if (agendaItems.length > 1) { // Prevents deletetion of row if there is only one agenda item left
+      const newAgendaItems = agendaItems.filter(item => item.id !== idToDelete);
+      updateAgendaItems(newAgendaItems);
     }
-    setIsEditMode(!isEditMode);
   };
 
-  // TO DO:
   // Connect functionality to backend
   // Update agenda function
   // Retrieve agenda function
-  
+
+
   return (
     <div className={styles.container}>
       <div className={stylo.titleContainer}>
         <h1 className={styles.titleTextStyle}>Agenda</h1>
-        <img
-          src={isEditMode ? tickIcon : editIcon} 
-          onClick={toggleEditMode} 
-          alt={isEditMode ? "Confirm" : "Edit"}
-          className={stylo.editButton}
-        />
       </div>
       {agendaItems.map((item, index) => (
         <div key={item.id} className={styles.agendaBlockTextFieldHolder}>
@@ -90,9 +79,9 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
             value={item.name}
             placeholder="Enter agenda item"
             onChange={(e) => handleAgendaChange(e.target.value, index)}
-            readOnly={!isEditMode}
+            onKeyDown={(e) => handleKeyDown(e, index)}
           />
-          {isEditMode && (
+          {agendaItems.length > 1 && (
             <img 
               src={deleteIcon} 
               onClick={() => deleteAgendaItem(item.id)} 
@@ -102,9 +91,6 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
           )}
         </div>
       ))}
-      {isEditMode && (
-        <button onClick={addNewAgendaItem} disabled={!canAddNewItem()} className={styles.addAgendaButton}>Add Agenda Item</button>
-      )}
     </div>
   );
 };
