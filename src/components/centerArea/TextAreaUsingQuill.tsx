@@ -391,7 +391,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           onClick={toggleSummaryVisibility}
           className={styles.topicBlockSummariserButton}
           disabled = {loadingSummary}
-          title = {summariseTopic.length > 0 ? "Regenerate Summary" : "Summarise"}
+          title = {summaryContent.length > 0 ? "Regenerate Summary" : "Summarise"}
         >
           {
             loadingSummary ? (

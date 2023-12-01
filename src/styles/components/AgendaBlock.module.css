@@ -1,0 +1,29 @@
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkboxImage {
+  cursor: pointer;
+  width: 2.2vw; 
+  height: 3.8vh; 
+}
+
+.editButton {
+  cursor: pointer;
+  width: 1.8vw; 
+  height: 3.2vh; 
+  margin-left: 0.78vw;
+}
+
+.deleteButton {
+  cursor: pointer;
+  width: 1.5vw; 
+  height: 2.6vh; 
+  margin-left: 0.78vw;
+}
+
+.margin {
+  margin-bottom: 2.78vh;
+}
