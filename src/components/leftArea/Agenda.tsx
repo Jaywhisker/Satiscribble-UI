@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState} from 'react';
 import styles from "@/styles/components/leftSideBar.module.css";
 
 const checkedImage = '/CheckboxTicked.svg'; 
@@ -18,37 +18,62 @@ const defaultAgendaItems: AgendaItem[] = [
   { id: 4, name: 'Task 4', completed: false },
 ];
 
+
+
 const Agenda = ({ agendaItems = defaultAgendaItems, onAgendaChange }) => {
-  const handleCompletionChange = (id: number) => { // Handles change in completion status of an agenda item
-    const newAgendaItems = agendaItems.map(item => // Updates completion status of item with given id
+  
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+
+  const updateCheckedItems = (id: number) => { 
+    // Handles change in completion status of an agenda item
+    const newAgendaItems = agendaItems.map(item => 
+      // Updates completion status of item with given id
       item.id === id ? { ...item, completed: !item.completed } : item
     );
 
-    if (onAgendaChange) { // Update parent component on the updated agenda items
+    if (onAgendaChange) { 
+      // Update parent component on the updated agenda items
       onAgendaChange(newAgendaItems);
     }
   };
+
+  const toggleDropDown = () => {
+    setDropDownOpen(prev => !prev);
+  };
+
 
   const filteredAgendaItems = agendaItems.filter(item => item.name.trim() !== ''); // Filter out agenda items that do not have content
 
   return (
     <div className={styles.agendaContainer}>
-      <div className={styles.agendaContent}>
-        <div className={styles.agendaButtonBar}>
-          <b>Agenda</b>
-        </div>
-        {filteredAgendaItems.map((item) => (
-          <div key={item.id} className={styles.agendaItemStyle}>
-            <img
-              className={styles.checkboxImage}
-              src={item.completed ? checkedImage : uncheckedImage}
-              alt={item.completed ? 'Checked' : 'Unchecked'}
-              onClick={() => handleCompletionChange(item.id)}
-            />
-            {item.name}
-          </div>
-        ))}
+      <div className={styles.containerHeading} onClick={toggleDropDown}>
+        <p className={styles.headerText}>Agenda</p>
+        <img 
+          className={styles.dropdownSvg} 
+          src="/Dropdown.svg" 
+          alt="Toggle Dropdown"
+          style={{ transform: dropDownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        />
       </div>
+      {dropDownOpen && (
+        <div className={styles.dropDownContainer}>
+          {filteredAgendaItems.length > 0 ? (
+            filteredAgendaItems.map((item) => (
+              <div key={item.id} className={styles.taskContainer}>
+                <img
+                  className={styles.checkboxImage}
+                  src={item.completed ? checkedImage : uncheckedImage}
+                  alt={item.completed ? 'Checked' : 'Unchecked'}
+                  onClick={() => updateCheckedItems(item.id)}
+                />
+                <p className={styles.checkedDropDownText}>{item.name}</p>
+              </div>
+            ))) : (
+              <p className={styles.emptyTasksText}>You haven't written any agenda!</p>
+            )
+            }
+        </div>
+      )}
     </div>
   );
 };

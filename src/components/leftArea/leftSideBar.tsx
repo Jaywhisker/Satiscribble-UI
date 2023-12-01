@@ -1,25 +1,15 @@
 import React from 'react';
-import Agenda from './agenda';
-import Outline from './outline';
-import ContainerWithBorder from './containerwithborder';
+import Agenda from './Agenda';
+import Outline from './Outline';
+import ContainerWithBorder from './ContainerWithBorder';
 
-class LeftSidebar extends React.Component {
-  render() {
-    const sidebarStyle: React.CSSProperties = {
-      width: '15vw',
-      backgroundColor: 'var(--Dark_Grey)',
-      height: '100vh', // Full height of the viewport
-      margin: 0,
-      padding: '10px', 
-      boxSizing: 'border-box', 
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start', 
-      alignItems: 'center', 
-    };
+import LeftBar from '@/styles/components/leftSideBar.module.css'
+
+
+export default function LeftSideBar() {
 
     return (
-      <div style={sidebarStyle}>
+      <div className={LeftBar.leftBarContainer}>
         <ContainerWithBorder text="HCI MEETING ON 23/10" /> 
         <Agenda />
         <div style={{ width: '100%', marginTop: '20px' }}>
@@ -27,10 +17,10 @@ class LeftSidebar extends React.Component {
         </div>
       </div>
     );
-  }
-}
 
-export default LeftSidebar;
+ }
+
+
 
 
 // We can also pass just the subject and the date if we want to

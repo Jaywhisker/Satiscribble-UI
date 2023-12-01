@@ -4,7 +4,7 @@ import styles from "@/styles/components/leftSideBar.module.css"
 
 const defaultTasks = ['Task 1', 'Task 2', 'Task 3', 'Task 4'];
 
-function Outline({ tasksProp }) {
+export default function Outline({ tasksProp }) {
   const tasks = tasksProp || defaultTasks;
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(tasks[0]); 
@@ -19,9 +19,9 @@ function Outline({ tasksProp }) {
   };
 
   return (
-    <div className={styles.dropdownContainer}>
-      <div className={styles.dropdownButton} onClick={toggleDropDown}>
-        <p><b>Outline</b></p>
+    <div className={styles.OutlineContainer}>
+      <div className={styles.containerHeading} onClick={toggleDropDown}>
+        <p className={styles.headerText}>Outline</p>
         <img 
           className={styles.dropdownSvg} 
           src="/Dropdown.svg" 
@@ -29,15 +29,20 @@ function Outline({ tasksProp }) {
           style={{ transform: dropDownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
         />
       </div>
-      <div className={`${styles.dropdownContent} ${dropDownOpen ? 'open' : ''}`}>
-        {tasks.map(task => (
-          <div className={styles.dropdownOption} key={task} onClick={() => handleTaskSelect(task)}>
-            <p>{task}</p> 
-          </div>
-        ))}
-      </div>
+      {dropDownOpen && (
+        <div className={styles.dropDownContainer}>
+          {tasks.length > 0 ? (
+            tasks.map(task => (
+              <div className={styles.taskContainer} key={task} onClick={() => handleTaskSelect(task)}>
+                <p className={styles.dropDownText}>{task}</p>
+              </div>
+              ))
+          ) : (
+            <p className={styles.emptyTasksText}>You haven't written any minutes!</p>
+          )}
+        </div>
+      )
+      }
     </div>
   );
 }
-
-export default Outline;

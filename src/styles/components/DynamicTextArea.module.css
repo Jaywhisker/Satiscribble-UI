@@ -220,6 +220,7 @@
   gap: var(--betweenBlockGap);
   width: var(--overallWidth);
   margin-bottom: 75vh;
+  margin-left: 15vw;
 }
 
 .mainAreaAddNewBlockButton{
@@ -271,4 +272,14 @@
   to {
     transform: rotate(1turn);
   }
+}
+
+
+.agendaBlockTextFieldHolder {
+  width:100%;
+  gap:var(--horizontalGap);
+  align-items: center;
+  display:flex;
+  flex-direction: row;
+  margin:0;
 }

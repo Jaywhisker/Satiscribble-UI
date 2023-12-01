@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import LeftSidebar from "@/components/leftArea/leftSideBar";
 import RightSideBar from "@/components/rightSideBar";
 import CenterArea from "@/components/centerArea/CenterArea";
 
@@ -25,18 +26,8 @@ export default function Home() {
   // }, [topicTitles]);
 
   return (
-    <div style={{ display: "flex", "flex-direction": "row" }}>
-      <div
-        style={{
-          display: "flex",
-          "flex-direction": "column",
-          width: "15vw",
-          backgroundColor: "black",
-          height: "100vh",
-        }}
-      >
-        <p>Left Hand Side</p>
-      </div>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <LeftSidebar/>
 
       <CenterArea
         minutesID={minutesID}

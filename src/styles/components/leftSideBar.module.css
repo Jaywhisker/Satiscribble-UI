@@ -1,93 +1,92 @@
-.agendaContainer, .dropdownContainer, .wrapper {
-  width: 100%;
-  box-sizing: border-box;
-  font-family: 'Lato', sans-serif;
-  padding-left: 1.41vw; /* 18px */
-  padding-right: 1.41vw; /* 18px */
-}
-
-.agendaContent {
-  background-color: var(--Grey);
-}
-
-.agendaButtonBar, .dropdownButton {
-  display: flex;
-  align-items: center;
-  padding: 0px;
+.leftBarContainer{
+  width: 15vw;
   background-color: var(--Dark_Grey);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+}
+
+.wrapper{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 5vh;
+  font: 600 0.9rem 'Lato';
   color: var(--Nice_Blue);
-  font-size: 1.25vw; /* 16px */
+  text-align: center;
+  border: 1px solid var(--Nice_Blue); 
+  padding: 0.75vh 0; /* 2px */ 
+  border-radius: 3px;
+}
+
+.OutlineContainer,
+.agendaContainer{
+  margin-top: 5vh;
+  width: 80%;
+  margin-left: 10%;
+}
+
+.containerHeading{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  font: 600 var(--headersize) 'Lato';
+  color: var(--Nice_Blue);
   border-bottom: 2px solid var(--Nice_Blue);
 }
 
-.agendaItemStyle, .dropdownOption {
-  display: flex;
-  align-items: center;
-  padding: 0.28vh 0.94vw; /* 2px */
-  color: var(--Pure_White);
-  font-size: 1.25vw; /* 16px */
-  border-bottom: 0px;
-}
-
-.checkboxImage {
+.containerHeading:hover{
   cursor: pointer;
-  margin-right: 0.94vw; /* 12px */
-  width: 1.88vw; /* 24px */
-  height: 3.33vh; /* 24px */
 }
 
-.styledContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0.28vh 0.94vw; /* 2px */ 
-  margin: 2.78vh 0; /* 20px */
-  border: 2px solid var(--Nice_Blue); 
-  border-radius: 0.69vh; /* 5px */
-  font-family: 'Lato', sans-serif;
-  font-weight: bold;
-  color: var(--Nice_Blue);
-  font-size: 1.17vw; 
-  box-sizing: border-box;
-  background-color: var(--Dark_Grey);
-}
-
-.dropdownButton {
-  position: relative; 
-  display: flex;
-  align-items: center;
-  justify-content: space-between; 
-  padding: 0px;
-  background-color: var(--Dark_Grey);
-  color: var(--Nice_Blue);
-  cursor: pointer;
-  font-size: 1.25vw; /* 16px */
-  border-bottom: 2px solid var(--Nice_Blue);
-}
-
-.dropdownButton p {
+.headerText{
   margin: 0;
-  line-height: 1;
-  flex-grow: 1; 
 }
 
-.dropdownButton img {
-  margin-left: auto;
-  transition: transform 0.3s ease;
+.dropdownSvg{
+  height: 1vh;
+  object-fit: contain;
+  transition: transform 0.25s linear; 
+  margin-bottom: 0.5vh;
 }
 
-.dropdownContent {
-  display: none;
+.dropDownContainer{
+  padding: 1vh 0;
   background-color: var(--Grey);
-  padding: 0 0.94vw; /* 12px */
-  box-sizing: border-box;
-  margin: 0;
-  width: 100%;
 }
 
-.dropdownSvg {
-  width: 1.56vw; /* 20px */
-  height: 2.78vh; /* 20px */
-  transition: transform 0.3s ease;
+.taskContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkboxImage{
+  height: 3vh;
+  object-fit: contain;
+  margin-left:1vw;
+}
+
+.checkboxImage:hover{
+  cursor: pointer;
+}
+
+.checkedDropDownText{
+  font: 600 1rem 'Lato';
+  color: var(--Off_White);
+  margin: 1vh 1vw 1vh 0.5vw;
+}
+
+.dropDownText{
+  font: 600 1rem 'Lato';
+  color: var(--Off_White);
+  margin: 1vh 1vw;
+}
+
+.emptyTasksText{
+  color: var(--Off_White);
+  margin: 1vh 1vw;
+
 }
