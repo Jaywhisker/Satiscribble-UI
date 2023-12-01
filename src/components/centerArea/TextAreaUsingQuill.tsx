@@ -148,7 +148,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     const rawText = quillEditor.getText();
     const backendDelta = deltaToBackend(rawText);
     const lastAbbreviation = detectLastAbbreviation(backendDelta);
-
     handleBlur(
       props.id,
       backendDelta,
