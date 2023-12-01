@@ -46,7 +46,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
 
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const [summaryContent, setSummaryContent] = useState("");
-  const [loadingSummary, setLoadingSummary] = useState(false)
+  const [loadingSummary, setLoadingSummary] = useState(false);
 
   const [quillRefHeight, setQuillRefHeight] = useState(null);
 
@@ -92,7 +92,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     prevTopicTitlesLength.current = props.topicTitlesLength;
   }, [props.shouldFocus]);
 
-
   //animation logic for drop down -------------------------------------------------------------------------
   useEffect(() => {
     if (minutesRef.current) {
@@ -122,23 +121,26 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   }, [isSummaryVisible, quillDisplayed]);
 
-  const toggleSummaryVisibility = async() => {
+  const toggleSummaryVisibility = async () => {
     setIsSummaryVisible(true);
     setQuillDisplayed(false);
     setLoadingSummary(true);
-    setSummaryContent('')
+    setSummaryContent("");
     await handleBlurring();
-    var response = await summariseTopic(props.minutesID, props.chatHistoryID, props.id)
-    if (typeof(response) == "string") {
-      setSummaryContent(response)
-      setLoadingSummary(false)
+    var response = await summariseTopic(
+      props.minutesID,
+      props.chatHistoryID,
+      props.id
+    );
+    if (typeof response == "string") {
+      setSummaryContent(response);
+      setLoadingSummary(false);
     } else {
-      console.log(typeof(response))
-      console.log("error summarising content")
+      console.log(typeof response);
+      console.log("error summarising content");
     }
   };
 
-  
   useEffect(() => {
     setTopic(props.title);
   }, [props.title]);
@@ -157,28 +159,39 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       props.minutesID,
       props.chatHistoryID
     );
+    var response = await handleUpdateMinutes(backendDelta, lastAbbreviation);
+  };
+
+  const handleUpdateMinutes = async (backendDelta, lastAbbreviation) => {
     var response = await updateMinutes(
-                          props.minutesID,
-                          props.chatHistoryID,
-                          props.id,
-                          props.title,
-                          backendDelta,
-                          lastAbbreviation
-                        );
+      props.minutesID,
+      props.chatHistoryID,
+      props.id,
+      props.title,
+      backendDelta,
+      lastAbbreviation
+    );
 
     if (response !== undefined) {
       //handle error
-      console.log("Minutes Update Error:", response.ERROR)
+      console.log("Minutes Update Error:", response.ERROR);
     }
+
+    return response;
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
       // console.log("yes");
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
+      const rawText = quillEditor.getText();
+      const backendDelta = deltaToBackend(rawText);
+      const lastAbbreviation = detectLastAbbreviation(backendDelta);
+      var response = await handleUpdateMinutes(backendDelta, lastAbbreviation);
+
       // console.log(backendDelta);
       const range = quillEditor.getSelection();
       if (range) {
@@ -359,16 +372,16 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             transform: quillDisplayed ? "rotate(90deg)" : "none",
           }}
         >
-          <img src="/SummuriserArrow.svg" alt="Summarise" title ='Summarise'/>
+          <img src="/SummuriserArrow.svg" alt="Summarise" title="Summarise" />
         </button>
         {/* Render the summary content here */}
-        {
-          summaryContent.length > 0 ? (
-            <p className={styles.topicBlockSummaryText}>{summaryContent}</p>
-          ) : (
-            <p className={styles.topicBlockLoadingSummaryText}>Generating summary, please wait </p>
-          )
-        }
+        {summaryContent.length > 0 ? (
+          <p className={styles.topicBlockSummaryText}>{summaryContent}</p>
+        ) : (
+          <p className={styles.topicBlockLoadingSummaryText}>
+            Generating summary, please wait{" "}
+          </p>
+        )}
       </div>
 
       <div
@@ -390,16 +403,14 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         <button
           onClick={toggleSummaryVisibility}
           className={styles.topicBlockSummariserButton}
-          disabled = {loadingSummary}
-          title = {summariseTopic.length > 0 ? "Regenerate Summary" : "Summarise"}
+          disabled={loadingSummary}
+          title={summariseTopic.length > 0 ? "Regenerate Summary" : "Summarise"}
         >
-          {
-            loadingSummary ? (
-              <div className={styles.loadingCursor}></div>
-            ) : (
-              <img src="/SummuriserButton.svg" alt="Summarise" />
-            )
-          }
+          {loadingSummary ? (
+            <div className={styles.loadingCursor}></div>
+          ) : (
+            <img src="/SummuriserButton.svg" alt="Summarise" />
+          )}
         </button>
       </div>
     </div>

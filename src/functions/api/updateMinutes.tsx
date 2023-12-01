@@ -100,10 +100,11 @@ export async function updateMinutes(
       var respMeaning = respAbbMeaning[1].trim().toLowerCase();
 
       console.log(respAbbreviation, respMeaning);
-      const exists = formattedGlossary.some(
-        (item) =>
-          item.meaning === respMeaning && item.abbreviation === respAbbreviation
-      );
+      console.log(formattedGlossary);
+      const exists = formattedGlossary.some((item) => {
+        console.log(item);
+        item.meaning === respMeaning && item.abbreviation === respAbbreviation;
+      });
 
       if (exists) {
         //ignore if exist? or are we gna js alert
