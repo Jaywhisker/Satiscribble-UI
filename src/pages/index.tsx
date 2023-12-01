@@ -14,7 +14,15 @@ export default function Home() {
   const [topicContent, setTopicContent] = useState([]);
   const [agendaContent, setAgendaContent] = useState([]);
 
-  const [selectedTask, setSelectedTask] = useState(null)
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  useEffect(() => {
+    console.log(topicContent, topicTitles);
+  }, [topicContent]);
+
+  useEffect(() => {
+    console.log(topicTitles, topicContent);
+  }, [topicTitles]);
 
   useEffect(() => {
     readID(setMinutesID, setChatHistoryID);
@@ -22,10 +30,12 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedTask !== null) {
-      var minutesElement = document.querySelector(`#minuteID${selectedTask}`) as HTMLElement;
-      minutesElement.scrollIntoView({ block: 'start',  behavior: 'smooth' })
+      var minutesElement = document.querySelector(
+        `#minuteID${selectedTask}`
+      ) as HTMLElement;
+      minutesElement.scrollIntoView({ block: "start", behavior: "smooth" });
     }
-  }, [selectedTask])
+  }, [selectedTask]);
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
@@ -34,7 +44,7 @@ export default function Home() {
         setAgendaContent={setAgendaContent}
         taskList={topicTitles}
         setSelectedTask={setSelectedTask}
-        />
+      />
 
       <CenterArea
         minutesID={minutesID}

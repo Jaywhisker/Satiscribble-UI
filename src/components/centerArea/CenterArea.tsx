@@ -15,7 +15,7 @@ interface centerAreaProps {
   setTopicTitles: any;
   topicContent: any[];
   setTopicContent: any;
-  agendaContent: [{ id: string; name: string; completed: boolean; }];
+  agendaContent: [{ id: string; name: string; completed: boolean }];
   setAgendaContent: any[];
 }
 
@@ -59,23 +59,23 @@ function CenterArea(props: centerAreaProps) {
     }
   };
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      // Check if Control and Enter keys are pressed
-      if (event.ctrlKey && event.key === "Enter") {
-        handleAddTopicArea();
-        console.log(props.topicTitles);
-      }
-    };
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     // Check if Control and Enter keys are pressed
+  //     if (event.ctrlKey && event.key === "Enter") {
+  //       handleAddTopicArea();
+  //       console.log(props.topicTitles);
+  //     }
+  //   };
 
-    // Add event listener
-    window.addEventListener("keydown", handleKeyDown);
+  //   // Add event listener
+  //   window.addEventListener("keydown", handleKeyDown);
 
-    // Clean up event listener
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   // Clean up event listener
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   return (
     <div className={styles.mainAreaContainer}>
@@ -94,7 +94,7 @@ function CenterArea(props: centerAreaProps) {
         <TextAreaQuill
           minutesID={props.minutesID}
           chatHistoryID={props.chatHistoryID}
-          key={area.id}
+          key={index}
           id={area.id}
           shouldFocus={index === props.topicTitles.length - 1}
           title={area.title}

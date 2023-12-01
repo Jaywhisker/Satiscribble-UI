@@ -130,7 +130,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     var response = await summariseTopic(
       props.minutesID,
       props.chatHistoryID,
-      props.id
+      String(props.id)
     );
     if (typeof response == "string") {
       setSummaryContent(response);
@@ -182,7 +182,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const handleKeyDown = async (event) => {
     // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
-      // console.log("yes");
+      console.log(props.content);
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
       const quillEditor = quillRef.current.getEditor();
