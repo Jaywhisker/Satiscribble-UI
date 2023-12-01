@@ -26,8 +26,6 @@ export async function updateMeetingDetails(
   attendees: string
 ) {
   try {
-    console.log(location, attendees);
-
     let participantList;
     if (attendees.length <= 0) {
       participantList = [];

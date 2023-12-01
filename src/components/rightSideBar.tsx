@@ -15,6 +15,7 @@ interface rightSideBarProps {
     minutesID: string
     chatHistoryID: string
     topicTitles: string[]
+    setSelectedMinutes:any
 }
 
 export default function RightSideBar(props:rightSideBarProps) {
@@ -372,6 +373,7 @@ export default function RightSideBar(props:rightSideBarProps) {
                                             sourceID={chatDetail.sourceID.map(data => props.topicTitles[parseInt(data, 10)])}
                                             copyable={false}
                                             id={index}
+                                            setSelectedMinutes={props.setSelectedMinutes}
                                         />
                                     )
                                 ))}

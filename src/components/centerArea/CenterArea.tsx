@@ -6,6 +6,7 @@ import EmptyBlock from "@/components/centerArea/EmptyBlock";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 import { deleteTopic } from "@/functions/api/topicActions";
+import AgendaBlock from "./AgendaBlocks";
 
 interface centerAreaProps {
   minutesID: string;
@@ -14,6 +15,8 @@ interface centerAreaProps {
   setTopicTitles: any;
   topicContent: any[];
   setTopicContent: any;
+  agendaContent: [{ id: string; name: string; completed: boolean; }];
+  setAgendaContent: any[];
 }
 
 function CenterArea(props: centerAreaProps) {
@@ -77,6 +80,12 @@ function CenterArea(props: centerAreaProps) {
   return (
     <div className={styles.mainAreaContainer}>
       <EmptyBlock />
+      <AgendaBlock
+        agendaItems={props.agendaContent}
+        setAgendaItems={props.setAgendaContent}
+        minutesID={props.minutesID}
+        chatHistoryID={props.chatHistoryID}
+      />
       <MeetingDetailBlocks
         minutesID={props.minutesID}
         chatHistoryID={props.chatHistoryID}

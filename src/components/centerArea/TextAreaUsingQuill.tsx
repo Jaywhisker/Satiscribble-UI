@@ -326,13 +326,13 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   };
 
   return (
-    <div className={styles.genericBlock}>
+    <div className={styles.genericBlock} id={`minuteID${props.id}`}>
       <div className={`${styles.topicBlockHeaderContainer}`}>
         <input
           ref={topicRef}
           type="text"
           value={topic}
-          placeholder="Enter Topic"
+          placeholder="Enter topic title here"
           onChange={handleTopicChange}
           onKeyPress={handleChange}
           className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}

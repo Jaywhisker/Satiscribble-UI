@@ -83,10 +83,16 @@
   font: 600 1rem 'Lato';
   color: var(--Off_White);
   margin: 1vh 1vw;
+  cursor: default;
 }
 
 .emptyTasksText{
   color: var(--Off_White);
   margin: 1vh 1vw;
+  cursor: default;
+}
 
+.clickableText:hover{
+  cursor: pointer;
+  text-decoration: underline;
 }

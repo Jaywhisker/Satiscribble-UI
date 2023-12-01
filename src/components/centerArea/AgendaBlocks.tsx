@@ -1,41 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import DynamicStyles from "@/styles/components/DynamicTextArea.module.css";
 import AgendaStyles from "@/styles/components/AgendaBlock.module.css";
+
 import ModularTextFieldAgenda from './ModularTextFieldAgenda';
 
-const checkedImage = '/CheckboxTicked.svg';
-const uncheckedImage = '/Checkbox.svg';
-const deleteIcon = '/Cancellation.svg';
+import { updateAgenda } from '@/functions/api/updateMinutes';
+
 
 interface AgendaProps{
   agendaItems: [{id:string, name:string, completed:boolean}]
   setAgendaItems: any
+  minutesID: string
+  chatHistoryID: string
 }
 
-const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
-  const [internalAgendaItems, setInternalAgendaItems] = useState([{ id: 0, name: '', completed: false }]);
-  const [nextId, setNextId] = useState(1);
-  const agendaItems = externalAgendaItems || internalAgendaItems;
+export default function AgendaBlock(props: AgendaProps) {
+  const checkedImage = '/CheckboxTicked.svg';
+  const uncheckedImage = '/Checkbox.svg';
+  const deleteIcon = '/Cancellation.svg';
+
+  const [nextId, setNextId] = useState(0);
+  const [focused, setFocused] = useState(true)
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  useEffect(() => {
+    if (props.agendaItems.length <= 0) {
+      addNewAgendaItem()
+    }
+  }, [])
+
+  useEffect(() => {
+    clearTimeout(timeoutId);
+    const newTimeoutId = setTimeout(async() => {
+      if (!focused) {
+        var agendaContent = props.agendaItems.map((agenda) => agenda.name ).filter((items) => items.trim() !== '')
+        console.log('Agenda unfocused, updating agenda', agendaContent)
+        var response = await updateAgenda(props.minutesID, props.chatHistoryID, agendaContent)
+        if (response !== undefined) {
+          console.log('ERROR:', response.ERROR)
+        }
+      }
+    }, 1000);
+
+    setTimeoutId(newTimeoutId);
+    return () => {
+      clearTimeout(newTimeoutId);
+    };
+  }, [focused])
 
   const updateAgendaItems = (newAgendaItems) => { 
     // Function to update agenda items
-    if (onAgendaChange) {
-      onAgendaChange(newAgendaItems);
-    } else {
-      setInternalAgendaItems(newAgendaItems);
-    }
+      props.setAgendaItems(newAgendaItems);
   };
 
   const updateCheckbox = (index) => { 
     // Updates if Agenda has been updated (ticked or unticked)
-    const newAgendaItems = [...agendaItems];
+    const newAgendaItems = [...props.agendaItems];
     newAgendaItems[index].completed = !newAgendaItems[index].completed;
     updateAgendaItems(newAgendaItems);
   };
 
   const handleAgendaChange = (value, index) => { 
     // Update Agenda Text
-    const newAgendaItems = [...agendaItems];
+    const newAgendaItems = [...props.agendaItems];
     newAgendaItems[index].name = value;
     updateAgendaItems(newAgendaItems);
   };
@@ -47,26 +75,26 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       addNewAgendaItem();
-    } else if (e.key === 'Backspace' && agendaItems[index].name === '') {
+    } else if (e.key === 'Backspace' && props.agendaItems[index].name === '') {
       e.preventDefault();
-      if (agendaItems.length > 1) {
-        deleteAgendaItem(agendaItems[index].id);
+      if (props.agendaItems.length > 1) {
+        deleteAgendaItem(props.agendaItems[index].id);
         //add focus on modulartextfileagenda with id-1
       }
     }
   };
 
   const addNewAgendaItem = () => { // Adds a new agenda item to the list
-    const newAgendaItems = [...agendaItems, { id: nextId, name: '', completed: false }];
+    const newAgendaItems = [...props.agendaItems, { id: nextId, name: '', completed: false }];
     updateAgendaItems(newAgendaItems);
     setNextId(nextId + 1);
   };
 
   const deleteAgendaItem = (idToDelete) => { 
     // Deletes agenda item
-    if (agendaItems.length > 1) { 
+    if (props.agendaItems.length > 1) { 
       // Prevents deletetion of row if there is only one agenda item left
-      const newAgendaItems = agendaItems.filter(item => item.id !== idToDelete);
+      const newAgendaItems = props.agendaItems.filter(item => item.id !== idToDelete);
       updateAgendaItems(newAgendaItems);
     }
   };
@@ -81,7 +109,7 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
       <div className={AgendaStyles.titleContainer}>
         <h1 className={DynamicStyles.genericTitleText}>Agenda</h1>
       </div>
-      {agendaItems.map((item, index) => (
+      {props.agendaItems.map((item, index) => (
         <div key={item.id} className={DynamicStyles.agendaBlockTextFieldHolder}>
           <img
             src={item.completed ? checkedImage : uncheckedImage}
@@ -91,9 +119,11 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
           />
           <ModularTextFieldAgenda
             value={item.name}
-            placeholder="Enter agenda item"
+            placeholder="Enter agenda here"
             onChange={(e) => handleAgendaChange(e.target.value, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
           />
           {/* {agendaItems.length > 1 && (
             <img 
@@ -109,4 +139,3 @@ const AgendaBlock = ({ agendaItems: externalAgendaItems, onAgendaChange }) => {
   );
 };
 
-export default AgendaBlock;

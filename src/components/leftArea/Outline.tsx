@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import styles from "@/styles/components/leftSideBar.module.css"
 
 
-const defaultTasks = ['Task 1', 'Task 2', 'Task 3', 'Task 4'];
+interface outlineProps {
+  taskList: [{title:string, id:number}]
+  setSelectedTask: any
+}
 
-export default function Outline({ tasksProp }) {
-  const tasks = tasksProp || defaultTasks;
-  const [dropDownOpen, setDropDownOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(tasks[0]); 
+export default function Outline(props: outlineProps) {
+  const [dropDownOpen, setDropDownOpen] = useState(true);
+  const filteredTasks = props.taskList.filter(item => item.title.trim() !== ''); // Filter out empty task lists
 
   const toggleDropDown = () => {
     setDropDownOpen(prev => !prev);
   };
 
-  const handleTaskSelect = (task) => {
-    setSelectedTask(task); 
-    setDropDownOpen(false); 
+  const handleTaskSelect = (taskID) => {
+    props.setSelectedTask(taskID); 
   };
 
   return (
@@ -31,10 +32,10 @@ export default function Outline({ tasksProp }) {
       </div>
       {dropDownOpen && (
         <div className={styles.dropDownContainer}>
-          {tasks.length > 0 ? (
-            tasks.map(task => (
-              <div className={styles.taskContainer} key={task} onClick={() => handleTaskSelect(task)}>
-                <p className={styles.dropDownText}>{task}</p>
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map(task => (
+              <div className={styles.taskContainer} key={task.id} onClick={() => handleTaskSelect(task.id)}>
+                <p className={`${styles.dropDownText} ${styles.clickableText}`}>{task.title}</p>
               </div>
               ))
           ) : (

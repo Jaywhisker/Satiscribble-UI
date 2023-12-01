@@ -5,15 +5,26 @@ import ContainerWithBorder from './ContainerWithBorder';
 
 import LeftBar from '@/styles/components/leftSideBar.module.css'
 
+interface LeftSideProps{
+  agendaContent: [{id:number, name:string, completed:boolean}]
+  setAgendaContent: any
+  taskList: [{title:string, id:number}]
+  setSelectedTask: any
+}
 
-export default function LeftSideBar() {
+export default function LeftSideBar(props: LeftSideProps) {
 
     return (
       <div className={LeftBar.leftBarContainer}>
         <ContainerWithBorder text="HCI MEETING ON 23/10" /> 
-        <Agenda />
+        <Agenda 
+          agendaList={props.agendaContent}
+          setAgendaList={props.setAgendaContent}
+        />
         <div style={{ width: '100%', marginTop: '20px' }}>
-        <Outline />
+        <Outline 
+          taskList={props.taskList}
+          setSelectedTask={props.setSelectedTask}/>
         </div>
       </div>
     );
