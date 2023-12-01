@@ -26,8 +26,6 @@ export async function updateMeetingDetails(
   attendees: string
 ) {
   try {
-    console.log(location, attendees);
-
     let participantList;
     if (attendees.length <= 0) {
       participantList = [];
@@ -65,6 +63,11 @@ export async function updateMinutes(
   abbreviation: any
 ) {
   try {
+    if (minutes.length <= 0) {
+      console.log('No minutes, ignoring function call')
+      return undefined
+    }
+
     var reqData = {
       minutesID: minutesID,
       chatHistoryID: chatHistoryID,

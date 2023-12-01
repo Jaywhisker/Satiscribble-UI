@@ -1,0 +1,98 @@
+.leftBarContainer{
+  width: 15vw;
+  background-color: var(--Dark_Grey);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+}
+
+.wrapper{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 5vh;
+  font: 600 0.9rem 'Lato';
+  color: var(--Nice_Blue);
+  text-align: center;
+  border: 1px solid var(--Nice_Blue); 
+  padding: 0.75vh 0; /* 2px */ 
+  border-radius: 3px;
+}
+
+.OutlineContainer,
+.agendaContainer{
+  margin-top: 5vh;
+  width: 80%;
+  margin-left: 10%;
+}
+
+.containerHeading{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  font: 600 var(--headersize) 'Lato';
+  color: var(--Nice_Blue);
+  border-bottom: 2px solid var(--Nice_Blue);
+}
+
+.containerHeading:hover{
+  cursor: pointer;
+}
+
+.headerText{
+  margin: 0;
+}
+
+.dropdownSvg{
+  height: 1vh;
+  object-fit: contain;
+  transition: transform 0.25s linear; 
+  margin-bottom: 0.5vh;
+}
+
+.dropDownContainer{
+  padding: 1vh 0;
+  background-color: var(--Grey);
+}
+
+.taskContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkboxImage{
+  height: 3vh;
+  object-fit: contain;
+  margin-left:1vw;
+}
+
+.checkboxImage:hover{
+  cursor: pointer;
+}
+
+.checkedDropDownText{
+  font: 600 1rem 'Lato';
+  color: var(--Off_White);
+  margin: 1vh 1vw 1vh 0.5vw;
+}
+
+.dropDownText{
+  font: 600 1rem 'Lato';
+  color: var(--Off_White);
+  margin: 1vh 1vw;
+  cursor: default;
+}
+
+.emptyTasksText{
+  color: var(--Off_White);
+  margin: 1vh 1vw;
+  cursor: default;
+}
+
+.clickableText:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}

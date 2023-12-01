@@ -15,6 +15,7 @@
   margin: 0;
   color: var(--Nice_Blue);
   font-weight: 700;
+  cursor: default;
 }
 
 .genericBlock {
@@ -31,6 +32,7 @@
   background-color: var(--Dark_Grey);
   border-radius:8px;
   min-height: 1.5vh;
+  scroll-margin-block-start: 10vh; /* for scrolling */
 }
 
 .genericBlock:first-child{
@@ -122,10 +124,19 @@
   outline:none;
 }
 
-.topicBlockDeleteButton img{
-  height: var(--deleteButtonSize);
-  width: auto;
+.topicBlockDeleteButton:focus .deleteIcon{
+  stroke-width: 2;
+  height: var(--deleteButtonFocusSize);
+  object-fit: contain;
 }
+
+.deleteIcon{
+  stroke-width: 1.5;
+  height: var(--deleteButtonSize);
+  object-fit: contain;
+}
+
+
 
 .topicBlockHeaderContainer{
   display: flex;
@@ -220,6 +231,7 @@
   gap: var(--betweenBlockGap);
   width: var(--overallWidth);
   margin-bottom: 75vh;
+  margin-left: 15vw;
 }
 
 .mainAreaAddNewBlockButton{
@@ -271,4 +283,14 @@
   to {
     transform: rotate(1turn);
   }
+}
+
+
+.agendaBlockTextFieldHolder {
+  width:100%;
+  gap:var(--horizontalGap);
+  align-items: center;
+  display:flex;
+  flex-direction: row;
+  margin:0;
 }

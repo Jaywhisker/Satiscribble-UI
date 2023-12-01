@@ -4,6 +4,7 @@ import inputChat from '@/styles/components/inputChat.module.css'
 export interface assistantResponse {
     text: string
     sourceID?: any[]
+    setSelectedMinutes?: any
     waiting?: boolean
     copyable: boolean
     id: number
@@ -26,8 +27,8 @@ export default function AssistantResponse(props: assistantResponse ) {
             <div className={inputChat.sourceContainer}>
                 <p className={inputChat.sourceText}>Sources</p>
                 <ul className={inputChat.listIndex}>
-                    {props.sourceID.map((topicTitle, index) => (
-                        <li className={inputChat.source} key={index}>{topicTitle.title}</li>
+                    {props.sourceID.map((topic, index) => (
+                        <li className={inputChat.source} key={index} onClick={props.setSelectedMinutes(topic.id)}>{topic.title}</li>
                     ))}
                 </ul>
             </div>

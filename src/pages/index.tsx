@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import LeftSidebar from "@/components/leftArea/leftSideBar";
 import RightSideBar from "@/components/rightSideBar";
 import CenterArea from "@/components/centerArea/CenterArea";
 
@@ -11,32 +12,29 @@ export default function Home() {
 
   const [topicTitles, setTopicTitles] = useState([]);
   const [topicContent, setTopicContent] = useState([]);
+  const [agendaContent, setAgendaContent] = useState([]);
+
+  const [selectedTask, setSelectedTask] = useState(null)
 
   useEffect(() => {
     readID(setMinutesID, setChatHistoryID);
-  });
+  }, []);
 
-  // useEffect(() => {
-  //   console.log(topicContent);
-  // }, [topicContent]);
-
-  // useEffect(() => {
-  //   console.log(topicTitles);
-  // }, [topicTitles]);
+  useEffect(() => {
+    if (selectedTask !== null) {
+      var minutesElement = document.querySelector(`#minuteID${selectedTask}`) as HTMLElement;
+      minutesElement.scrollIntoView({ block: 'start',  behavior: 'smooth' })
+    }
+  }, [selectedTask])
 
   return (
-    <div style={{ display: "flex", "flex-direction": "row" }}>
-      <div
-        style={{
-          display: "flex",
-          "flex-direction": "column",
-          width: "15vw",
-          backgroundColor: "black",
-          height: "100vh",
-        }}
-      >
-        <p>Left Hand Side</p>
-      </div>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <LeftSidebar
+        agendaContent={agendaContent}
+        setAgendaContent={setAgendaContent}
+        taskList={topicTitles}
+        setSelectedTask={setSelectedTask}
+        />
 
       <CenterArea
         minutesID={minutesID}
@@ -45,12 +43,15 @@ export default function Home() {
         setTopicTitles={setTopicTitles}
         topicContent={topicContent}
         setTopicContent={setTopicContent}
+        agendaContent={agendaContent}
+        setAgendaContent={setAgendaContent}
       />
 
       <RightSideBar
         minutesID={minutesID}
         chatHistoryID={chatHistoryID}
         topicTitles={topicTitles}
+        setSelectedMinutes={setSelectedTask}
       />
     </div>
   );
