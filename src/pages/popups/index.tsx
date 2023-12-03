@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Button } from '@/components/buttons';
-import * as PopUp from '@/components/popup';
+import PopUp from '@/components/popup';
 
 
 export default function Home() {
-  const [name, setName] = useState(null);
-  const [pythonMsg, setPythonMsg] = useState(null);
-
-  useEffect(() => {
-    async function getPythonMsg() {
-      const response = await axios.get("/api/testpython");
-      console.log(response);
-      setPythonMsg(response.data.message);
-    }
-    getPythonMsg();
-  }, []);
 
   return (
     <div style={{ display:'flex', flexDirection: 'column', gap: '2vh'}}>
@@ -40,37 +28,40 @@ export default function Home() {
       <PopUp.AgendaAlert isOpen={true} onClose={() => {}} />
       <PopUp.TopicChangeAlert isOpen={true} onClose={() => {}} />
       <PopUp.DetectAlert isOpen={true} onClose={() => {}} />
-      <PopUp.ClearChat isOpen={true} onClose={() => {}} />
+      <PopUp.ClearChat isOpen={true} />
       <PopUp.DeleteTopic isOpen={true} onClose={() => {}} />
       <PopUp.BasicAlert isOpen={true} onClose={() => {}} />
 
       <PopUp.BasicAlert
         colorVariant="red"
-        alertIcon="ExclamationIcon"
+        iconName="exclamation"
         iconColor="red"
         messageTitle="Topic Length Alert"
         messageContent="The current topic block has exceeded 1000 tokens. Your topic may be too long for effective discussion."
         messageHeaderColor="Red"
+        isOpen={true}
         onClose={() => {}}
       />
 
       <PopUp.BasicAlert
         colorVariant="red"
-        alertIcon="ExclamationIcon"
+        iconName="exclamation"
         iconColor="red"
         messageTitle="Add new topic failed"
         messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure both the meeting details and agenda blocks are filled out."
         messageHeaderColor="Red"
+        isOpen={true}
         onClose={() => {}}
       />
 
       <PopUp.BasicAlert
         colorVariant="grey"
-        alertIcon="CheckIcon"
+        iconName="check"
         iconColor="green"
         messageTitle="Glossary Addition Successful"
         messageContent="Great news! Your abbreviation has been successfully added to the glossary."
         messageHeaderColor="Green"
+        isOpen={true}
         onClose={() => {}}
       />
     </div>

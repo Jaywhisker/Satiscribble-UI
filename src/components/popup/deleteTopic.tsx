@@ -4,7 +4,7 @@ import Icons from '../icons/icons';
 import styles from '@/styles/popups.module.css';
 
 interface PopupProps {
-//   isOpen?: boolean;
+  isOpen?: boolean;
   onClose: () => void;
 }
 
