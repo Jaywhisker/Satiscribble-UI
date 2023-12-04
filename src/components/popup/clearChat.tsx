@@ -13,7 +13,6 @@ const ClearChat: React.FC<ClearChatProps> = ({ isOpen }) => {
     console.log('Popup is now open and is shown');
   };
 
-
   const handleClose = () => {
     console.log('Closing the popup');
     // Additional logic for closing the popup

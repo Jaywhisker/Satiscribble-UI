@@ -10,7 +10,7 @@ interface PopupProps {
 }
 
 const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose }) => {
-  // Placeholder function for isOpen
+
   const handleIsOpen = () => {
     console.log('Popup is now open and is shown');
   };
@@ -18,6 +18,11 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
+    onClose();
+  };
+
+  const handleAdd = () => {
+    console.log('Adding abbreviation');
     onClose();
   };
 
@@ -44,17 +49,14 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
           size="small"
           fillBorderVariant="no-background"
           leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
-          onClick={() => {
-            handleIsOpen();
-            handleClose();
-          }}
+          onClick={() => {handleClose()}}
         ></Button>
       </span>
       <span className={styles.messageContent}>
         <p style={{ marginBlock: "0" }}>{detectedAbbrev}</p>
       </span>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleClose}>
+        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleAdd}>
           ADD TO GLOSSARY
         </Button>
       </span>

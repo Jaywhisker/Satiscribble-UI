@@ -14,11 +14,18 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     console.log('Popup is now open and is shown');
   };
 
-  // Placeholder function for onClose
+  // Placeholder functions
   const handleClose = () => {
     console.log('Closing the popup');
     onClose();
   };
+
+  const handleReport = () => {
+    console.log('Reporting inaccuracy');
+    onClose();
+  };
+
+
 
   if (!isOpen) {
     return null;
@@ -51,7 +58,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
         It appears we may have deviated from the agenda. Please review and update to stay on track with the agenda.
       </p>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleClose}>
+        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleReport}>
           REPORT INACCURATE
         </Button>
       </span>

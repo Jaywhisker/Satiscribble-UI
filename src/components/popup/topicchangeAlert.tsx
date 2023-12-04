@@ -20,6 +20,16 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleReport = () => {
+    console.log('Reporting inaccuracy');
+    onClose();
+  };
+
+  const handleCreate = () => {
+    console.log('Creating new topic');
+    onClose();
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -49,10 +59,10 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
       </span>
       <p className={styles.messageContent}>A topic change has been detected. Please select one of the following actions:</p>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleClose}>
+        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleReport}>
           REPORT INACCURATE
         </Button>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleClose}>
+        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleCreate}>
           CREATE NEW TOPIC
         </Button>
       </span>
