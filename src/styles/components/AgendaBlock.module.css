@@ -6,8 +6,8 @@
 
 .checkboxImage {
   cursor: pointer;
-  width: 2.2vw; 
-  height: 3.8vh; 
+  height: 3vh;
+  object-fit: contain; 
 }
 
 .editButton {

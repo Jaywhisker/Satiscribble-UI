@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.5 5.525L4.8107 9.375L11.25 1.875" stroke="#D1D1D1" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+=======
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="511px" viewBox="0 0 512 511" enable-background="new 0 0 512 511" xml:space="preserve">  <image id="image0" width="512" height="511" x="0" y="0"
@@ -86,4 +90,5 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAiOr/AV9/xwXXB8IaAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTExLTIyVDA4OjA3OjQ3
 KzAxOjAwlXNaDQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0xMS0yMlQwODowNzo0NyswMTowMOQu
 4rEAAAAASUVORK5CYII=" />
+>>>>>>> 2e98f79099097fa5fddf4d0cfe4c62b4ca23cb6b
 </svg>

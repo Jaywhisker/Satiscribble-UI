@@ -1,0 +1,37 @@
+.errorBackground{
+    width: 25vw;
+    position: absolute;
+    z-index: 2;
+    background-color: var(--Dark_Grey);
+    padding: 1vh 0 0 0;
+    bottom: 10vh;
+    /* border-top: 1px solid var(--Grey); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.errorText{
+    color: var(--Red);
+    font: 400 0.7rem 'Lato';
+    text-align: center;
+    margin: 0;
+}
+
+.retryButton{
+    margin: 0.75vh 0;
+    background-color: var(--Alert_Red);
+    font: 600 0.8rem 'Lato';
+    color: var(--Off_White);
+    border: none;
+    outline: none;
+    padding: 1.5vh 1.5vw;
+    border: 1px solid var(--Off_White);
+    border-radius: 5px;
+}
+
+.retryButton:hover{
+    cursor: pointer;
+    background-color: var(--Alert_Red_75);
+}

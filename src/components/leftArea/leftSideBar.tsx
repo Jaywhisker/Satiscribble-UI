@@ -1,36 +1,37 @@
 import React from 'react';
-import Agenda from './agenda';
-import Outline from './outline';
-import ContainerWithBorder from './containerwithborder';
+import Agenda from './Agenda';
+import Outline from './Outline';
+import ContainerWithBorder from './ContainerWithBorder';
 
-class LeftSidebar extends React.Component {
-  render() {
-    const sidebarStyle: React.CSSProperties = {
-      width: '15vw',
-      backgroundColor: 'var(--Dark_Grey)',
-      height: '100vh', // Full height of the viewport
-      margin: 0,
-      padding: '10px', 
-      boxSizing: 'border-box', 
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start', 
-      alignItems: 'center', 
-    };
+import LeftBar from '@/styles/components/leftSideBar.module.css'
+
+interface LeftSideProps{
+  agendaContent: [{id:number, name:string, completed:boolean}]
+  setAgendaContent: any
+  taskList: [{title:string, id:number}]
+  setSelectedTask: any
+}
+
+export default function LeftSideBar(props: LeftSideProps) {
 
     return (
-      <div style={sidebarStyle}>
+      <div className={LeftBar.leftBarContainer}>
         <ContainerWithBorder text="HCI MEETING ON 23/10" /> 
-        <Agenda />
+        <Agenda 
+          agendaList={props.agendaContent}
+          setAgendaList={props.setAgendaContent}
+        />
         <div style={{ width: '100%', marginTop: '20px' }}>
-        <Outline />
+        <Outline 
+          taskList={props.taskList}
+          setSelectedTask={props.setSelectedTask}/>
         </div>
       </div>
     );
-  }
-}
 
-export default LeftSidebar;
+ }
+
+
 
 
 // We can also pass just the subject and the date if we want to

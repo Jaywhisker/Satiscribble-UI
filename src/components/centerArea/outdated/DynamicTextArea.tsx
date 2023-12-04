@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  isAbbreviation,
-  adjustHeight,
-  setDefaultHeight,
-} from "@/functions/centerArea/helpers";
+import {isAbbreviation, adjustHeight, setDefaultHeight } from "@/functions/centerArea/helpers";
+
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 let typingTimer;

@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 import ModularTextField from "@/components/centerArea/ModularTextField";
+import { updateMeetingDetails } from "@/functions/api/updateMinutes";
 
-function MeetingDetailBlocks() {
+interface meetingDetailBlockProps {
+  minutesID: string;
+  chatHistoryID: string;
+}
+
+function MeetingDetailBlocks(props: meetingDetailBlockProps) {
   const containerRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -15,7 +21,7 @@ function MeetingDetailBlocks() {
     setIsEditing(true);
   };
 
-  const handleContainerClick = (e) => {
+  const handleContainerClick = async (e) => {
     if (containerRef.current && containerRef.current.contains(e.target)) {
       return;
     }
@@ -33,6 +39,16 @@ function MeetingDetailBlocks() {
       console.log("Location: " + locationValue);
 
       setIsEditing(false);
+      var response = await updateMeetingDetails(
+                            props.minutesID,
+                            props.chatHistoryID,
+                            locationValue,
+                            participantsValue
+                          );
+      if (response !== undefined) {
+        //handle error
+        console.log("Meeting Details Error:", response.ERROR)
+      }
     }
   };
 
@@ -45,8 +61,8 @@ function MeetingDetailBlocks() {
   }, [isEditing]);
 
   return (
-    <div ref={containerRef} className={styles.container}>
-      <p className={styles.titleTextStyle}>Meeting Details</p>
+    <div ref={containerRef} className={styles.genericBlock}>
+      <p className={styles.genericTitleText}>Meeting Details</p>
       <ModularTextField
         label="Date"
         placeholder="Enter date here"

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.64085 4.72498L8.27502 7.35915L3.63417 12H1V9.36583L5.64085 4.72498ZM11.8162 2.93574L10.0643 1.18377C10.0065 1.12554 9.93779 1.07932 9.86209 1.04778C9.78638 1.01624 9.70518 1 9.62316 1C9.54115 1 9.45995 1.01624 9.38424 1.04778C9.30853 1.07932 9.23982 1.12554 9.18207 1.18377L7.39282 2.97301L10.027 5.60718L11.8162 3.81793C11.8745 3.76018 11.9207 3.69147 11.9522 3.61576C11.9838 3.54005 12 3.45885 12 3.37684C12 3.29482 11.9838 3.21362 11.9522 3.13791C11.9207 3.06221 11.8745 2.99349 11.8162 2.93574Z" fill="#D1D1D1" stroke="#D1D1D1" stroke-width="0.621265" stroke-linecap="round" stroke-linejoin="round"/>
+=======
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="511px" viewBox="0 0 512 511" enable-background="new 0 0 512 511" xml:space="preserve">  <image id="image0" width="512" height="511" x="0" y="0"
@@ -72,4 +76,5 @@ n/lTngDsy/wZgADsx/wZQvcvAt1+7H3BHjd/On/X+wYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACALP4PfAu+n+H1FY8AAAAldEVY
 dGRhdGU6Y3JlYXRlADIwMjMtMTEtMjJUMDg6MDc6NDcrMDE6MDCVc1oNAAAAJXRFWHRkYXRlOm1v
 ZGlmeQAyMDIzLTExLTIyVDA4OjA3OjQ3KzAxOjAw5C7isQAAAABJRU5ErkJggg==" />
+>>>>>>> 2e98f79099097fa5fddf4d0cfe4c62b4ca23cb6b
 </svg>

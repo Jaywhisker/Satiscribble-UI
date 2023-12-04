@@ -10,9 +10,7 @@ interface ContainerWithBorderProps {
 const ContainerWithBorder: React.FC<ContainerWithBorderProps> = ({ text }) => {
   return (
     <div className={styles.wrapper}>
-      <div className={styles.styledContainer}>
         {text}
-      </div>
     </div>
   );
 };

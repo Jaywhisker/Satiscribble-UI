@@ -41,6 +41,7 @@
 .dropDownIcon{
     height: 1.2vh;
     object-fit: contain;
+    transition: transform 0.75s ease-in-out;
 }
 
 .tabOverallContainer{
@@ -64,6 +65,7 @@
     margin: 1.5vh 0;
 }
 
+.errorContainer,
 .tabDetailsContainer{
     width: 100%;
 }
@@ -83,7 +85,7 @@
 .backgroundText{
     color: var(--Dark_Purple_Blue);
     /* font-size: 5vmin; */
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 800;
     letter-spacing: 1px;
     margin-bottom: 1.5vh;
@@ -146,7 +148,7 @@
 
 .clearChatContainer{
     position: absolute;
-    top: 18vh;
+    top: 17vh;
     right: 6%;
     background-color: var(--Grey);
     padding: 1vh 1vw;
@@ -163,7 +165,7 @@
     color: var(--Off_White);
     font-weight: 600;
     letter-spacing: 0.5px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     /* font-size: 1.75vmin; */
     margin: 0;
 }
@@ -221,7 +223,7 @@
 }
 
 .queryContainer{
-    max-height: 15vh;
+    max-height: 25vh;
     width: 88%;
     border:none;
     resize: none;
@@ -249,7 +251,8 @@
 
 .warningText{
     width: 84%;
-    font: 400 1.5vmin 'Lato';
+    /* font: 400 1.5vmin 'Lato'; */
+    font: 400 0.7rem 'Lato';
     color: var(--Off_White);
     text-align: center;
 }
@@ -261,3 +264,44 @@
     cursor: pointer;
 }
 
+.loadingAnimation{
+    display: flex;
+    flex-direction: row;
+    margin-right: 0.5vw;
+}
+
+.loadingAnimation span{
+    width: 0.45vmin;
+    height: 0.45vmin;
+    border-radius: 50%;
+    margin-right: 0.25vw;
+    margin-bottom: 1.35vh;
+    background-color: var(--Off_White);
+    animation: jump 1.5s linear infinite 0.5s
+}
+
+.loadingAnimation span:nth-child(2){
+    animation-delay: 0.75s;
+}
+
+.loadingAnimation span:last-child{
+    animation-delay: 1s;
+}
+
+@keyframes jump {
+    25% {
+        transform: translateY(0);
+    } 50% {
+        transform: translateY(-0.15vh);
+    } 75% {
+        transform: translateY(0);
+      }
+}
+
+.errorText{
+    color: var(--Red);
+    font: 400 0.7rem 'Lato';
+    text-align: center;
+    margin: 0;
+    margin-bottom: 2vh;
+}

@@ -5,16 +5,12 @@ const ModularTextField = forwardRef((props, ref) => {
   const { label, placeholder, onChange } = props;
 
   return (
-    <div className={styles.meetingBlockTextFieldHolder}>
-      <p
-        className={`${styles.meetingBlockTextFieldLabel} ${styles.meetingBlockTextFieldText}`}
-      >
-        {label}:
-      </p>
+    <div className={styles.detailBlockMain}>
+      <p className={`${styles.detailBlockText}`}>{label}:</p>
       <input
         ref={ref}
         type="text"
-        className={`${styles.meetingBlockTextField} ${styles.meetingBlockTextFieldText}`}
+        className={`${styles.detailBlockInput}`}
         placeholder={placeholder}
         onChange={onChange}
       />

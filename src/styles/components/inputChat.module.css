@@ -17,15 +17,16 @@
     color: var(--Dark_Grey);
     font-weight: 600;
     /* font-size: 2vmin; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.25px;
+    white-space: pre-line;
 }
 
 .assistantContainer{
     margin: auto;
     margin-left: 0;
     width: 65%;
-    padding: 0;
+    padding: 2vh 0 1vh 0;
     background-color: var(--Dark_Purple_Blue);
     border-radius: 8px;
     margin-bottom: 2vh;
@@ -37,18 +38,20 @@
     text-align: left;
     width: 84%;
     margin-left: 8%;
-    padding: 2vh 0;
+    padding: 0 0 1vh 0;
     color: var(--Off_White);
     font-weight: 600;
     /* font-size: 2vmin; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.25px;
+    white-space: pre-line;
 }
 
 .sourceContainer{
     border-top: 1.5px solid var(--Off_White_10);
     width: 88%;
     margin-left: 6%;
+    margin-top: 1vh;
 }
 
 .sourceText{
@@ -57,7 +60,7 @@
     color: var(--Off_White);
     font-weight: 600;
     /* font-size: 2vmin; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.25px;
     margin-bottom: 1vh;
 }
@@ -72,16 +75,35 @@
     font-family: 'Lato';
     font-weight: 600;
     /* font-size: 1.75vmin; */
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     letter-spacing: 0.25px;
     margin: 0.5vh 0;
 }
 
 .source:last-child{
-    padding-bottom: 2vh;
+    padding-bottom: 1vh;
 }
 
 .source:hover{
     text-decoration: underline;
     cursor: pointer;
 }
+
+.responseLoadingAnimation{
+    background-color: var(--Off_White);
+    width: 0.15vw;
+    height: 2vh;
+    margin-left: 8%;
+    opacity: 1;
+    animation: 1s blink step-end infinite;
+}
+
+
+@keyframes blink {
+    from, to {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--Off_White);
+    }
+  }
