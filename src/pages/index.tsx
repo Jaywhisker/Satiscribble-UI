@@ -4,6 +4,7 @@ import axios from "axios";
 import LeftSidebar from "@/components/leftArea/leftSideBar";
 import RightSideBar from "@/components/rightSideBar";
 import CenterArea from "@/components/centerArea/CenterArea";
+import Overlay from "@/components/notificationOverlay/overlay";
 
 import { readID } from "@/functions/IDHelper";
 export default function Home() {
@@ -63,6 +64,8 @@ export default function Home() {
         topicTitles={topicTitles}
         setSelectedMinutes={setSelectedTask}
       />
+
+      <Overlay />
     </div>
   );
 }
