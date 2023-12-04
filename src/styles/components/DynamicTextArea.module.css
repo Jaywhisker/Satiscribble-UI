@@ -12,9 +12,9 @@
 .genericTitleText{
   font-size: var(--headersize);
   font-family: Lato;
+  font-weight: var(--titleWeight);
   margin: 0;
   color: var(--Nice_Blue);
-  font-weight: 700;
   cursor: default;
 }
 

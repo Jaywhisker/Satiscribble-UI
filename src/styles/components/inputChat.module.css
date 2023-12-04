@@ -15,9 +15,9 @@
     margin-left: 8%;
     padding: 1.75vh 0;
     color: var(--Dark_Grey);
-    font-weight: 600;
+    font-weight: var(--normalWeight);
     /* font-size: 2vmin; */
-    font-size: 0.9rem;
+    font-size: var(--psize);
     letter-spacing: 0.25px;
     white-space: pre-line;
 }
@@ -40,9 +40,9 @@
     margin-left: 8%;
     padding: 0 0 1vh 0;
     color: var(--Off_White);
-    font-weight: 600;
+    font-weight: var(--normalWeight);
     /* font-size: 2vmin; */
-    font-size: 0.9rem;
+    font-size: var(--psize);
     letter-spacing: 0.25px;
     white-space: pre-line;
 }
@@ -58,9 +58,9 @@
     margin: 0;
     margin-top: 1vh;
     color: var(--Off_White);
-    font-weight: 600;
+    font-weight: var(--normalWeight);
     /* font-size: 2vmin; */
-    font-size: 0.9rem;
+    font-size: var(--psize);
     letter-spacing: 0.25px;
     margin-bottom: 1vh;
 }

@@ -60,8 +60,8 @@
 .tabText{
     margin: 0;
     /* font-size: 2.5vmin; */
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: var(--headersize);
+    font-weight: var(--titleWeight);
     margin: 1.5vh 0;
 }
 
@@ -163,9 +163,9 @@
 
 .clearChatText{
     color: var(--Off_White);
-    font-weight: 600;
+    font-weight: var(--titleWeight);
     letter-spacing: 0.5px;
-    font-size: 0.8rem;
+    font-size: var(--smallerPSize);
     /* font-size: 1.75vmin; */
     margin: 0;
 }
@@ -204,9 +204,9 @@
 }
 
 .buttonText{
-    font-weight: 600;
+    font-weight: var(--titleWeight);
     letter-spacing: 0.5px;
-    font-size: 1.75vmin;
+    font-size: var(--smallerPSize);
     margin: 0.5vh 0;
     color: var(--Nice_Blue);
 }
@@ -229,7 +229,9 @@
     resize: none;
     border: none;
     background-color: transparent;
-    font: 400 1.75vmin 'Lato';
+    font-size: var(--smallerPSize);
+    font-family: Lato;
+    font-weight: var(--normalWeight);
     color: var(--Off_White);
     overflow: hidden;
     height: auto;
@@ -252,7 +254,9 @@
 .warningText{
     width: 84%;
     /* font: 400 1.5vmin 'Lato'; */
-    font: 400 0.7rem 'Lato';
+    font-size: var(--smallestPSize);
+    font-family: Lato;
+    font-weight: var(--normalWeight);
     color: var(--Off_White);
     text-align: center;
 }

@@ -1,12 +1,9 @@
 :root{
     --psize: 2vh;
+    --smallerPSize: 1.75vh;
+    --smallestPSize: 1.5vh;
     --headersize:3vh;
-}
 
-.ql-editor {
-  padding: 0px!important;
-}
-
-.ql-editor ul{
-  padding-left: 0!important;
+    --titleWeight: 700;
+    --normalWeight: 400;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import notificationsStyle from "@/styles/components/NotificationsOverlay.module.css";
+import notificationsStyle from "@/styles/components/notificationsOverlay.module.css";
 import { Button } from "@/components/buttons";
 import PopUp from "@/components/popup";
 

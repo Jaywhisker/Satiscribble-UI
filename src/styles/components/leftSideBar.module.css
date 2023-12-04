@@ -11,7 +11,9 @@
   width: 80%;
   margin-left: 10%;
   margin-top: 5vh;
-  font: 600 0.9rem 'Lato';
+  font-family: Lato;
+  font-size: var(--psize);
+  font-weight: var(--titleWeight);
   color: var(--Nice_Blue);
   text-align: center;
   border: 1px solid var(--Nice_Blue); 
@@ -74,13 +76,17 @@
 }
 
 .checkedDropDownText{
-  font: 600 1rem 'Lato';
+  font-size: var(--psize);
+  font-family: Lato;
+  font-weight: var(--normalWeight);
   color: var(--Off_White);
   margin: 1vh 1vw 1vh 0.5vw;
 }
 
 .dropDownText{
-  font: 600 1rem 'Lato';
+  font-size: var(--psize);
+  font-family: Lato;
+  font-weight: var(--normalWeight);
   color: var(--Off_White);
   margin: 1vh 1vw;
   cursor: default;
@@ -90,6 +96,7 @@
   color: var(--Off_White);
   margin: 1vh 1vw;
   cursor: default;
+  font-size: var(--psize);
 }
 
 .clickableText:hover{

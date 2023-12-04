@@ -1,4 +1,6 @@
 :root{
+
+    /* Center Area */
     /* Button Sizes */
     --magicWandButtonSize: 4vh;
     --deleteButtonSize: 2.5vh;
@@ -17,4 +19,16 @@
     --overallWidth: 60vw;
     --betweenBlockGap: 2vh;
     --blockSideMargin: 2vh;
+
+    /* Left Side Bar */
 }
+
+
+/* For quillarea */
+.ql-editor {
+    padding: 0px!important;
+  }
+  
+  .ql-editor ul{
+    padding-left: 0!important;
+  }
