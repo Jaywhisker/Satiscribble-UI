@@ -1,27 +1,39 @@
 import PopUp from '@/components/popup';
 import styles from '@/styles/popups.module.css';
+import { useToast } from '@/hooks/useToast';
+import { useState } from "react";
 
 export interface ToastProps {
-    type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail'| 'glossaryAdd';
-    id: string;
+    type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail' | 'glossaryAdd';
+    id: number;
     message?: string;
 }
 
-
 const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
+    const toast = useToast()
+
+    const [dismissed, setDismissed] = useState(false);
+
+    const handleDismiss = () => {
+        setDismissed(true);
+        setTimeout(() => {
+            toast.remove(id);
+        }, 500);  // Adjust the duration based on your CSS animation duration
+    };
+
     // Declare toastTypes
     const toastTypes = {
         agenda: {
-            popup: <PopUp.AgendaAlert onClose={() => { }} />
+            popup: <PopUp.AgendaAlert isOpen={true} onClose={handleDismiss} />
         },
         inactivity: {
-            popup: <PopUp.InactivityAlert onClose={() => { }} />
+            popup: <PopUp.InactivityAlert isOpen={true} onClose={handleDismiss} />
         },
         changeTopic: {
-            popup: <PopUp.TopicChangeAlert onClose={() => { }} />
+            popup: <PopUp.TopicChangeAlert isOpen={true} onClose={handleDismiss} />
         },
         detectAbbrev: {
-            popup: <PopUp.DetectAlert detectedAbbrev={message} onClose={() => { }} />
+            popup: <PopUp.DetectAlert detectedAbbrev={message} isOpen={true} onClose={handleDismiss} />
         },
         topicLength: {
             popup: <PopUp.BasicAlert
@@ -31,7 +43,8 @@ const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
                 messageTitle="Topic Length Alert"
                 messageContent="The current topic block has exceeded 1000 tokens. Your topic may be too long for effective discussion."
                 messageHeaderColor="Red"
-                onClose={() => { }} />
+                isOpen={true}
+                onClose={handleDismiss} />
         },
         addTopicfail: {
             popup: <PopUp.BasicAlert
@@ -41,7 +54,8 @@ const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
                 messageTitle="Add new topic failed"
                 messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure both the meeting details and agenda blocks are filled out."
                 messageHeaderColor="Red"
-                onClose={() => { }} />
+                isOpen={true}
+                onClose={handleDismiss} />
         },
         glossaryAdd: {
             popup: <PopUp.BasicAlert
@@ -51,14 +65,16 @@ const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
                 messageTitle="Glossary Addition Successful"
                 messageContent="Great news! Your abbreviation has been successfully added to the glossary."
                 messageHeaderColor="Green"
-                onClose={() => { }} />
+                isOpen={true}
+                onClose={() => { handleDismiss }} />
         }
     };
 
     const currentToast = toastTypes[type];
 
+
     return (
-        <div>
+        <div className={`${styles.toast} ${dismissed ? styles["toast-dismissed"] : ""}`}>
             {currentToast && currentToast.popup}
         </div>
     );

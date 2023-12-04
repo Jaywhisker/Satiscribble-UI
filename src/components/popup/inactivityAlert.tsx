@@ -9,7 +9,7 @@ interface PopupProps {
 }
 
 const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
-  // Placeholder function for isOpen
+
   const handleIsOpen = () => {
     console.log('Popup is now open and is shown');
   };
@@ -17,6 +17,11 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
+    onClose();
+  };
+
+  const handleSnooze = () => {
+    console.log('Snooze for 15 minutes');
     onClose();
   };
 
@@ -32,7 +37,7 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Notification Icon" color="orange" size="small" name = 'notification' />}
+            leftIcon={<Icons.GeneralIcon alt="Notification Icon" color="orange" size="small" name='notification' />}
           ></Button>
           <p className={styles.messageHeader} style={{ color: "var(--Orange, #FFCE85)" }}>
             Are you still there?
@@ -42,18 +47,15 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
-          onClick={() => {
-            handleIsOpen();
-            handleClose();
-          }}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
+          onClick={() => { handleClose() }}
         ></Button>
       </span>
       <p className={styles.messageContent}>
         It's been 5 minutes since the last update to meeting minutes. Please review and update to stay on track with the agenda.
       </p>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleClose}>
+        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleSnooze}>
           Snooze 15 minutes
         </Button>
       </span>

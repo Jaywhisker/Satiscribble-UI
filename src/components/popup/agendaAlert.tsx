@@ -14,9 +14,14 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     console.log('Popup is now open and is shown');
   };
 
-  // Placeholder function for onClose
+  // Placeholder functions
   const handleClose = () => {
     console.log('Closing the popup');
+    onClose();
+  };
+
+  const handleReport = () => {
+    console.log('Reporting inaccuracy');
     onClose();
   };
 
@@ -32,7 +37,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Exclamation Icon" color="red" size="small" name = 'exclamation' />}
+            leftIcon={<Icons.GeneralIcon alt="Exclamation Icon" color="red" size="small" name='exclamation' />}
           ></Button>
           {/* pop up icon button */}
           <p className={styles.messageHeader} style={{ color: "var(--Red, #DE5C64)" }}>
@@ -43,7 +48,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
           onClick={handleClose}
         ></Button>
       </span>
@@ -51,7 +56,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
         It appears we may have deviated from the agenda. Please review and update to stay on track with the agenda.
       </p>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleClose}>
+        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleReport}>
           REPORT INACCURATE
         </Button>
       </span>

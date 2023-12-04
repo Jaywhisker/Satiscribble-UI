@@ -1,5 +1,5 @@
 interface Toast {
-    id: string;
+    id;
     type: string; // Replace with the actual type
     message?: string;
   }
@@ -10,9 +10,10 @@ interface Toast {
   
   type ToastAction =
     | { type: "ADD_TOAST"; payload: Toast }
-    | { type: "DELETE_TOAST"; payload: string };
+    | { type: "DELETE_TOAST"; payload };
   
   export const toastReducer = (state: ToastState, action: ToastAction): ToastState => {
+    console.log('Reducer Action:', action);
     switch (action.type) {
       case "ADD_TOAST":
         return {

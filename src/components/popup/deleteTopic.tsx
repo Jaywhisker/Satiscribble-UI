@@ -9,22 +9,33 @@ interface PopupProps {
 }
 
 const DeleteTopic: React.FC<PopupProps> = ({ isOpen, onClose }) => {
-//   if (!isOpen) {
-//     return null;
-//   }
+  // Placeholder functions
+  const handleClose = () => {
+    console.log('Closing the popup');
+    onClose();
+  };
+
+  const handleDelete = () => {
+    console.log('Deleting topic');
+    onClose();
+  };
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className={`${styles.confirmPopup} ${styles.greyNotif}`}>
-        <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }} >Delete Topic?</p>
-        <p className={styles.messageContent} style={{alignSelf: "center"}}>This action cannot be undone.</p>
-        <span className={styles.actionButtons}>
-          <Button size="small" fillBorderVariant="border" colorVariant = 'white' onClick={onClose}>
-            CANCEL
-          </Button>
-          <Button size="small" fillBorderVariant="fill" colorVariant = 'red' onClick={onClose}>
-            DELETE
-          </Button>
-        </span>
+      <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }} >Delete Topic?</p>
+      <p className={styles.messageContent} style={{ alignSelf: "center" }}>This action cannot be undone.</p>
+      <span className={styles.actionButtons}>
+        <Button size="small" fillBorderVariant="border" colorVariant='white' onClick={handleClose}>
+          CANCEL
+        </Button>
+        <Button size="small" fillBorderVariant="fill" colorVariant='red' onClick={handleDelete}>
+          DELETE
+        </Button>
+      </span>
     </div>
   );
 };
