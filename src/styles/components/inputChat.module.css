@@ -15,9 +15,7 @@
     margin-left: 8%;
     padding: 1.75vh 0;
     color: var(--Dark_Grey);
-    font-weight: var(--normalWeight);
-    /* font-size: 2vmin; */
-    font-size: var(--psize);
+    font: var(--ui-bold-text);
     letter-spacing: 0.25px;
     white-space: pre-line;
 }
@@ -40,9 +38,7 @@
     margin-left: 8%;
     padding: 0 0 1vh 0;
     color: var(--Off_White);
-    font-weight: var(--normalWeight);
-    /* font-size: 2vmin; */
-    font-size: var(--psize);
+    font: var(--ui-bold-text);
     letter-spacing: 0.25px;
     white-space: pre-line;
 }
@@ -58,9 +54,7 @@
     margin: 0;
     margin-top: 1vh;
     color: var(--Off_White);
-    font-weight: var(--normalWeight);
-    /* font-size: 2vmin; */
-    font-size: var(--psize);
+    font: var(--ui-bold-text);
     letter-spacing: 0.25px;
     margin-bottom: 1vh;
 }
@@ -72,10 +66,7 @@
 
 .source{
     color: var(--Nice_Blue);
-    font-family: 'Lato';
-    font-weight: 600;
-    /* font-size: 1.75vmin; */
-    font-size: 0.8rem;
+    font: var(--ui-subtext);
     letter-spacing: 0.25px;
     margin: 0.5vh 0;
 }

@@ -11,9 +11,7 @@
   width: 80%;
   margin-left: 10%;
   margin-top: 5vh;
-  font-family: Lato;
-  font-size: var(--psize);
-  font-weight: var(--titleWeight);
+  font: var(--ui-comment);
   color: var(--Nice_Blue);
   text-align: center;
   border: 1px solid var(--Nice_Blue); 
@@ -33,7 +31,7 @@
   flex-direction: row;
   align-items: flex-end;
   justify-content: space-between;
-  font: 600 var(--headersize) 'Lato';
+  font: var(--ui-heading);
   color: var(--Nice_Blue);
   border-bottom: 2px solid var(--Nice_Blue);
 }
@@ -76,27 +74,27 @@
 }
 
 .checkedDropDownText{
-  font-size: var(--psize);
-  font-family: Lato;
-  font-weight: var(--normalWeight);
+  font: var(--ui-bold-text);
   color: var(--Off_White);
   margin: 1vh 1vw 1vh 0.5vw;
+  max-width: 10vw;
+  word-break: break-all;
 }
 
 .dropDownText{
-  font-size: var(--psize);
-  font-family: Lato;
-  font-weight: var(--normalWeight);
+  font: var(--ui-bold-text);
   color: var(--Off_White);
   margin: 1vh 1vw;
   cursor: default;
+  max-width: 10vw;
+  word-break: break-all;
 }
 
 .emptyTasksText{
   color: var(--Off_White);
   margin: 1vh 1vw;
   cursor: default;
-  font-size: var(--psize);
+  font: var(--ui-bold-text);
 }
 
 .clickableText:hover{

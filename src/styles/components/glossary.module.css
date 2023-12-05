@@ -30,8 +30,8 @@
     color: var(--Nice_Blue);
     width: 70%;
     margin: 0;
-    font-size: var(--psize);
-    font-weight: var(--titleWeight);
+    font: var(--ui-subheading);
+    letter-spacing: 0.1vw;
     margin-bottom: 0.75vh;
     word-break: break-all;
 }
@@ -66,9 +66,7 @@
     border: none;
     outline: none;
     color: var(--Off_White);
-    font-size: var(--psize);
-    font-family: Lato;
-    font-weight: var(--normalWeight);
+    font: var(--ui-bold-text);
     letter-spacing: 0.25px;
     resize: none;
     height: auto;

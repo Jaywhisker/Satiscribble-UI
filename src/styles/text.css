@@ -1,9 +1,10 @@
 :root{
-    --psize: 2vh;
-    --smallerPSize: 1.75vh;
-    --smallestPSize: 1.5vh;
-    --headersize:3vh;
-
-    --titleWeight: 700;
-    --normalWeight: 400;
+    --ui-background-text: 800 5vh 'Lato';
+    --ui-heading: 600 3vh 'Lato';
+    --ui-subheading: 800 2vh 'Lato';
+    --ui-text: 400 2vh 'Lato';
+    --ui-bold-text: 600 2vh 'Lato';
+    --ui-subtext: 600 1.95vh 'Lato';
+    --ui-comment: 600 1.75vh 'Lato';
+    --ui-captions: 400 1.5vh 'Lato';
 }

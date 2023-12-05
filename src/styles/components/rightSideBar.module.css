@@ -74,9 +74,10 @@
 .tabText{
     margin: 0;
     /* font-size: 2.5vmin; */
-    font-size: var(--headersize);
-    font-weight: var(--titleWeight);
+    font: var(--ui-heading);
     margin: 1.5vh 0;
+    max-width: 80%;
+    word-break: break-word;
 }
 
 .errorContainer,
@@ -98,9 +99,9 @@
 
 .backgroundText{
     color: var(--Dark_Purple_Blue);
-    /* font-size: 5vmin; */
-    font-size: 2.5rem;
-    font-weight: 800;
+    font: var(--ui-background-text);
+    max-width: 80%;
+    word-break: break-word;
     letter-spacing: 1px;
     margin-bottom: 1.5vh;
 }
@@ -162,7 +163,7 @@
 
 .clearChatContainer{
     position: absolute;
-    top: 17vh;
+    top: 18vh;
     right: 6%;
     background-color: var(--Grey);
     padding: 1vh 1vw;
@@ -177,10 +178,8 @@
 
 .clearChatText{
     color: var(--Off_White);
-    font-weight: var(--titleWeight);
     letter-spacing: 0.5px;
-    font-size: var(--smallerPSize);
-    /* font-size: 1.75vmin; */
+    font: var(--ui-comment);
     margin: 0;
 }
 
@@ -218,9 +217,8 @@
 }
 
 .buttonText{
-    font-weight: var(--titleWeight);
     letter-spacing: 0.5px;
-    font-size: var(--smallerPSize);
+    font: var(--ui-comment);
     margin: 0.5vh 0;
     color: var(--Nice_Blue);
 }
@@ -243,9 +241,7 @@
     resize: none;
     border: none;
     background-color: transparent;
-    font-size: var(--smallerPSize);
-    font-family: Lato;
-    font-weight: var(--normalWeight);
+    font: var(--ui-text);
     color: var(--Off_White);
     overflow: hidden;
     height: auto;
@@ -268,9 +264,7 @@
 .warningText{
     width: 84%;
     /* font: 400 1.5vmin 'Lato'; */
-    font-size: var(--smallestPSize);
-    font-family: Lato;
-    font-weight: var(--normalWeight);
+    font: var(--ui-captions);
     color: var(--Off_White);
     text-align: center;
 }
@@ -318,7 +312,7 @@
 
 .errorText{
     color: var(--Red);
-    font: 400 0.7rem 'Lato';
+    font: var(--ui-captions);
     text-align: center;
     margin: 0;
     margin-bottom: 2vh;

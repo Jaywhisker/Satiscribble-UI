@@ -14,7 +14,7 @@
 
 .errorText{
     color: var(--Red);
-    font: 400 0.7rem 'Lato';
+    font: var(--ui-captions);
     text-align: center;
     margin: 0;
 }
@@ -22,7 +22,7 @@
 .retryButton{
     margin: 0.75vh 0;
     background-color: var(--Alert_Red);
-    font: 600 0.8rem 'Lato';
+    font: var(--ui-captions);
     color: var(--Off_White);
     border: none;
     outline: none;

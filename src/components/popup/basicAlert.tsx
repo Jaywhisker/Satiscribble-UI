@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
-import styles from '@/styles/popups.module.css';
+import styles from '@/styles/components/popups.module.css';
 
 
 interface PopupProps {

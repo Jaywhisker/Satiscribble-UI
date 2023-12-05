@@ -5,14 +5,11 @@
 .genericPText{
   padding: 0;
   color: var(--Off_White);
-  font-family: lato;
-  font-size: var(--psize);
+  font: var(--ui-text);
 }
 
 .genericTitleText{
-  font-size: var(--headersize);
-  font-family: Lato;
-  font-weight: var(--titleWeight);
+  font: var(--ui-heading);
   margin: 0;
   color: var(--Nice_Blue);
   cursor: default;
@@ -43,8 +40,7 @@
 .topicBlockSummaryText{
   padding: 0;
   color: var(--Off_White);
-  font-family: lato;
-  font-size: var(--psize);
+  font: var(--ui-text);
   margin:0;
 }
 
@@ -218,8 +214,7 @@
   margin:auto;
   height:fit-content; 
   color: var(--Off_White);
-  font-family: lato;
-  font-size: var(--psize);
+  font: var(--ui-text);
 }
 
 
@@ -233,8 +228,8 @@
   outline: none; 
   padding-top: calc(var(--psize)/8);
   color: var(--Off_White);
-  font-family: lato;
-  font-size: var(--psize);
+  font: var(--ui-text);
+
 }
 
 /*  */
