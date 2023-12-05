@@ -7,6 +7,20 @@
     bottom: 0;
 }
 
+.deleteOverlay{
+    background-color: var(--Dark_Grey_50);
+    z-index: 2;
+    width: var(--rightSideWidth);
+    height:100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:white;
+}
+
 @keyframes scrollUp {
     0% {
         height: 5.2vh;

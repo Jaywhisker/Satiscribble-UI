@@ -29,9 +29,9 @@ export default function AssistantResponse(props: assistantResponse) {
               <li
                 className={inputChat.source}
                 key={index}
-                onClick={props.setSelectedMinutes(topic.id)}
+                onClick={props.setSelectedMinutes(null)}
               >
-                {topic.title}
+                {/* {topic.title} */}
               </li>
             ))}
           </ul>

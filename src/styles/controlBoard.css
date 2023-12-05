@@ -20,7 +20,22 @@
     --betweenBlockGap: 2vh;
     --blockSideMargin: 2vh;
 
-    /* Left Side Bar */
+    /* RightSideBar */
+    --rightSideWidth: 25vw;
+
+    /* Alert stuff */
+    --blockGap: 1vh;
+    --alertVerticalPadding: 2vh;
+    --alertHorizontalPadding: 1vw;
+    --popUpWidth: 21vw;
+
+    /* button stuff */
+    --smallButtonWidth: 7.39vw;
+    --mediumButtonWidth: 14.27vw;
+    --largeButtonWidth: 34.375vw;
+    --buttonVerticalPadding: 0.75vh;
+    --buttonHorizontalPadding: 0.75vw;
+    --buttonMinHeight: 4vh;
 }
 
 

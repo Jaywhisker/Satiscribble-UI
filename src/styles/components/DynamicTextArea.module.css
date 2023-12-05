@@ -35,10 +35,6 @@
   scroll-margin-block-start: 10vh; /* for scrolling */
 }
 
-.genericBlock:first-child{
-  margin-top: var(--firstBlockMarginFromTop);
-}
-
 
 /*  */
 /* topicBlock */
@@ -184,6 +180,26 @@
 .topicBlockTopicInput:focus {
   outline:none;
   border:none;
+}
+
+.topicBlockDeleteOverlay {
+  background-color: var(--Dark_Grey_50);
+  z-index: 2;
+  width: calc(100% - var(--blockSideMargin)*2);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  margin-right: var(--blockSideMargin);
+  margin-left: var(--blockSideMargin);
+  border-radius:8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topicBlockBigHolder{
+  height: fit-content;
+  position: relative;
 }
 
 /*  */

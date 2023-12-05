@@ -1,6 +1,6 @@
 .Notif{
     display: flex;
-    width: 23vw;
+    width: var(--popUpWidth);
     padding: 1rem 1rem;
     align-items: flex-end;
     flex-direction: column;
@@ -11,13 +11,14 @@
 
 .confirmPopup{
     display: flex;
-    width: 23vw;
+    width: var(--popUpWidth);
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 2rem 1rem;
+    padding: var(--alertVerticalPadding) var(--alertHorizontalPadding);
     border-radius: 5px;
-    gap: 0.75rem;
+    gap: var(--blockGap);
+    height:fit-content;
 }
 
 .greyNotif{

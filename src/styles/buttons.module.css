@@ -1,16 +1,16 @@
 .button-small {
-    width: 7.39vw;
+    width: var(--smallButtonWidth);
     /* width: 8vw; */
 }
 
 .button-medium {
-    width: 14.27vw;
+    width: var(--mediumButtonWidth);
     /* width: 15vw; */
 }
 
 .button-large {
     /* width: 25vw; */
-    width: 34.375vw;
+    width: var(--largeButtonWidth);
 }
 
 .purple-fill {
@@ -60,8 +60,8 @@
 
 .button {
     display: flex;
-    min-height: 2.75rem;
-    padding: 1.25vh 0.75vw;
+    min-height: var(--buttonMinHeight);
+    padding: var(--buttonVerticalPadding) var(--buttonHorizontalPadding);
     justify-content: center;
     align-items: center;
     gap: 0.3125rem;
