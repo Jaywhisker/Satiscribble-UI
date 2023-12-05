@@ -1,44 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import DynamicStyles from "@/styles/components/DynamicTextArea.module.css";
 import AgendaStyles from "@/styles/components/AgendaBlock.module.css";
 
-import ModularTextFieldAgenda from './ModularTextFieldAgenda';
+import ModularTextFieldAgenda from "./ModularTextFieldAgenda";
 
-import { updateAgenda } from '@/functions/api/updateMinutes';
+import { updateAgenda } from "@/functions/api/updateMinutes";
 
-
-interface AgendaProps{
-  agendaItems: [{id:string, name:string, completed:boolean}]
-  setAgendaItems: any
-  minutesID: string
-  chatHistoryID: string
+interface AgendaProps {
+  agendaItems: [{ id: string; name: string; completed: boolean }];
+  setAgendaItems: any;
+  minutesID: string;
+  chatHistoryID: string;
+  showCover: boolean; // New prop for cover visibility
+  setShowCover: (show: boolean) => void;
 }
 
 export default function AgendaBlock(props: AgendaProps) {
-  const checkedImage = '/CheckboxTicked.svg';
-  const uncheckedImage = '/Checkbox.svg';
-  const deleteIcon = '/Cancellation.svg';
+  const checkedImage = "/CheckboxTicked.svg";
+  const uncheckedImage = "/Checkbox.svg";
+  const deleteIcon = "/Cancellation.svg";
 
   const [nextId, setNextId] = useState(0);
-  const [focused, setFocused] = useState(true)
+  const [focused, setFocused] = useState(true);
   const [timeoutId, setTimeoutId] = useState(null);
 
   useEffect(() => {
     if (props.agendaItems.length <= 0) {
-      addNewAgendaItem()
+      addNewAgendaItem();
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     clearTimeout(timeoutId);
-    const newTimeoutId = setTimeout(async() => {
+    const newTimeoutId = setTimeout(async () => {
       if (!focused) {
-        var agendaContent = props.agendaItems.map((agenda) => agenda.name ).filter((items) => items.trim() !== '')
-        console.log('Agenda unfocused, updating agenda', agendaContent)
-        var response = await updateAgenda(props.minutesID, props.chatHistoryID, agendaContent)
+        var agendaContent = props.agendaItems
+          .map((agenda) => agenda.name)
+          .filter((items) => items.trim() !== "");
+        console.log("Agenda unfocused, updating agenda", agendaContent);
+        var response = await updateAgenda(
+          props.minutesID,
+          props.chatHistoryID,
+          agendaContent
+        );
         if (response !== undefined) {
-          console.log('ERROR:', response.ERROR)
+          console.log("ERROR:", response.ERROR);
         }
       }
     }, 1000);
@@ -47,35 +54,35 @@ export default function AgendaBlock(props: AgendaProps) {
     return () => {
       clearTimeout(newTimeoutId);
     };
-  }, [focused])
+  }, [focused]);
 
-  const updateAgendaItems = (newAgendaItems) => { 
+  const updateAgendaItems = (newAgendaItems) => {
     // Function to update agenda items
-      props.setAgendaItems(newAgendaItems);
+    props.setAgendaItems(newAgendaItems);
   };
 
-  const updateCheckbox = (index) => { 
+  const updateCheckbox = (index) => {
     // Updates if Agenda has been updated (ticked or unticked)
     const newAgendaItems = [...props.agendaItems];
     newAgendaItems[index].completed = !newAgendaItems[index].completed;
     updateAgendaItems(newAgendaItems);
   };
 
-  const handleAgendaChange = (value, index) => { 
+  const handleAgendaChange = (value, index) => {
     // Update Agenda Text
     const newAgendaItems = [...props.agendaItems];
     newAgendaItems[index].name = value;
     updateAgendaItems(newAgendaItems);
   };
 
-  const handleKeyDown = (e, index) => { 
-    // Key functions 
+  const handleKeyDown = (e, index) => {
+    // Key functions
     // Create new input on enter
     // Delete previouse input on enter
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       addNewAgendaItem();
-    } else if (e.key === 'Backspace' && props.agendaItems[index].name === '') {
+    } else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
       e.preventDefault();
       if (props.agendaItems.length > 1) {
         deleteAgendaItem(props.agendaItems[index].id);
@@ -84,17 +91,23 @@ export default function AgendaBlock(props: AgendaProps) {
     }
   };
 
-  const addNewAgendaItem = () => { // Adds a new agenda item to the list
-    const newAgendaItems = [...props.agendaItems, { id: nextId, name: '', completed: false }];
+  const addNewAgendaItem = () => {
+    // Adds a new agenda item to the list
+    const newAgendaItems = [
+      ...props.agendaItems,
+      { id: nextId, name: "", completed: false },
+    ];
     updateAgendaItems(newAgendaItems);
     setNextId(nextId + 1);
   };
 
-  const deleteAgendaItem = (idToDelete) => { 
+  const deleteAgendaItem = (idToDelete) => {
     // Deletes agenda item
-    if (props.agendaItems.length > 1) { 
+    if (props.agendaItems.length > 1) {
       // Prevents deletetion of row if there is only one agenda item left
-      const newAgendaItems = props.agendaItems.filter(item => item.id !== idToDelete);
+      const newAgendaItems = props.agendaItems.filter(
+        (item) => item.id !== idToDelete
+      );
       updateAgendaItems(newAgendaItems);
     }
   };
@@ -103,29 +116,35 @@ export default function AgendaBlock(props: AgendaProps) {
   // Update agenda function
   // Retrieve agenda function
 
-
   return (
-    <div className={DynamicStyles.genericBlock}>
-      <div className={AgendaStyles.titleContainer}>
-        <h1 className={DynamicStyles.genericTitleText}>Agenda</h1>
-      </div>
-      {props.agendaItems.map((item, index) => (
-        <div key={item.id} className={DynamicStyles.agendaBlockTextFieldHolder}>
-          <img
-            src={item.completed ? checkedImage : uncheckedImage}
-            alt={item.completed ? 'Checked' : 'Unchecked'}
-            onClick={() => updateCheckbox(index)}
-            className={AgendaStyles.checkboxImage}
-          />
-          <ModularTextFieldAgenda
-            value={item.name}
-            placeholder="Enter agenda here"
-            onChange={(e) => handleAgendaChange(e.target.value, index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-          />
-          {/* {agendaItems.length > 1 && (
+    <div className={DynamicStyles.genericBlockHolder}>
+      {props.showCover && (
+        <div className={DynamicStyles.genericBlockCover}></div>
+      )}
+      <div className={DynamicStyles.genericBlock}>
+        <div className={AgendaStyles.titleContainer}>
+          <h1 className={DynamicStyles.genericTitleText}>Agenda</h1>
+        </div>
+        {props.agendaItems.map((item, index) => (
+          <div
+            key={item.id}
+            className={DynamicStyles.agendaBlockTextFieldHolder}
+          >
+            <img
+              src={item.completed ? checkedImage : uncheckedImage}
+              alt={item.completed ? "Checked" : "Unchecked"}
+              onClick={() => updateCheckbox(index)}
+              className={AgendaStyles.checkboxImage}
+            />
+            <ModularTextFieldAgenda
+              value={item.name}
+              placeholder="Enter agenda here"
+              onChange={(e) => handleAgendaChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+            />
+            {/* {agendaItems.length > 1 && (
             <img 
               src={deleteIcon} 
               onClick={() => deleteAgendaItem(item.id)} 
@@ -133,9 +152,9 @@ export default function AgendaBlock(props: AgendaProps) {
               className={stylo.deleteButton}
             />
           )} */}
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
-
+}

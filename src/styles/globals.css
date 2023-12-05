@@ -26,6 +26,5 @@ p{
 }
 
 li{
-  font-family: lato;
-  font-size: var(--psize);
+  font: var(--ui-text)
 }

@@ -38,6 +38,8 @@ interface TextAreaQuillProps {
   topicTitlesLength: number;
   content: string;
   updateBlockContent: (newContent: string) => void;
+  showCover: boolean; // New prop for cover visibility
+  setShowCover: (show: boolean) => void;
 }
 
 function TextAreaQuill(props: TextAreaQuillProps) {
@@ -344,17 +346,28 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       props.onDelete();
     } else {
       setDeleteMode(true);
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+      props.setShowCover(true);
     }
+  }
+
+  function actualDeletefunction() {
+    props.onDelete();
+    document.body.style.overflow = "auto";
+    props.setShowCover(false);
   }
 
   return (
     <div className={styles.topicBlockBigHolder}>
+      {props.showCover && !deleteMode && (
+        <div className={styles.genericBlockCover}></div>
+      )}
       {deleteMode && (
         <div className={styles.topicBlockDeleteOverlay}>
           <PopUp.DeleteTopic
             isOpen={true}
             onClose={() => setDeleteMode(false)}
-            onDelete={props.onDelete}
+            onDelete={() => actualDeletefunction()}
           />
         </div>
       )}
