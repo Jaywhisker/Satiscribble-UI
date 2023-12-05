@@ -339,6 +339,14 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   };
 
+  function handleDeleteButton() {
+    if (props.title == "" && props.content == "<ul><li><br></li></ul>") {
+      props.onDelete();
+    } else {
+      setDeleteMode(true);
+    }
+  }
+
   return (
     <div className={styles.topicBlockBigHolder}>
       {deleteMode && (
@@ -362,7 +370,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             className={`${styles.topicBlockTopicInput} ${styles.genericTitleText}`}
           />
           <button
-            onClick={() => setDeleteMode(true)}
+            onClick={() => handleDeleteButton()}
             className={styles.topicBlockDeleteButton}
             title="Delete Minutes Block"
           >

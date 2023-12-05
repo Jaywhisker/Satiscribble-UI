@@ -183,7 +183,7 @@
 }
 
 .topicBlockDeleteOverlay {
-  background-color: var(--Dark_Grey_50);
+  background-color: var(--Black_60);
   z-index: 2;
   width: calc(100% - var(--blockSideMargin)*2);
   height: 100%;
