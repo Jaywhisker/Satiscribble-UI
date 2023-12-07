@@ -52,11 +52,13 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [summaryContent, setSummaryContent] = useState("");
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
+  const [tooLong, setTooLong] = useState(false);
 
   const [quillRefHeight, setQuillRefHeight] = useState(null);
+  const [contentChanged, setContentChanged] = useState(false);
 
-  const [agendaInaccuracyCounter, setAgendaInaccuracyCounter] = useState(0)
-  const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0)
+  const [agendaInaccuracyCounter, setAgendaInaccuracyCounter] = useState(0);
+  const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0);
 
   const toast = useToast();
 
@@ -65,7 +67,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const minutesRef = useRef(null);
   const quillRef = useRef();
   const prevTopicTitlesLength = useRef(props.topicTitlesLength);
-
 
   const toggleQuillVisibility = () => {
     setQuillDisplayed(!quillDisplayed);
@@ -152,7 +153,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   };
 
-
   //handling updating of minutes ------------------------------
   useEffect(() => {
     setTopic(props.title);
@@ -174,42 +174,67 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     var response = await handleUpdateMinutes(backendDelta, lastAbbreviation);
   };
 
+  const handleFocus = () => {
+    setContentChanged(false);
+    console.log("clicked in");
+  };
+
   const handleUpdateMinutes = async (backendDelta, lastAbbreviation) => {
-    var reqData = {
-      minutesID: props.minutesID,
-      chatHistoryID: props.chatHistoryID,
-      abbreviation: lastAbbreviation,
-      topicID: props.id,
-      topicTitle: props.title,
-      minutes: backendDelta,
-    };
-    
-    var response = await updateMinutes(
-      reqData,
-      toast,
-      agendaInaccuracyCounter,
-      setAgendaInaccuracyCounter,
-      topicInaccuracyCounter,
-      setTopicInaccuracyCounter,
-      props.onAddTopicArea,
-    );
+    if (contentChanged) {
+      console.log("Content has been changed, updating");
+      setContentChanged(false);
+      var reqData = {
+        minutesID: props.minutesID,
+        chatHistoryID: props.chatHistoryID,
+        abbreviation: lastAbbreviation,
+        topicID: props.id,
+        topicTitle: props.title,
+        minutes: backendDelta,
+      };
 
-    if (response !== undefined) {
-      //handle error
-      console.log("Minutes Update Error:", response.ERROR);
+      var response = await updateMinutes(
+        reqData,
+        toast,
+        agendaInaccuracyCounter,
+        setAgendaInaccuracyCounter,
+        topicInaccuracyCounter,
+        setTopicInaccuracyCounter,
+        props.onAddTopicArea
+      );
+
+      if (response !== undefined) {
+        //handle error
+        console.log("Minutes Update Error:", response.ERROR);
+      }
+
+      return response;
+    } else {
+      console.log("Content has not been changed");
     }
-
-    return response;
   };
 
   const handleKeyDown = async (event) => {
+    if (contentChanged == false) {
+      setContentChanged(true);
+      console.log("Content in topic has been changed");
+    }
+    const quillEditor = quillRef.current.getEditor();
+    const rawText = quillEditor.getText();
+    console.log(rawText.length);
+    if (rawText.length > 1000) {
+      setTooLong(true);
+      if (!tooLong) {
+        toast.topicLength();
+      }
+    } else {
+      setTooLong(false);
+    }
+
     // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
-      console.log(props.content);
+      // console.log(props.content);
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
-      const quillEditor = quillRef.current.getEditor();
-      const rawText = quillEditor.getText();
       const backendDelta = deltaToBackend(rawText);
       const lastAbbreviation = detectLastAbbreviation(backendDelta);
       var response = await handleUpdateMinutes(backendDelta, lastAbbreviation);
@@ -288,7 +313,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       }
     } else if (event.key === "Backspace") {
       // console.log("Backspace");
-      const quillEditor = quillRef.current.getEditor();
       const range = quillEditor.getSelection();
       if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
@@ -477,7 +501,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
               theme="bubble"
               value={quillValue}
               onChange={handleQuillValueChange}
-              // onFocus={handleQuillFocus}
+              onFocus={handleFocus}
               onKeyDown={handleKeyDown} // Add the onKeyUp prop here
               onBlur={handleBlurring} // Added onBlur handler
             />
