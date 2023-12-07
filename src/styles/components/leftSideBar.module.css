@@ -77,6 +77,9 @@
   font: 600 1rem 'Lato';
   color: var(--Off_White);
   margin: 1vh 1vw 1vh 0.5vw;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .dropDownText{
@@ -84,6 +87,9 @@
   color: var(--Off_White);
   margin: 1vh 1vw;
   cursor: default;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .emptyTasksText{
