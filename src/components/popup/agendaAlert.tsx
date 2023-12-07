@@ -6,13 +6,12 @@ import styles from '@/styles/components/popups.module.css';
 interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
+  inaccuracyValue: number;
+  setInaccuracyValue: any;
 }
 
-const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue }) => {
 
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
 
   // Placeholder functions
   const handleClose = () => {
@@ -21,7 +20,8 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   };
 
   const handleReport = () => {
-    console.log('Reporting inaccuracy');
+    console.log('Reporting agenda inaccuracy, inaccuracy count', inaccuracyValue+1);
+    setInaccuracyValue(inaccuracyValue + 1)
     onClose();
   };
 
@@ -39,7 +39,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Exclamation Icon" color="red" size="small" name = 'exclamation' />}
+            leftIcon={<Icons.GeneralIcon alt="Exclamation Icon" color="red" size="small" name='exclamation' />}
           ></Button>
           {/* pop up icon button */}
           <p className={styles.messageHeader} style={{ color: "var(--Red, #DE5C64)" }}>
@@ -50,7 +50,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
           onClick={handleClose}
         ></Button>
       </span>

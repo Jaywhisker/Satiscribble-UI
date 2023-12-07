@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
+
 import PopUp from "@/components/popup";
 
 import rightBar from "@/styles/components/rightSideBar.module.css";
@@ -8,12 +9,13 @@ import SirLogo from "./chatContainer/sirLogos";
 import UserChat from "./chatContainer/userInput";
 import AssistantResponse from "./chatContainer/assistantResponse";
 import GlossaryModal from "./glossary/glossaryModal";
-import ResponseError from "./chatContainer/responseError";
 
 import {
   fetchChatHistory,
   fetchGlossary,
 } from "@/functions/api/fetchRightSideBar";
+
+import { useToast } from "@/hooks/useToast";
 
 interface rightSideBarProps {
   minutesID: string;
@@ -43,6 +45,9 @@ export default function RightSideBar(props: rightSideBarProps) {
   const queryInputArea = useRef(null);
   const chatResponse = useRef(null);
 
+  const toast = useToast();
+
+
   useEffect(() => {
     setGPTResponse("");
     setQueryMode(localStorage.getItem("queryMode") || "document");
@@ -71,7 +76,25 @@ export default function RightSideBar(props: rightSideBarProps) {
     };
     fetchData();
   }, [props.minutesID]);
-
+  
+    
+  useEffect(() => {
+    const refetchGlossary = async() => {
+      var newGlossary = toast.alertContainer.some((alert) => {
+        return alert.type === 'glossaryAdd'
+      })
+      if (newGlossary) {
+        const glosaryLength = await fetchGlossary(
+          props.minutesID,
+          props.chatHistoryID,
+          setGlossaryData
+        );
+        console.log(glosaryLength)
+        setGlossaryMode(Array(glosaryLength).fill("default"));
+      }
+  }
+  refetchGlossary()
+  }, [toast.alertContainer])
   // useEffect(() => {
   //     if (loadingResponse && !(queryMode === 'document' ? responseError[0] : responseError[1])) {
   //         //loading true and error is false

@@ -3,17 +3,16 @@ import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
 
+import { createGlossaryEntry } from '@/functions/api/glossaryActions';
+
 interface PopupProps {
   detectedAbbrev?: string;
   isOpen?: boolean;
   onClose: () => void;
+  toast: any;
 }
 
-const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose }) => {
-
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
+const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, toast }) => {
 
   // Placeholder function for onClose
   const handleClose = () => {
@@ -21,9 +20,22 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     onClose();
   };
 
-  const handleAdd = () => {
+
+  const handleAdd = async() => {
     console.log('Adding abbreviation');
     onClose();
+
+    const minutesID = localStorage.getItem('minutesID');
+    const chatHistoryID = localStorage.getItem('chatHistoryID')
+    var abbreviation = detectedAbbrev.split("-")[0].trim().toUpperCase();
+    var meaning = detectedAbbrev.split("-")[1].trim().toLowerCase();
+    
+    var response = await createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)
+    if (response !== undefined) {
+      console.log(response.ERROR)
+    } else {
+      toast.glossaryAdd()
+    }
   };
 
   if (!isOpen) {
@@ -38,7 +50,7 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Check Icon" color="purple" size="small" name = 'check' />}
+            leftIcon={<Icons.GeneralIcon alt="Check Icon" color="purple" size="small" name='check' />}
           ></Button>
           <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }}>
             We've detected an abbreviation
