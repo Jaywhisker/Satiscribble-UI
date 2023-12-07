@@ -53,7 +53,7 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
           onClick={handleClose}
         ></Button>
       </span>

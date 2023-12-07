@@ -11,6 +11,7 @@ interface PopupProps {
 
 const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose }) => {
 
+
   const handleIsOpen = () => {
     console.log('Popup is now open and is shown');
   };
@@ -18,6 +19,11 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
+    onClose();
+  };
+
+  const handleAdd = () => {
+    console.log('Adding abbreviation');
     onClose();
   };
 
@@ -38,7 +44,7 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Check Icon" color="purple" size="small" name = 'check' />}
+            leftIcon={<Icons.GeneralIcon alt="Check Icon" color="purple" size="small" name='check' />}
           ></Button>
           <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }}>
             We've detected an abbreviation

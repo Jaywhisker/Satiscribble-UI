@@ -39,7 +39,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Exclamation Icon" color="red" size="small" name = 'exclamation' />}
+            leftIcon={<Icons.GeneralIcon alt="Exclamation Icon" color="red" size="small" name='exclamation' />}
           ></Button>
           {/* pop up icon button */}
           <p className={styles.messageHeader} style={{ color: "var(--Red, #DE5C64)" }}>
@@ -50,7 +50,7 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
           onClick={handleClose}
         ></Button>
       </span>

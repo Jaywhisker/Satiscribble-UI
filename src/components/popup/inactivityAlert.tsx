@@ -10,6 +10,7 @@ interface PopupProps {
 
 const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 
+
   const handleIsOpen = () => {
     console.log('Popup is now open and is shown');
   };
@@ -17,6 +18,11 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
+    onClose();
+  };
+
+  const handleSnooze = () => {
+    console.log('Snooze for 15 minutes');
     onClose();
   };
 
@@ -37,7 +43,7 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Notification Icon" color="orange" size="small" name = 'notification' />}
+            leftIcon={<Icons.GeneralIcon alt="Notification Icon" color="orange" size="small" name='notification' />}
           ></Button>
           <p className={styles.messageHeader} style={{ color: "var(--Orange, #FFCE85)" }}>
             Are you still there?
