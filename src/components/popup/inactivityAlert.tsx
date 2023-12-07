@@ -6,29 +6,23 @@ import styles from '@/styles/components/popups.module.css';
 interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
+  inactivityRef: any;
 }
 
-const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose, inactivityRef }) => {
 
-
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
 
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
     onClose();
+    inactivityRef.current = 'active'
   };
 
   const handleSnooze = () => {
     console.log('Snooze for 15 minutes');
     onClose();
-  };
-
-  const handleSnooze = () => {
-    console.log('Snooze for 15 minutes');
-    onClose();
+    inactivityRef.current = 'snooze'
   };
 
   if (!isOpen) {

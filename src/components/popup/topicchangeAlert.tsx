@@ -6,13 +6,12 @@ import styles from '@/styles/components/popups.module.css';
 interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
+  inaccuracyValue: number;
+  setInaccuracyValue: any;
+  createNewTopic: () => void;
 }
 
-const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
-  // Placeholder function for isOpen
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
+const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue, createNewTopic}) => {
 
   // Placeholder function for onClose
   const handleClose = () => {
@@ -21,12 +20,14 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   };
 
   const handleReport = () => {
-    console.log('Reporting inaccuracy');
+    console.log('Reporting topic inaccuracy, inaccuracy count', inaccuracyValue+1);
+    setInaccuracyValue(inaccuracyValue + 1)
     onClose();
   };
 
   const handleCreate = () => {
     console.log('Creating new topic');
+    createNewTopic()
     onClose();
   };
 

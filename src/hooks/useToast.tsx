@@ -9,7 +9,7 @@ export const useToast = (): ToastContextType => {
         throw new Error('useToast must be used within a ToastContextProvider');
     }
 
-    const { agenda, inactivity, changeTopic, detectAbbrev, topicLength, addTopicfail, glossaryAdd, remove } = useContext(ToastContext);
+    const { agenda, inactivity, changeTopic, detectAbbrev, topicLength, addTopicfail, glossaryAdd, remove, alertContainer } = useContext(ToastContext);
 
     return {
         agenda,
@@ -19,6 +19,7 @@ export const useToast = (): ToastContextType => {
         topicLength,
         addTopicfail,
         glossaryAdd,
-        remove
+        remove,
+        alertContainer
     };
 };

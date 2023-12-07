@@ -14,6 +14,7 @@ import {
 import { updateMinutes } from "@/functions/api/updateMinutes";
 import { summariseTopic } from "@/functions/api/topicActions";
 import PopUp from "@/components/popup";
+import { useToast } from "@/hooks/useToast";
 
 const ReactQuill = dynamic(
   async () => {
@@ -52,11 +53,17 @@ function TextAreaQuill(props: TextAreaQuillProps) {
 
   const [quillRefHeight, setQuillRefHeight] = useState(null);
 
+  const [agendaInaccuracyCounter, setAgendaInaccuracyCounter] = useState(0)
+  const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0)
+
+  const toast = useToast();
+
   const topicRef = useRef(null);
   const fullMinutesRef = useRef(null);
   const minutesRef = useRef(null);
   const quillRef = useRef();
   const prevTopicTitlesLength = useRef(props.topicTitlesLength);
+
 
   const toggleQuillVisibility = () => {
     setQuillDisplayed(!quillDisplayed);
@@ -143,6 +150,8 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   };
 
+
+  //handling updating of minutes ------------------------------
   useEffect(() => {
     setTopic(props.title);
   }, [props.title]);
@@ -164,13 +173,23 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   };
 
   const handleUpdateMinutes = async (backendDelta, lastAbbreviation) => {
+    var reqData = {
+      minutesID: props.minutesID,
+      chatHistoryID: props.chatHistoryID,
+      abbreviation: lastAbbreviation,
+      topicID: props.id,
+      topicTitle: props.title,
+      minutes: backendDelta,
+    };
+    
     var response = await updateMinutes(
-      props.minutesID,
-      props.chatHistoryID,
-      props.id,
-      props.title,
-      backendDelta,
-      lastAbbreviation
+      reqData,
+      toast,
+      agendaInaccuracyCounter,
+      setAgendaInaccuracyCounter,
+      topicInaccuracyCounter,
+      setTopicInaccuracyCounter,
+      props.onAddTopicArea,
     );
 
     if (response !== undefined) {

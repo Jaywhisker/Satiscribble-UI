@@ -5,6 +5,9 @@ import LeftSidebar from "@/components/leftArea/leftSideBar";
 import RightSideBar from "@/components/rightSideBar";
 import CenterArea from "@/components/centerArea/CenterArea";
 
+import { ToastContextProvider } from "@/contexts/ToastContext";
+import { useToast } from "@/hooks/useToast";
+
 import { readID } from "@/functions/IDHelper";
 
 
@@ -18,8 +21,7 @@ export default function Home() {
 
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const [agendaInaccuracyCounter, setAgendaInaccuracyCounter] = useState(0)
-  const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0)
+  const toast = useToast();
 
   const inactivityTimeoutRef = useRef(null);
   const inactivityStatusRef = useRef('active');
@@ -41,18 +43,16 @@ export default function Home() {
   }, [])
   
 
-  //inactivity stuff
+  //inactivity stuff  ----------------------------------------
   const resetInactivityTimeout = () => {
     if (inactivityTimeoutRef.current) {
       clearTimeout(inactivityTimeoutRef.current);
     }
 
     inactivityTimeoutRef.current = setTimeout(() => {
-      console.log('User is inactive, status:', inactivityStatusRef.current)
       if (inactivityStatusRef.current === 'active') {
-        console.log('alert here')
+        toast.inactivity(inactivityStatusRef)
         inactivityStatusRef.current = 'inactive';
-        inactivityStatusRef.current = 'snooze';
       }
     }, timeout5MinTime);
   };
@@ -79,15 +79,17 @@ export default function Home() {
 
 
   useEffect(() => {
+    console.log('inactivity status updated to', inactivityStatusRef.current)
     if (inactivityStatusRef.current == 'snooze') {
       setTimeout(() => {
         inactivityStatusRef.current = 'active';
         console.log('snooze over');
         resetInactivityTimeout();
       }, timeout15MinTime)
+    } else {
+      resetInactivityTimeout()
     }
   }, [inactivityStatusRef.current])
-
 
 
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function Home() {
       minutesElement.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   }, [selectedTask]);
+
 
 
   return (
@@ -128,7 +131,6 @@ export default function Home() {
         setSelectedMinutes={setSelectedTask}
       />
 
-      {/* <Overlay /> */}
     </div>
   );
 }

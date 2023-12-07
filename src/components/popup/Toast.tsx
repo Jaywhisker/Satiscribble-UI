@@ -1,5 +1,5 @@
 import PopUp from '@/components/popup';
-import styles from '@/styles/popups.module.css';
+import styles from '@/styles/components/popups.module.css';
 import { useToast } from '@/hooks/useToast';
 import { useState } from "react";
 
@@ -7,9 +7,13 @@ export interface ToastProps {
     type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail' | 'glossaryAdd';
     id: number;
     message?: string;
+    inactivityRef?: any;
+    inaccuracyValue?: number;
+    setInaccuracyValue?: any;
+    createNewTopic?: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
+const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccuracyValue, setInaccuracyValue, createNewTopic }) => {
     const toast = useToast()
 
     const [dismissed, setDismissed] = useState(false);
@@ -24,16 +28,16 @@ const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
     // Declare toastTypes
     const toastTypes = {
         agenda: {
-            popup: <PopUp.AgendaAlert isOpen={true} onClose={handleDismiss} />
+            popup: <PopUp.AgendaAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={inaccuracyValue} setInaccuracyValue={setInaccuracyValue}/>
         },
         inactivity: {
-            popup: <PopUp.InactivityAlert isOpen={true} onClose={handleDismiss} />
+            popup: <PopUp.InactivityAlert isOpen={true} onClose={handleDismiss} inactivityRef={inactivityRef}/>
         },
         changeTopic: {
-            popup: <PopUp.TopicChangeAlert isOpen={true} onClose={handleDismiss} />
+            popup: <PopUp.TopicChangeAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={inaccuracyValue} setInaccuracyValue={setInaccuracyValue} createNewTopic={createNewTopic}/>
         },
         detectAbbrev: {
-            popup: <PopUp.DetectAlert detectedAbbrev={message} isOpen={true} onClose={handleDismiss} />
+            popup: <PopUp.DetectAlert detectedAbbrev={message} isOpen={true} onClose={handleDismiss} toast={toast}/>
         },
         topicLength: {
             popup: <PopUp.BasicAlert
