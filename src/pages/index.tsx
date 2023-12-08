@@ -10,7 +10,6 @@ import { useToast } from "@/hooks/useToast";
 
 import { readID } from "@/functions/IDHelper";
 
-
 export default function Home() {
   const [minutesID, setMinutesID] = useState(null);
   const [chatHistoryID, setChatHistoryID] = useState(null);
@@ -24,24 +23,21 @@ export default function Home() {
   const toast = useToast();
 
   const inactivityTimeoutRef = useRef(null);
-  const inactivityStatusRef = useRef('active');
-  const timeout5MinTime = 5 * 60 * 1000
-  const timeout15MinTime = 15 * 60 * 1000
+  const inactivityStatusRef = useRef("active");
+  const timeout5MinTime = 5 * 60 * 1000;
+  const timeout15MinTime = 15 * 60 * 1000;
 
   // useEffect(() => {
   //   console.log(topicContent, topicTitles);
   // }, [topicContent]);
 
-
   // useEffect(() => {
   //   console.log(topicTitles, topicContent);
   // }, [topicTitles]);
 
-
   useEffect(() => {
     readID(setMinutesID, setChatHistoryID);
-  }, [])
-  
+  }, []);
 
   //inactivity stuff  ----------------------------------------
   const resetInactivityTimeout = () => {
@@ -50,13 +46,12 @@ export default function Home() {
     }
 
     inactivityTimeoutRef.current = setTimeout(() => {
-      if (inactivityStatusRef.current === 'active') {
-        toast.inactivity(inactivityStatusRef)
-        inactivityStatusRef.current = 'inactive';
+      if (inactivityStatusRef.current === "active") {
+        toast.inactivity(inactivityStatusRef);
+        inactivityStatusRef.current = "inactive";
       }
     }, timeout5MinTime);
   };
-
 
   useEffect(() => {
     const handleMouseMove = () => {
@@ -66,31 +61,29 @@ export default function Home() {
       resetInactivityTimeout();
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('keypress', handleKeyPress);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("keypress", handleKeyPress);
 
     resetInactivityTimeout();
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('keypress', handleKeyPress);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("keypress", handleKeyPress);
       clearTimeout(inactivityTimeoutRef.current);
     };
-  }, [timeout5MinTime])
-
+  }, [timeout5MinTime]);
 
   useEffect(() => {
-    console.log('inactivity status updated to', inactivityStatusRef.current)
-    if (inactivityStatusRef.current == 'snooze') {
+    console.log("inactivity status updated to", inactivityStatusRef.current);
+    if (inactivityStatusRef.current == "snooze") {
       setTimeout(() => {
-        inactivityStatusRef.current = 'active';
-        console.log('snooze over');
+        inactivityStatusRef.current = "active";
+        console.log("snooze over");
         resetInactivityTimeout();
-      }, timeout15MinTime)
+      }, timeout15MinTime);
     } else {
-      resetInactivityTimeout()
+      resetInactivityTimeout();
     }
-  }, [inactivityStatusRef.current])
-
+  }, [inactivityStatusRef.current]);
 
   useEffect(() => {
     //scroll to minutes
@@ -101,8 +94,6 @@ export default function Home() {
       minutesElement.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   }, [selectedTask]);
-
-
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
@@ -130,7 +121,6 @@ export default function Home() {
         topicTitles={topicTitles}
         setSelectedMinutes={setSelectedTask}
       />
-
     </div>
   );
 }

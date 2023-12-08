@@ -91,16 +91,20 @@ function CenterArea(props: centerAreaProps) {
 
   return (
     <div className={styles.mainAreaContainer}>
-      <EmptyBlock />
+      <EmptyBlock showCover={showCover} />
       <AgendaBlock
         agendaItems={props.agendaContent}
         setAgendaItems={props.setAgendaContent}
         minutesID={props.minutesID}
         chatHistoryID={props.chatHistoryID}
+        showCover={showCover}
+        setShowCover={setShowCover}
       />
       <MeetingDetailBlocks
         minutesID={props.minutesID}
         chatHistoryID={props.chatHistoryID}
+        showCover={showCover}
+        setShowCover={setShowCover}
       />
       {props.topicTitles.map((area, index) => (
         <TextAreaQuill
@@ -123,16 +127,21 @@ function CenterArea(props: centerAreaProps) {
           updateBlockContent={(newContent) =>
             updateBlockContent(area.id, newContent)
           }
+          showCover={showCover}
+          setShowCover={setShowCover}
         />
       ))}
 
-      <button
-        className={styles.mainAreaAddNewBlockButton}
-        onClick={handleAddTopicArea}
-      >
-        <img src="/plus.svg" alt="add" />
-        <p className={styles.genericTitleText}>New Block</p>
-      </button>
+      <div className={styles.genericBlockHolder}>
+        {showCover && <div className={styles.genericBlockCover}></div>}
+        <button
+          className={styles.mainAreaAddNewBlockButton}
+          onClick={handleAddTopicArea}
+        >
+          <img src="/plus.svg" alt="add" />
+          <p className={styles.genericTitleText}>New Block</p>
+        </button>
+      </div>
     </div>
   );
 }

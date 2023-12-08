@@ -6,6 +6,8 @@ import { updateMeetingDetails } from "@/functions/api/updateMinutes";
 interface meetingDetailBlockProps {
   minutesID: string;
   chatHistoryID: string;
+  showCover: boolean; // New prop for cover visibility
+  setShowCover: (show: boolean) => void;
 }
 
 function MeetingDetailBlocks(props: meetingDetailBlockProps) {
@@ -40,14 +42,14 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
 
       setIsEditing(false);
       var response = await updateMeetingDetails(
-                            props.minutesID,
-                            props.chatHistoryID,
-                            locationValue,
-                            participantsValue
-                          );
+        props.minutesID,
+        props.chatHistoryID,
+        locationValue,
+        participantsValue
+      );
       if (response !== undefined) {
         //handle error
-        console.log("Meeting Details Error:", response.ERROR)
+        console.log("Meeting Details Error:", response.ERROR);
       }
     }
   };
@@ -61,32 +63,35 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
   }, [isEditing]);
 
   return (
-    <div ref={containerRef} className={styles.genericBlock}>
-      <p className={styles.genericTitleText}>Meeting Details</p>
-      <ModularTextField
-        label="Date"
-        placeholder="Enter date here"
-        ref={dateRef}
-        onChange={handleInputChange}
-      />
-      <ModularTextField
-        label="Time"
-        placeholder="Enter time here"
-        ref={timeRef}
-        onChange={handleInputChange}
-      />
-      <ModularTextField
-        label="Participants"
-        placeholder="Enter participants here"
-        ref={participantsRef}
-        onChange={handleInputChange}
-      />
-      <ModularTextField
-        label="Location"
-        placeholder="Enter location here"
-        ref={locationRef}
-        onChange={handleInputChange}
-      />
+    <div className={styles.genericBlockHolder}>
+      {props.showCover && <div className={styles.genericBlockCover}></div>}
+      <div ref={containerRef} className={styles.genericBlock}>
+        <p className={styles.genericTitleText}>Meeting Details</p>
+        <ModularTextField
+          label="Date"
+          placeholder="Enter date here"
+          ref={dateRef}
+          onChange={handleInputChange}
+        />
+        <ModularTextField
+          label="Time"
+          placeholder="Enter time here"
+          ref={timeRef}
+          onChange={handleInputChange}
+        />
+        <ModularTextField
+          label="Participants"
+          placeholder="Enter participants here"
+          ref={participantsRef}
+          onChange={handleInputChange}
+        />
+        <ModularTextField
+          label="Location"
+          placeholder="Enter location here"
+          ref={locationRef}
+          onChange={handleInputChange}
+        />
+      </div>
     </div>
   );
 }

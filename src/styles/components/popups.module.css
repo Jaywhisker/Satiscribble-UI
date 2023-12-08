@@ -19,6 +19,7 @@
     border-radius: 5px;
     gap: var(--blockGap);
     height:fit-content;
+    z-index: 3;
 }
 
 .greyNotif {
