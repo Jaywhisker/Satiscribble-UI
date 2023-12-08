@@ -2,13 +2,14 @@ import PopUp from '@/components/popup';
 import styles from '@/styles/components/popups.module.css';
 import { useToast } from '@/hooks/useToast';
 import { useState } from "react";
+import { createGlossaryEntry } from '@/functions/api/glossaryActions';
 
 export interface ToastProps {
     type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail' | 'glossaryAdd';
     id: number;
     message?: string;
     inactivityRef?: any;
-    stateValue?: number | boolean;
+    stateValue?: number | boolean | {};
     setState?: any;
     createNewTopic?: () => void;
 }
@@ -56,7 +57,7 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 colorVariant="red"
                 iconName="exclamation"
                 iconColor="red"
-                messageTitle="Add new topic failed"
+                messageTitle="Creating New Topic Failed"
                 messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure the agenda block is filled out."
                 messageHeaderColor="Red"
                 isOpen={true}
@@ -73,6 +74,20 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 messageHeaderColor="Green"
                 isOpen={true}
                 onClose={handleDismiss} />
+        },
+        glossaryAddFail: {
+            popup: <PopUp.BasicOneButtonAlert
+                colorVariant="red"
+                iconName="exclamation"
+                iconColor="red"
+                messageTitle="Glossary Addition Failed"
+                messageContent="Oh no! Your abbreviation could not be added to the glossary. Please try again."
+                messageHeaderColor="Red"
+                isOpen={true}
+                onClose={handleDismiss}
+                buttonFunction={(minutesID, chatHistoryID, abbreviation, meaning) => createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)}
+                stateValue={{"glossary": message}}
+                toast = {toast} />
         }
     };
 

@@ -27,15 +27,17 @@
     --blockGap: 1vh;
     --alertVerticalPadding: 2vh;
     --alertHorizontalPadding: 1vw;
-    --popUpWidth: 18vw;
+    --popUpWidth: 24vw;
+    --buttonIconSize: 2.75vh;
 
     /* button stuff */
     --smallButtonWidth: 7.39vw;
     --mediumButtonWidth: 14.27vw;
     --largeButtonWidth: 34.375vw;
     --buttonVerticalPadding: 0.75vh;
-    --buttonHorizontalPadding: 0.75vw;
-    --buttonMinHeight: 4vh;
+    --buttonHorizontalPadding: 4.5vw;
+    --buttonMinHeight: 4.5vh;
+    --buttonMinWidth: 10vw;
 }
 
 

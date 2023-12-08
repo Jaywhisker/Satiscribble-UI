@@ -31,10 +31,16 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     var meaning = detectedAbbrev.split("-")[1].trim().toLowerCase();
     
     var response = await createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)
+    console.log(response)
     if (response !== undefined) {
       console.log(response.ERROR)
+      setTimeout(() => {
+        toast.glossaryAddFail(detectedAbbrev, toast)
+      }, 1000)
     } else {
-      toast.glossaryAdd()
+      setTimeout(() => {
+        toast.glossaryAdd()
+      }, 1000)
     }
   };
 
@@ -65,6 +71,7 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
         ></Button>
       </span>
       <span className={styles.messageContent}>
+        <p style={{ marginBlock: "0" }}>Abbreviation will be added with no response:</p>
         <p style={{ marginBlock: "0" }}>{detectedAbbrev}</p>
       </span>
       <span className={styles.actionButtons}>

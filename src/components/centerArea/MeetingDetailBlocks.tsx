@@ -34,11 +34,11 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
       const participantsValue = participantsRef.current.value;
       const locationValue = locationRef.current.value;
 
-      console.log("API call triggered");
-      console.log("Date: " + dateValue);
-      console.log("Time: " + timeValue);
-      console.log("Participants: " + participantsValue);
-      console.log("Location: " + locationValue);
+      // console.log("API call triggered");
+      // console.log("Date: " + dateValue);
+      // console.log("Time: " + timeValue);
+      // console.log("Participants: " + participantsValue);
+      // console.log("Location: " + locationValue);
 
       setIsEditing(false);
       var response = await updateMeetingDetails(

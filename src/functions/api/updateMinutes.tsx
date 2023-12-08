@@ -76,7 +76,6 @@ export async function updateMinutes(
 
     const response = await axios.post("/api/update", reqData);
     console.log(response);
-    console.log(toast)
     
     if (!response.data.agenda) {
       //update agenda error
@@ -109,8 +108,11 @@ export async function updateMinutes(
       if (exists) {
         //ignore if exist? or are we gna js alert
       } else {
-        //call alert notification
-        toast.detectAbbrev(`${respAbbreviation} - ${respMeaning}`)
+        //call alert notification if no alert on this
+        var existingAlert = toast.alertContainer.some((item) => item.message === `${respAbbreviation} - ${respMeaning}`)
+        if (!existingAlert) {
+          toast.detectAbbrev(`${respAbbreviation} - ${respMeaning}`)
+        }
       }
     }
   } catch (error) {

@@ -220,7 +220,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
     const quillEditor = quillRef.current.getEditor();
     const rawText = quillEditor.getText();
-    console.log(rawText.length);
+    // console.log(rawText.length);
     if (rawText.length > 3000) {
       setTooLong(true);
       if (!tooLong) {

@@ -25,7 +25,6 @@ export default async function handler(req, res) {
             )
             res.setHeader('SourceID', response.headers['source_id']);
             res.status(200);
-            console.log(response.headers)
             response.data.pipe(res)
             response.data.on('end', () => {
                 res.end();

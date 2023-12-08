@@ -89,7 +89,7 @@ export default function RightSideBar(props: rightSideBarProps) {
           props.chatHistoryID,
           setGlossaryData
         );
-        console.log(glosaryLength)
+        // console.log(glosaryLength)
         setGlossaryMode(Array(glosaryLength).fill("default"));
       }
   }

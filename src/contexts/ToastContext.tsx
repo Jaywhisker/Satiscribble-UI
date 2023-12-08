@@ -10,6 +10,7 @@ export type ToastContextType = {
     topicLength: (message?: string) => void;
     addTopicfail: (stateValue:boolean, message?: string) => void;
     glossaryAdd: (message?: string) => void;
+    glossaryAddFail: (message: string, toast:any) => void;
     remove: (id: number) => void;
     update : (id: number, type: string, message?: string, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any) => void
     alertContainer: any[];
@@ -66,6 +67,7 @@ export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) 
         topicLength: (message?: string) => addToast("topicLength", message),
         addTopicfail: (stateValue:boolean, message?: string) => addToast("addTopicfail", message=message, stateValue=stateValue),
         glossaryAdd: (message?: string) => addToast("glossaryAdd", message),
+        glossaryAddFail: (message: string, toast:any) => addToast("glossaryAddFail", message, toast),
         remove,
         update,
         alertContainer: state.toasts
