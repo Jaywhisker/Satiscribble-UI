@@ -95,6 +95,8 @@ export default function RightSideBar(props: rightSideBarProps) {
   }
   refetchGlossary()
   }, [toast.alertContainer])
+
+  
   // useEffect(() => {
   //     if (loadingResponse && !(queryMode === 'document' ? responseError[0] : responseError[1])) {
   //         //loading true and error is false

@@ -5,8 +5,8 @@ import AgendaStyles from "@/styles/components/AgendaBlock.module.css";
 
 import ModularTextFieldAgenda from './ModularTextFieldAgenda';
 
-import { updateAgenda } from '@/functions/api/updateMinutes';
-
+import { updateAgenda } from "@/functions/api/updateMinutes";
+import { useToast } from "@/hooks/useToast";
 
 interface AgendaProps{
   agendaItems: [{id:string, name:string, completed:boolean}]
@@ -24,12 +24,16 @@ export default function AgendaBlock(props: AgendaProps) {
   const [focused, setFocused] = useState(true)
   const [timeoutId, setTimeoutId] = useState(null);
 
+  const toast = useToast()
+
+  //intialisation to alw alr have 1 agenda input space
   useEffect(() => {
     if (props.agendaItems.length <= 0) {
       addNewAgendaItem()
     }
   }, [])
 
+  //updating agenda when unfocused
   useEffect(() => {
     clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(async() => {
@@ -47,11 +51,32 @@ export default function AgendaBlock(props: AgendaProps) {
     return () => {
       clearTimeout(newTimeoutId);
     };
-  }, [focused])
+  }, [focused]);
+
+  //outline the agenda block on alert
+  useEffect(() => {
+    var unfilledAgenda = toast.alertContainer.some((alert) => {
+      return alert.type === 'addTopicfail'
+    })
+    const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement
+
+    if (unfilledAgenda) {
+      agendaBlock.style.outline = `2px solid var(--Alert-Red)`
+    } else if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
+      agendaBlock.style.outline = 'none'
+    }
+  }, [toast.alertContainer])
+
 
   const updateAgendaItems = (newAgendaItems) => { 
     // Function to update agenda items
-      props.setAgendaItems(newAgendaItems);
+    const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement
+    if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
+      agendaBlock.style.outline = 'none'
+      var topicFailedAlert = toast.alertContainer.filter((alert) => alert.type === 'addTopicfail')
+      toast.remove(topicFailedAlert[0].id)
+    }
+    props.setAgendaItems(newAgendaItems);
   };
 
   const updateCheckbox = (index) => { 
@@ -105,27 +130,34 @@ export default function AgendaBlock(props: AgendaProps) {
 
 
   return (
-    <div className={DynamicStyles.genericBlock}>
-      <div className={AgendaStyles.titleContainer}>
-        <h1 className={DynamicStyles.genericTitleText}>Agenda</h1>
-      </div>
-      {props.agendaItems.map((item, index) => (
-        <div key={item.id} className={DynamicStyles.agendaBlockTextFieldHolder}>
-          <img
-            src={item.completed ? checkedImage : uncheckedImage}
-            alt={item.completed ? 'Checked' : 'Unchecked'}
-            onClick={() => updateCheckbox(index)}
-            className={AgendaStyles.checkboxImage}
-          />
-          <ModularTextFieldAgenda
-            value={item.name}
-            placeholder="Enter agenda here"
-            onChange={(e) => handleAgendaChange(e.target.value, index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-          />
-          {/* {agendaItems.length > 1 && (
+    <div className={DynamicStyles.genericBlockHolder}>
+      {props.showCover && (
+        <div className={DynamicStyles.genericBlockCover}></div>
+      )}
+      <div className={DynamicStyles.genericBlock} id="agendaBlock">
+        <div className={AgendaStyles.titleContainer}>
+          <h1 className={DynamicStyles.genericTitleText}>Agenda</h1>
+        </div>
+        {props.agendaItems.map((item, index) => (
+          <div
+            key={item.id}
+            className={DynamicStyles.agendaBlockTextFieldHolder}
+          >
+            <img
+              src={item.completed ? checkedImage : uncheckedImage}
+              alt={item.completed ? "Checked" : "Unchecked"}
+              onClick={() => updateCheckbox(index)}
+              className={AgendaStyles.checkboxImage}
+            />
+            <ModularTextFieldAgenda
+              value={item.name}
+              placeholder="Enter agenda here"
+              onChange={(e) => handleAgendaChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+            />
+            {/* {agendaItems.length > 1 && (
             <img 
               src={deleteIcon} 
               onClick={() => deleteAgendaItem(item.id)} 

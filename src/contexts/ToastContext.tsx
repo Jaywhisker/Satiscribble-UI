@@ -38,13 +38,18 @@ export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) 
     const [state, dispatch] = useReducer(toastReducer, initialState);
 
     const addToast = (type: string, message?: string, inactivityRef?: any, inaccuracyValue?:number, setInaccuracyValue?:any, createNewTopic? :() => void, toast?:any): void => {
+        //logic on checking notification container size will be here
+        //probably using toast.states to check the size 
+        //if yes, allow for dispatch else do remove function
         const id = Math.floor(Math.random() * 10000000);
         console.log('Dispatching ADD_TOAST action');
         dispatch({ type: "ADD_TOAST", payload: { id, message, type, inactivityRef, inaccuracyValue, setInaccuracyValue, createNewTopic, toast} });
     };
     
     const remove = ( id: number): void => {
-        dispatch({ type: "DELETE_TOAST", payload: id });
+        setTimeout(() => {
+            dispatch({ type: "DELETE_TOAST", payload: id });
+        }, 500)
     };
     
     

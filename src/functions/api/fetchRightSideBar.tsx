@@ -1,22 +1,28 @@
 import axios from 'axios'
 
 export async function fetchChatHistory(minutesID:string, chatHistoryID:string, setDocumentChatHistory:any, setWebChatHistory:any) {
-    var reqData = {
+    try{
+      var reqData = {
         "minutesID" : minutesID,
         "chatHistoryID": chatHistoryID,
         "type": "chatHistory"
-    }
+      }
 
-    const response = await axios.post('/api/read', reqData)
-    setDocumentChatHistory(response.data.document)
-    setWebChatHistory(response.data.web)
+      const response = await axios.post('/api/read', reqData)
+      setDocumentChatHistory(response.data.document)
+      setWebChatHistory(response.data.web)
+    } catch (error) {
+        console.log("Error reading history", error)
+        return {'document': [], 'web': []}
+      }
 }
 
 export async function fetchGlossary(minutesID:string, chatHistoryID:string, setGlossaryData:any) {
+  try {
     var reqData = {
-        "minutesID" : minutesID,
-        "chatHistoryID": chatHistoryID,
-        "type": "glossary"
+      "minutesID" : minutesID,
+      "chatHistoryID": chatHistoryID,
+      "type": "glossary"
     }
 
     const response = await axios.post('/api/read', reqData)
@@ -34,4 +40,8 @@ export async function fetchGlossary(minutesID:string, chatHistoryID:string, setG
       });
     setGlossaryData(sortedGlossary)
     return sortedGlossary.length
+  } catch (error) {
+      console.log("Error reading glossary", error)
+      return 0
+  }
 }

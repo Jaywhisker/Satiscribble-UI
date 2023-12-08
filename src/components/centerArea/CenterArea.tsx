@@ -7,6 +7,7 @@ import styles from "@/styles/components/DynamicTextArea.module.css";
 
 import { deleteTopic } from "@/functions/api/topicActions";
 import AgendaBlock from "./AgendaBlocks";
+import { useToast } from "@/hooks/useToast";
 
 interface centerAreaProps {
   minutesID: string;
@@ -21,17 +22,28 @@ interface centerAreaProps {
 
 function CenterArea(props: centerAreaProps) {
   const [topicCount, setTopCount] = useState(0);
+  const [showCover, setShowCover] = useState(false); //prevent editing when there is a delete topic
+
+  const toast = useToast()
 
   const handleAddTopicArea = () => {
-    props.setTopicTitles((prevTopicAreas) => [
-      ...prevTopicAreas,
-      { title: "", id: topicCount },
-    ]);
-    props.setTopicContent((prevTopicContent) => [
-      ...prevTopicContent,
-      { content: "<ul><li></li></ul>", id: topicCount },
-    ]);
-    setTopCount(topicCount + 1);
+    var filledAgendaContent = props.agendaContent
+    .map((agenda) => agenda.name)
+    .filter((items) => items.trim() !== "")
+    
+    if (!showCover && filledAgendaContent.length > 0) {
+      props.setTopicTitles((prevTopicAreas) => [
+        ...prevTopicAreas,
+        { title: "", id: topicCount },
+      ]);
+      props.setTopicContent((prevTopicContent) => [
+        ...prevTopicContent,
+        { content: "<ul><li></li></ul>", id: topicCount },
+      ]);
+      setTopCount(topicCount + 1);
+    } else if (filledAgendaContent.length <= 0) {
+      toast.addTopicfail()
+    }
   };
 
   function updateBlockContent(id, newContent) {

@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         }
         catch (error) {
             console.log(error)
-            res.status(500).json({'error':error})
+            res.status(500).json({'error':error.code})
         }
     }
 
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         }
         catch (error) {
             console.log(error)
-            res.status(500).json({'error':error})
+            res.status(500).json({'error':error.code})
         }
     }
 

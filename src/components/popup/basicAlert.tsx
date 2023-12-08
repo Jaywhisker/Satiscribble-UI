@@ -57,13 +57,14 @@ const BasicAlert: React.FC<PopupProps> = ({
   children,
   ...rest
 }: PopupProps) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(isOpen);
+  
+  // const [isPopupOpen, setIsPopupOpen] = useState(isOpen);
 
-  useEffect(() => {
-    if (isPopupOpen) {
-      console.log("Popup is now open and is shown");
-    }
-  }, [isPopupOpen]);
+  // useEffect(() => {
+  //   if (isPopupOpen) {
+  //     console.log("Popup is now open and is shown");
+  //   }
+  // }, [isPopupOpen]);
 
   const getIcon = () => {
     const IconComponent = Icons.GeneralIcon;
@@ -76,11 +77,15 @@ const BasicAlert: React.FC<PopupProps> = ({
   };
 
   const handleClose = () => {
-    setIsPopupOpen(false);
+    console.log('Closing the popup')
     onClose();
   };
+  
+  if (!isOpen) {
+    return null;
+  }
 
-  return isPopupOpen ? (
+  return (
     <div className={`${styles.Notif} ${styles[colorVariant + 'Notif']}`}>
       <span className={styles.topRow}>
         <span className={styles.titleCol}>
@@ -99,7 +104,7 @@ const BasicAlert: React.FC<PopupProps> = ({
       </span>
       <p className={styles.messageContent}>{messageContent}</p>
     </div>
-  ) : null;
+  ) 
 };
 
 export default BasicAlert;

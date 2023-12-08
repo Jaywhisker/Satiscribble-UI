@@ -201,6 +201,22 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   };
 
   const handleKeyDown = async (event) => {
+    if (contentChanged == false) {
+      setContentChanged(true);
+      console.log("Content in topic has been changed");
+    }
+    const quillEditor = quillRef.current.getEditor();
+    const rawText = quillEditor.getText();
+    console.log(rawText.length);
+    if (rawText.length > 3000) {
+      setTooLong(true);
+      if (!tooLong) {
+        toast.topicLength();
+      }
+    } else {
+      setTooLong(false);
+    }
+
     // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
       console.log(props.content);

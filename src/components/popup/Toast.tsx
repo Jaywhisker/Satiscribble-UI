@@ -20,9 +20,10 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccur
 
     const handleDismiss = () => {
         setDismissed(true);
-        setTimeout(() => {
-            toast.remove(id);
-        }, 500);  // Adjust the duration based on your CSS animation duration
+        toast.remove(id);
+        // setTimeout(() => {
+        //     toast.remove(id);
+        // }, 500);  // Adjust the duration based on your CSS animation duration
     };
 
     // Declare toastTypes
@@ -56,7 +57,7 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccur
                 iconName="exclamation"
                 iconColor="red"
                 messageTitle="Add new topic failed"
-                messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure both the meeting details and agenda blocks are filled out."
+                messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure the agenda block is filled out."
                 messageHeaderColor="Red"
                 isOpen={true}
                 onClose={handleDismiss} />
@@ -70,7 +71,7 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccur
                 messageContent="Great news! Your abbreviation has been successfully added to the glossary."
                 messageHeaderColor="Green"
                 isOpen={true}
-                onClose={() => { handleDismiss }} />
+                onClose={handleDismiss} />
         }
     };
 

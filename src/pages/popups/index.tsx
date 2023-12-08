@@ -48,7 +48,7 @@ export default function Home() {
         iconName="exclamation"
         iconColor="red"
         messageTitle="Add new topic failed"
-        messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure both the meeting details and agenda blocks are filled out."
+        messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure the agenda block is filled out."
         messageHeaderColor="Red"
         isOpen={true}
         onClose={() => {}}
