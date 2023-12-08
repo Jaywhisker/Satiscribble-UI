@@ -42,7 +42,7 @@ function CenterArea(props: centerAreaProps) {
       ]);
       setTopCount(topicCount + 1);
     } else if (filledAgendaContent.length <= 0) {
-      toast.addTopicfail()
+      toast.addTopicfail(false)
     }
   };
 

@@ -8,12 +8,12 @@ export interface ToastProps {
     id: number;
     message?: string;
     inactivityRef?: any;
-    inaccuracyValue?: number;
-    setInaccuracyValue?: any;
+    stateValue?: number | boolean;
+    setState?: any;
     createNewTopic?: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccuracyValue, setInaccuracyValue, createNewTopic }) => {
+const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateValue, setState, createNewTopic }) => {
     const toast = useToast()
 
     const [dismissed, setDismissed] = useState(false);
@@ -29,13 +29,13 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccur
     // Declare toastTypes
     const toastTypes = {
         agenda: {
-            popup: <PopUp.AgendaAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={inaccuracyValue} setInaccuracyValue={setInaccuracyValue}/>
+            popup: <PopUp.AgendaAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={stateValue} setInaccuracyValue={setState}/>
         },
         inactivity: {
             popup: <PopUp.InactivityAlert isOpen={true} onClose={handleDismiss} inactivityRef={inactivityRef}/>
         },
         changeTopic: {
-            popup: <PopUp.TopicChangeAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={inaccuracyValue} setInaccuracyValue={setInaccuracyValue} createNewTopic={createNewTopic}/>
+            popup: <PopUp.TopicChangeAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={stateValue} setInaccuracyValue={setState} createNewTopic={createNewTopic}/>
         },
         detectAbbrev: {
             popup: <PopUp.DetectAlert detectedAbbrev={message} isOpen={true} onClose={handleDismiss} toast={toast}/>
@@ -60,7 +60,8 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, inaccur
                 messageContent="Oops! It seems we can't add a new topic just yet. To proceed, please make sure the agenda block is filled out."
                 messageHeaderColor="Red"
                 isOpen={true}
-                onClose={handleDismiss} />
+                onClose={handleDismiss}
+                stateValue={stateValue} />
         },
         glossaryAdd: {
             popup: <PopUp.BasicAlert

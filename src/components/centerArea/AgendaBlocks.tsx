@@ -82,7 +82,7 @@ export default function AgendaBlock(props: AgendaProps) {
     if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
       agendaBlock.style.outline = 'none'
       var topicFailedAlert = toast.alertContainer.filter((alert) => alert.type === 'addTopicfail')
-      toast.remove(topicFailedAlert[0].id)
+      toast.update(topicFailedAlert[0].id, "addTopicfail", null, null, true)
     }
     props.setAgendaItems(newAgendaItems);
   };
@@ -149,7 +149,7 @@ export default function AgendaBlock(props: AgendaProps) {
       )}
       <div className={DynamicStyles.genericBlock} id="agendaBlock">
         <div className={AgendaStyles.titleContainer}>
-          <h1 className={DynamicStyles.genericTitleText}>Agenda</h1>
+          <h1 className={DynamicStyles.genericTitleText} style={{cursor: 'default'}}>Agenda</h1>
         </div>
         {props.agendaItems.map((item, index) => (
           <div

@@ -12,7 +12,6 @@
   font: var(--ui-heading);
   margin: 0;
   color: var(--Nice_Blue);
-  cursor: default;
 }
 
 .genericBlock {
@@ -106,8 +105,8 @@
 }
 
 .topicBlockReactQuillHolder{
-  width:100%;
-  min-height: var(--summariserButtonWidth);
+  width:95%;
+  min-height: var(--magicWandButtonSize);
 }
 
 .topicBlockTooooooooooooooooooooooooggleSummaryButton{
@@ -187,14 +186,7 @@
 }
 
 .topicBlockMinutesContainer{
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  /* Oso contains animated transitions */
-  overflow: hidden;
-}
-
-.topicBlockMinutesContainer{
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -203,7 +195,7 @@
 }
 
 .topicBlockTopicInput {
-  width: 100%;
+  width: 95%;
   box-sizing: border-box;
   overflow: hidden;
   resize: none; /* Prevent user resizing of textarea */

@@ -10,7 +10,8 @@ interface Toast {
   
   type ToastAction =
     | { type: "ADD_TOAST"; payload: Toast }
-    | { type: "DELETE_TOAST"; payload };
+    | { type: "DELETE_TOAST"; payload }
+    | { type: "UPDATE_TOAST"; payload };
   
   export const toastReducer = (state: ToastState, action: ToastAction): ToastState => {
     console.log('Reducer Action:', action);
@@ -26,6 +27,16 @@ interface Toast {
           ...state,
           toasts: updatedToasts,
         };
+      case "UPDATE_TOAST":
+        const updatedToast = state.toasts.map((toast) =>
+            toast.id === action.payload.id
+                ? { ...toast, ...action.payload}
+                : toast
+        );
+        return {
+          ...state,
+          toasts: updatedToast
+        }
       default:
         return state;
   };

@@ -26,10 +26,10 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, s
   };
 
 
-
   if (!isOpen) {
     return null;
   }
+  
 
   return (
     <div className={`${styles.Notif} ${styles.redNotif}`}>

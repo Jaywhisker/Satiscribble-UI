@@ -14,6 +14,7 @@ interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
   children?: ReactNode;
+  stateValue?: boolean;
 }
 
 const colorMapping = {
@@ -55,6 +56,7 @@ const BasicAlert: React.FC<PopupProps> = ({
   isOpen,
   onClose,
   children,
+  stateValue,
   ...rest
 }: PopupProps) => {
   
@@ -80,6 +82,13 @@ const BasicAlert: React.FC<PopupProps> = ({
     console.log('Closing the popup')
     onClose();
   };
+
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
   
   if (!isOpen) {
     return null;
