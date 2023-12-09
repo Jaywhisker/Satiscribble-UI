@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import DynamicStyles from "@/styles/components/DynamicTextArea.module.css";
 import AgendaStyles from "@/styles/components/AgendaBlock.module.css";
@@ -24,18 +24,55 @@ export default function AgendaBlock(props: AgendaProps) {
   const deleteIcon = "/Cancellation.svg";
 
   const [nextId, setNextId] = useState(0);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [focused, setFocused] = useState(true);
   const [timeoutId, setTimeoutId] = useState(null);
-  const [noDelete, setNoDelete] = useState(false);
+  const [noDelete, setNoDelete] = useState(false)
+
+  const textInputRefs = useRef([]);
 
   const toast = useToast();
 
   //intialisation to alw alr have 1 agenda input space
   useEffect(() => {
     if (props.agendaItems.length <= 0) {
-      addNewAgendaItem();
+      addNewAgendaItem(undefined);
     }
   }, []);
+
+  // Adding mouse arrow key functionality
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      switch (event.key) {
+        case 'ArrowUp':
+          console.log('up')
+          var newIndex = Math.max(focusedIndex-1, 0);
+          setFocusedIndex(newIndex);
+          textInputRefs.current[newIndex]?.focus()
+          break;
+        case 'ArrowDown':
+          console.log('down')
+          var newIndex = Math.min(focusedIndex+1, nextId-1);
+          setFocusedIndex(newIndex);
+          textInputRefs.current[newIndex]?.focus()
+          break;
+        default:
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [focusedIndex])
+
+  // Update the refs array when the agenda items change
+  useEffect(() => {
+    textInputRefs.current = textInputRefs.current.slice(0, props.agendaItems.length);
+  }, [props.agendaItems])
+
 
   //updating agenda when unfocused
   useEffect(() => {
@@ -114,14 +151,15 @@ export default function AgendaBlock(props: AgendaProps) {
     if (e.key === "Enter") {
       // Create new input on enter
       e.preventDefault();
-      addNewAgendaItem();
+      addNewAgendaItem(index);
       setNoDelete(false);
     } 
     else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
       // Delete row if row is empty
       e.preventDefault();
       if (props.agendaItems.length > 1) {
-        deleteAgendaItem(props.agendaItems[index].id);
+        const focusIndex = index > 0 ? index - 1 : 0;
+        deleteAgendaItem(index, focusIndex);
         //add focus on modulartextfileagenda with id-1
       }
     }
@@ -140,30 +178,41 @@ export default function AgendaBlock(props: AgendaProps) {
     }
   };
 
-  const addNewAgendaItem = () => {
-    // Adds a new agenda item to the list
-    const newAgendaItems = [
-      ...props.agendaItems,
-      { id: nextId, name: "", completed: false },
-    ];
+
+  // Function to add a new agenda item
+  const addNewAgendaItem = (index) => {
+    const newAgendaItems = [...props.agendaItems];
+    const newAgendaItem = { id: `item-${nextId}`, name: '', completed: false };
+    if (index !== null && index !== undefined) {
+      newAgendaItems.splice(index + 1, 0, newAgendaItem);
+    } else {
+      newAgendaItems.push(newAgendaItem);
+    }
     updateAgendaItems(newAgendaItems);
     setNextId(nextId + 1);
+
+    // Set focus on the new item's input field
+    setTimeout(() => {
+      const newItemIndex = index !== null && index !== undefined ? index + 1 : newAgendaItems.length - 1;
+      textInputRefs.current[newItemIndex]?.focus();
+    }, 0);
   };
 
 
-  const deleteAgendaItem = (idToDelete) => {
-    // Deletes agenda item
-    if (props.agendaItems.length > 1) {
-      // Prevents deletetion of row if there is only one agenda item left
-      const newAgendaItems = props.agendaItems.filter(
-        (item) => item.id !== idToDelete
-      );
-      updateAgendaItems(newAgendaItems);
-    }
+// Function to delete an agenda item
+  const deleteAgendaItem = (index, focusIndex) => {
+    const newAgendaItems = props.agendaItems.filter((_, i) => i !== index);
+    updateAgendaItems(newAgendaItems);
+
+    // Set focus on the previous (or next if the first was deleted) item's input field
+    setTimeout(() => {
+        textInputRefs.current[focusIndex]?.focus();
+    }, 0);
   };
 
 
-  const handleFocus = () => {
+  const handleFocus = (index) => {
+    setFocusedIndex(index)
     setFocused(true)
     // Remove agendaSaveFail alert
     var agendaFailedAlert = toast.alertContainer.filter(
@@ -207,12 +256,13 @@ export default function AgendaBlock(props: AgendaProps) {
               className={AgendaStyles.checkboxImage}
             />
             <ModularTextFieldAgenda
+              ref={(el) => (textInputRefs.current[index] = el)}
               value={item.name}
               placeholder="Enter agenda here"
               onChange={(e) => handleAgendaChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              onFocus={handleFocus}
-              onBlur={() => setFocused(false)}
+              onFocus={() => handleFocus(index)}
+              onBlur={() => {setFocused(false), setFocusedIndex(null)}}
             />
           </div>
         ))}
