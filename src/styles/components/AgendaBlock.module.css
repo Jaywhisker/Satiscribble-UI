@@ -4,6 +4,12 @@
   justify-content: space-between;
 }
 
+.warningText{
+  color: var(--Alert-Red-75);
+  font: var(--ui-text);
+  margin: 0;
+}
+
 .checkboxImage {
   cursor: pointer;
   height: 3vh;

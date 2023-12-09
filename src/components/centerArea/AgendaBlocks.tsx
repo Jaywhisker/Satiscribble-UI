@@ -25,8 +25,9 @@ export default function AgendaBlock(props: AgendaProps) {
   const [nextId, setNextId] = useState(0);
   const [focused, setFocused] = useState(true);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [noDelete, setNoDelete] = useState(false);
 
-  const toast = useToast()
+  const toast = useToast();
 
   //intialisation to alw alr have 1 agenda input space
   useEffect(() => {
@@ -64,25 +65,26 @@ export default function AgendaBlock(props: AgendaProps) {
   //outline the agenda block on alert
   useEffect(() => {
     var unfilledAgenda = toast.alertContainer.some((alert) => {
-      return alert.type === 'addTopicfail'
-    })
-    const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement
+      return alert.type === "addTopicfail";
+    });
+    const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement;
 
     if (unfilledAgenda) {
-      agendaBlock.style.outline = `2px solid var(--Alert-Red)`
+      agendaBlock.style.outline = `2px solid var(--Alert-Red)`;
     } else if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
-      agendaBlock.style.outline = 'none'
+      agendaBlock.style.outline = "none";
     }
-  }, [toast.alertContainer])
-
+  }, [toast.alertContainer]);
 
   const updateAgendaItems = (newAgendaItems) => {
     // Function to update agenda items
-    const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement
+    const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement;
     if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
-      agendaBlock.style.outline = 'none'
-      var topicFailedAlert = toast.alertContainer.filter((alert) => alert.type === 'addTopicfail')
-      toast.update(topicFailedAlert[0].id, "addTopicfail", null, null, true)
+      agendaBlock.style.outline = "none";
+      var topicFailedAlert = toast.alertContainer.filter(
+        (alert) => alert.type === "addTopicfail"
+      );
+      toast.update(topicFailedAlert[0].id, "addTopicfail", null, null, true);
     }
     props.setAgendaItems(newAgendaItems);
   };
@@ -108,12 +110,29 @@ export default function AgendaBlock(props: AgendaProps) {
     if (e.key === "Enter") {
       e.preventDefault();
       addNewAgendaItem();
+      setNoDelete(false);
     } else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
       e.preventDefault();
       if (props.agendaItems.length > 1) {
         deleteAgendaItem(props.agendaItems[index].id);
         //add focus on modulartextfileagenda with id-1
       }
+    } else if (e.key === "Backspace") {
+      if (
+        props.agendaItems[index].name.length === 1 &&
+        props.agendaItems
+          .slice(0, index)
+          .every((item) => item.name.length === 0) &&
+        props.agendaItems
+          .slice(index + 1)
+          .every((item) => item.name.length === 0)
+      ) {
+        e.preventDefault();
+        console.log("saveme");
+        setNoDelete(true);
+      }
+    } else {
+      setNoDelete(false);
     }
   };
 
@@ -148,8 +167,20 @@ export default function AgendaBlock(props: AgendaProps) {
         <div className={DynamicStyles.genericBlockCover}></div>
       )}
       <div className={DynamicStyles.genericBlock} id="agendaBlock">
+        {noDelete && (
+          <div>
+            <p className={AgendaStyles.warningText}>
+              *Your agenda shouldn't be empty!
+            </p>
+          </div>
+        )}
         <div className={AgendaStyles.titleContainer}>
-          <h1 className={DynamicStyles.genericTitleText} style={{cursor: 'default'}}>Agenda</h1>
+          <h1
+            className={DynamicStyles.genericTitleText}
+            style={{ cursor: "default" }}
+          >
+            Agenda
+          </h1>
         </div>
         {props.agendaItems.map((item, index) => (
           <div

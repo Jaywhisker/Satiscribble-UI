@@ -395,7 +395,14 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   }
 
   function actualDeletefunction() {
+    setDeleteMode(false);
     props.onDelete();
+    document.body.style.overflow = "auto";
+    props.setShowCover(false);
+  }
+
+  function handleClose() {
+    setDeleteMode(false);
     document.body.style.overflow = "auto";
     props.setShowCover(false);
   }
@@ -409,7 +416,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         <div className={styles.topicBlockDeleteOverlay}>
           <PopUp.DeleteTopic
             isOpen={true}
-            onClose={() => setDeleteMode(false)}
+            onClose={() => handleClose()}
             onDelete={() => actualDeletefunction()}
           />
         </div>
