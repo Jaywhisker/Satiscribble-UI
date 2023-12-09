@@ -3,15 +3,26 @@
     --Nice_Blue: rgb(156,165,216);
     --Nice_Blue_10: rgb(156,165,216,0.1);
     --Nice_Blue_25: rgb(156,165,216,0.25);
+    --Nice_Blue_75: rgb(156,165,216,0.75);
     --Dark_Grey: rgb(32,33,35);
+    --Dark_Grey_80: rgb(32,33,35, 0.95);
+    --Dark_Grey_50: rgb(32,33,35, 0.5);
     --Grey: rgb(50,50,51);
     --Light_Grey: rgb(177,177,177);
     --Off_White: rgb(209,209,209);
     --Off_White_10: rgb(209,209,209, 0.1);
+    --Off_White_25: rgb(209,209,209,0.25);
     --Off_White_50: rgb(209,209,209,0.5);
     --Blue: rgb(174,201,229);
     --Lighter_Grey: rgb(217,217,217,0.1);
+    --Black_60: rgb(0,0,0,0.6);
+
     --Orange: rgb(255,206,133);
+    --Alert-Red: rgba(171, 41, 41);
+    --Alert-Red-75: rgba(171, 41, 41, 0.75);
+    --Dark-Red:rgba(67, 41, 43) ;
+    --Red: rgba(222, 92, 100);
+    --Green: rgb(76, 175, 80);
 
     /* Unnamed Colors */
     --Pure_White: rgb(255,255,255);

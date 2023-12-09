@@ -1,0 +1,100 @@
+.userContainer{
+    margin: auto;
+    margin-right: 0;
+    width: 65%;
+    padding: 0;
+    background-color: var(--Nice_Blue);
+    border-radius: 8px;
+    margin-bottom: 2vh;
+}
+
+.userText{
+    margin: 0;
+    text-align: left;
+    width: 84%;
+    margin-left: 8%;
+    padding: 1.75vh 0;
+    color: var(--Dark_Grey);
+    font: var(--ui-bold-text);
+    letter-spacing: 0.25px;
+    white-space: pre-line;
+}
+
+.assistantContainer{
+    margin: auto;
+    margin-left: 0;
+    width: 65%;
+    padding: 2vh 0 1vh 0;
+    background-color: var(--Dark_Purple_Blue);
+    border-radius: 8px;
+    margin-bottom: 2vh;
+}
+
+
+.assistantText{
+    margin: 0;
+    text-align: left;
+    width: 84%;
+    margin-left: 8%;
+    padding: 0 0 1vh 0;
+    color: var(--Off_White);
+    font: var(--ui-bold-text);
+    letter-spacing: 0.25px;
+    white-space: pre-line;
+}
+
+.sourceContainer{
+    border-top: 1.5px solid var(--Off_White_10);
+    width: 88%;
+    margin-left: 6%;
+    margin-top: 1vh;
+}
+
+.sourceText{
+    margin: 0;
+    margin-top: 1vh;
+    color: var(--Off_White);
+    font: var(--ui-bold-text);
+    letter-spacing: 0.25px;
+    margin-bottom: 1vh;
+}
+
+.listIndex{
+    margin: 0;
+    padding: 0 8%;
+}
+
+.source{
+    color: var(--Nice_Blue);
+    font: var(--ui-subtext);
+    letter-spacing: 0.25px;
+    margin: 0.5vh 0;
+}
+
+.source:last-child{
+    padding-bottom: 1vh;
+}
+
+.source:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.responseLoadingAnimation{
+    background-color: var(--Off_White);
+    width: 0.15vw;
+    height: 2vh;
+    margin-left: 8%;
+    opacity: 1;
+    animation: 1s blink step-end infinite;
+}
+
+
+@keyframes blink {
+    from, to {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--Off_White);
+    }
+  }

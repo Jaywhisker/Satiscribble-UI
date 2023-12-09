@@ -1,0 +1,119 @@
+.button-small {
+    width: var(--smallButtonWidth);
+    /* width: 8vw; */
+}
+
+.button-medium {
+    width: var(--mediumButtonWidth);
+    /* width: 15vw; */
+}
+
+.button-large {
+    /* width: 25vw; */
+    width: var(--largeButtonWidth);
+}
+
+.purple-fill {
+    border: 1px solid var(--Grey, #323233);
+    background: var(--Nice-Blue, #9CA5D8);
+}
+
+.purple-fill:hover {
+    border: 1px solid var(--Grey, #323233);
+    background: var(--Nice-Blue-75, rgba(156, 165, 216, 0.75));
+}
+
+.purple-border {
+    border: 1px solid var(--Nice-Blue, #9CA5D8);
+    background: transparent
+}
+
+.purple-border:hover {
+    border: 1px solid var(--Nice-Blue, #9CA5D8);
+    background: var(--Nice_Blue_25, rgba(156, 165, 216, 0.25));
+}
+
+.no-background {
+    border: transparent;
+    background: transparent
+}
+
+.white-border {
+    border: 1px solid var(--Off_White, #D1D1D1);
+    background: transparent;
+}
+
+.white-border:hover {
+    border: 1px solid var(--Off_White, #D1D1D1);
+    background: var(--Off_White_25, rgba(209,209,209,0.25));
+}
+
+.red-fill {
+    border: 1px solid var(--Off_White, #D1D1D1);
+    background: var(--Alert-Red, rgba(171, 41, 41));
+}
+
+.red-fill:hover {
+    border: 1px solid var(--Off_White, #D1D1D1);
+    background: var(--Alert-Red, rgba(171, 41, 41, 0.75));
+}
+
+.button {
+    display: flex;
+    min-height: var(--buttonMinHeight);
+    min-width: var(--buttonMinWidth);
+    padding: var(--buttonVerticalPadding) var(--buttonHorizontalPadding);
+    justify-content: center;
+    align-items: center;
+    border-radius:5px;
+    cursor: pointer;
+}
+
+.icon-button {
+    display: flex;
+    padding: 15px 15px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 0.3125rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 1.5vw;
+    height: 1.5vw;
+}
+
+.icon-button-small {
+    height: var(--buttonIconSize);
+    width: var(--buttonIconSize);
+}
+
+.icon-button-large {
+    width: 3vw;
+    height: 3vw;
+}
+
+.button-text {
+    color: var(--Grey, #323233);
+    text-align: center;
+
+    /* Button Text */
+    min-width: calc(var(--buttonMinWidth) - var(--buttonHorizontalPadding));
+    font: var(--ui-comment);
+    line-height: 2vh;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+}
+
+.border-text {
+    color: var(--Nice-Blue, #9CA5D8);
+}
+
+.fill-text {
+    color: var(--Grey, #323233);
+}
+
+.white-text {
+    color: var(--Off_White, #D1D1D1);
+}

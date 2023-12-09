@@ -1,0 +1,15 @@
+.overallContainer{
+    padding-top: 2vh;
+    padding-right: 2vh;
+    width: fit-content;
+    position: fixed;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    height: fit-content;
+    color:white;
+    max-height: 100vh;
+    display:flex;
+    flex-direction: column;
+    gap: 2vh;
+}
