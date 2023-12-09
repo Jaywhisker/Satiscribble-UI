@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 import ModularTextField from "@/components/centerArea/ModularTextField";
 import { updateMeetingDetails } from "@/functions/api/updateMinutes";
+import { useToast } from "@/hooks/useToast";
 
 interface meetingDetailBlockProps {
   minutesID: string;
@@ -13,26 +14,47 @@ interface meetingDetailBlockProps {
 function MeetingDetailBlocks(props: meetingDetailBlockProps) {
   const containerRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [meetingFocused, setMeetingFocused] = useState(false);
 
   const dateRef = useRef(null);
   const timeRef = useRef(null);
   const participantsRef = useRef(null);
   const locationRef = useRef(null);
 
+  const toast = useToast()
+
+
+  useEffect(() => {
+      // check if there is a meetingDetails alert fail
+      var meetingDetailsFailedAlert = toast.alertContainer.filter(
+        (alert) => alert.type === "meetingSaveFail" && alert.stateValue == false
+      )
+      if (meetingDetailsFailedAlert.length > 0) {
+        //if there is an error and meeting minutes in focus, remove alert
+        if (meetingFocused) {
+          toast.update(meetingDetailsFailedAlert[0].id, "meetingSaveFail", null, null, true)
+        }
+      }
+  }, [toast.alertContainer, meetingFocused])
+
+
   const handleInputChange = () => {
     setIsEditing(true);
   };
 
+
   const handleContainerClick = async (e) => {
     if (containerRef.current && containerRef.current.contains(e.target)) {
+      //reference the error container at time of addEventListener...HELPS
+      setMeetingFocused(true)
       return;
     }
-
-    if (isEditing) {
+    if (isEditing && meetingFocused) {
       const dateValue = dateRef.current.value;
       const timeValue = timeRef.current.value;
       const participantsValue = participantsRef.current.value;
       const locationValue = locationRef.current.value;
+      setMeetingFocused(false)
 
       // console.log("API call triggered");
       // console.log("Date: " + dateValue);
@@ -40,7 +62,6 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
       // console.log("Participants: " + participantsValue);
       // console.log("Location: " + locationValue);
 
-      setIsEditing(false);
       var response = await updateMeetingDetails(
         props.minutesID,
         props.chatHistoryID,
@@ -50,6 +71,9 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
       if (response !== undefined) {
         //handle error
         console.log("Meeting Details Error:", response.ERROR);
+        toast.meetingSaveFail({'location': locationValue, 'participants': participantsValue}, false, toast)
+      } else {
+        setIsEditing(false);
       }
     }
   };
@@ -60,7 +84,8 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
     return () => {
       document.removeEventListener("mousedown", handleContainerClick);
     };
-  }, [isEditing]);
+  }, [isEditing, meetingFocused]);
+
 
   return (
     <div className={styles.genericBlockHolder}>

@@ -31,7 +31,7 @@ export default function AssistantResponse(props: assistantResponse) {
                 key={index}
                 onClick={props.setSelectedMinutes(null)}
               >
-                {topic.title}
+                {topic.title || "No sources"}
               </li>
             ))}
           </ul>

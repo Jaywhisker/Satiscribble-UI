@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import styles from "@/styles/components/DynamicTextArea.module.css";
 
 const ModularTextField = forwardRef((props, ref) => {
-  const { label, placeholder, onChange } = props;
+  const { label, placeholder, onChange, onBlur } = props;
 
   return (
     <div className={styles.detailBlockMain}>

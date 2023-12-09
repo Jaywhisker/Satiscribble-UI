@@ -34,7 +34,7 @@ function CenterArea(props: centerAreaProps) {
     if (!showCover && filledAgendaContent.length > 0) {
       props.setTopicTitles((prevTopicAreas) => [
         ...prevTopicAreas,
-        { title: "", id: topicCount },
+        { title: `Topic ${topicCount}`, id: topicCount },
       ]);
       props.setTopicContent((prevTopicContent) => [
         ...prevTopicContent,
@@ -95,6 +95,7 @@ function CenterArea(props: centerAreaProps) {
       <AgendaBlock
         agendaItems={props.agendaContent}
         setAgendaItems={props.setAgendaContent}
+        topicContent={props.topicContent}
         minutesID={props.minutesID}
         chatHistoryID={props.chatHistoryID}
         showCover={showCover}
@@ -110,7 +111,7 @@ function CenterArea(props: centerAreaProps) {
         <TextAreaQuill
           minutesID={props.minutesID}
           chatHistoryID={props.chatHistoryID}
-          key={index}
+          key={area.id}
           id={area.id}
           shouldFocus={index === props.topicTitles.length - 1}
           title={area.title}

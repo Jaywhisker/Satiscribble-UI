@@ -3,6 +3,7 @@ import styles from '@/styles/components/popups.module.css';
 import { useToast } from '@/hooks/useToast';
 import { useState } from "react";
 import { createGlossaryEntry } from '@/functions/api/glossaryActions';
+import { updateAgenda, updateMeetingDetails, updateMinutes } from '@/functions/api/updateMinutes';
 
 export interface ToastProps {
     type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail' | 'glossaryAdd';
@@ -86,9 +87,54 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 isOpen={true}
                 onClose={handleDismiss}
                 buttonFunction={(minutesID, chatHistoryID, abbreviation, meaning) => createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)}
-                stateValue={{"glossary": message}}
+                dataValue={{"glossary": message}}
                 toast = {toast} />
-        }
+        },
+        agendaSaveFail: {
+            popup: <PopUp.BasicOneButtonAlert
+            colorVariant="red"
+            iconName="exclamation"
+            iconColor="red"
+            messageTitle="Agenda Autosave Failed"
+            messageContent="Oh no! Your agenda couldn't be saved. Please try again or edit your agenda to retrigger autosave."
+            messageHeaderColor="Red"
+            isOpen={true}
+            onClose={handleDismiss}
+            buttonFunction={(minutesID, chatHistoryID, agenda) => updateAgenda(minutesID, chatHistoryID, agenda)}
+            stateValue={stateValue}
+            dataValue={{"agenda": message}}
+            toast = {toast} />
+        },
+        meetingSaveFail: {
+            popup: <PopUp.BasicOneButtonAlert
+            colorVariant="red"
+            iconName="exclamation"
+            iconColor="red"
+            messageTitle="Meeting Details Autosave Failed"
+            messageContent="Oh no! Your meeting details couldn't be saved. Please try again or edit your meeting details to retrigger autosave."
+            messageHeaderColor="Red"
+            isOpen={true}
+            onClose={handleDismiss}
+            buttonFunction={(minutesID, chatHistoryID, location, attendees) => updateMeetingDetails(minutesID, chatHistoryID, location, attendees)}
+            stateValue={stateValue}
+            dataValue={{"meetingDetails": message}}
+            toast = {toast} />
+        },
+        minutesSaveFail: {
+            popup: <PopUp.BasicOneButtonAlert
+            colorVariant="red"
+            iconName="exclamation"
+            iconColor="red"
+            messageTitle="Minutes Auto Save Failed"
+            messageContent={`Oh no! Your latest edits to ${message?.reqData?.topicTitle || ""} couldn't be saved. Please try again or edit ${message?.reqData?.topicTitle || ""} to retrigger autosave.`}
+            messageHeaderColor="Red"
+            isOpen={true}
+            onClose={handleDismiss}
+            buttonFunction={(reqData, toast, agendaInaccuracyCounter,setAgendaInaccuracyCounter,topicInaccuracyCounter,setTopicInaccuracyCounter,onAddTopicArea) => updateMinutes(reqData, toast,agendaInaccuracyCounter,setAgendaInaccuracyCounter,topicInaccuracyCounter,setTopicInaccuracyCounter, onAddTopicArea, [], undefined, true)}
+            stateValue={stateValue}
+            dataValue={{"minutesDetails": message}}
+            toast = {toast} />
+        },
     };
 
     const currentToast = toastTypes[type];

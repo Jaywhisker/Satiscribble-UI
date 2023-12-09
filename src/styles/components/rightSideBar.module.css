@@ -221,6 +221,7 @@
     font: var(--ui-comment);
     margin: 0.5vh 0;
     color: var(--Nice_Blue);
+    cursor: pointer;
 }
 
 .inputTextContainer{

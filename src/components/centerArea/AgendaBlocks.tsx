@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/useToast";
 interface AgendaProps {
   agendaItems: [{ id: string; name: string; completed: boolean }];
   setAgendaItems: any;
+  topicContent: any[];
   minutesID: string;
   chatHistoryID: string;
   showCover: boolean; // New prop for cover visibility
@@ -52,6 +53,7 @@ export default function AgendaBlock(props: AgendaProps) {
         );
         if (response !== undefined) {
           console.log("ERROR:", response.ERROR);
+          toast.agendaSaveFail({'items': agendaContent}, false, toast)
         }
       }
     }, 1000);
@@ -61,6 +63,7 @@ export default function AgendaBlock(props: AgendaProps) {
       clearTimeout(newTimeoutId);
     };
   }, [focused]);
+
 
   //outline the agenda block on alert
   useEffect(() => {
@@ -76,15 +79,18 @@ export default function AgendaBlock(props: AgendaProps) {
     }
   }, [toast.alertContainer]);
 
+
   const updateAgendaItems = (newAgendaItems) => {
     // Function to update agenda items
     const agendaBlock = document.querySelector("#agendaBlock") as HTMLElement;
+
+    // Remove addTopicfail alert
     if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
       agendaBlock.style.outline = "none";
-      var topicFailedAlert = toast.alertContainer.filter(
-        (alert) => alert.type === "addTopicfail"
+      var topicAddFailedAlert = toast.alertContainer.filter(
+        (alert) => alert.type === "addTopicfail" && alert.stateValue === false
       );
-      toast.update(topicFailedAlert[0].id, "addTopicfail", null, null, true);
+      toast.update(topicAddFailedAlert[0].id, "addTopicfail", null, null, true);
     }
     props.setAgendaItems(newAgendaItems);
   };
@@ -105,30 +111,28 @@ export default function AgendaBlock(props: AgendaProps) {
 
   const handleKeyDown = (e, index) => {
     // Key functions
-    // Create new input on enter
-    // Delete previouse input on enter
     if (e.key === "Enter") {
+      // Create new input on enter
       e.preventDefault();
       addNewAgendaItem();
       setNoDelete(false);
-    } else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
+    } 
+    else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
+      // Delete row if row is empty
       e.preventDefault();
       if (props.agendaItems.length > 1) {
         deleteAgendaItem(props.agendaItems[index].id);
         //add focus on modulartextfileagenda with id-1
       }
-    } else if (e.key === "Backspace") {
+    }
+    else if (e.key === "Backspace") {
+      // Prevent agenda from being empty if there are minutes
       if (
-        props.agendaItems[index].name.length === 1 &&
-        props.agendaItems
-          .slice(0, index)
-          .every((item) => item.name.length === 0) &&
-        props.agendaItems
-          .slice(index + 1)
-          .every((item) => item.name.length === 0)
+        props.agendaItems[0].name.length === 1 &&
+        props.agendaItems.slice(0, index).every((item) => item.name.length === 0) &&
+        props.topicContent.length > 0
       ) {
         e.preventDefault();
-        console.log("saveme");
         setNoDelete(true);
       }
     } else {
@@ -146,6 +150,7 @@ export default function AgendaBlock(props: AgendaProps) {
     setNextId(nextId + 1);
   };
 
+
   const deleteAgendaItem = (idToDelete) => {
     // Deletes agenda item
     if (props.agendaItems.length > 1) {
@@ -157,9 +162,17 @@ export default function AgendaBlock(props: AgendaProps) {
     }
   };
 
-  // Connect functionality to backend
-  // Update agenda function
-  // Retrieve agenda function
+
+  const handleFocus = () => {
+    setFocused(true)
+    // Remove agendaSaveFail alert
+    var agendaFailedAlert = toast.alertContainer.filter(
+      (alert) => alert.type === "agendaSaveFail"
+    )
+    if (agendaFailedAlert.length > 0) {
+      toast.update(agendaFailedAlert[0].id, "agendaSaveFail", null, null, true)
+    }
+  }
 
   return (
     <div className={DynamicStyles.genericBlockHolder}>
@@ -198,17 +211,9 @@ export default function AgendaBlock(props: AgendaProps) {
               placeholder="Enter agenda here"
               onChange={(e) => handleAgendaChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              onFocus={() => setFocused(true)}
+              onFocus={handleFocus}
               onBlur={() => setFocused(false)}
             />
-            {/* {agendaItems.length > 1 && (
-            <img 
-              src={deleteIcon} 
-              onClick={() => deleteAgendaItem(item.id)} 
-              alt="Delete"
-              className={stylo.deleteButton}
-            />
-          )} */}
           </div>
         ))}
       </div>

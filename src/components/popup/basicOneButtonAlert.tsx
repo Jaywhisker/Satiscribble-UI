@@ -15,7 +15,8 @@ interface PopupProps {
   onClose: () => void;
   buttonFunction: (any) => void;
   children?: ReactNode;
-  stateValue?: {};
+  dataValue?: {agenda?:{items:string[]}, glossary?:string, meetingDetails?:{'location': string, 'participants': string}, minutesDetails?:{}}
+  stateValue?: boolean;
   toast?: any;
 }
 
@@ -59,6 +60,7 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
   onClose,
   buttonFunction,
   children,
+  dataValue,
   stateValue,
   toast,
   ...rest
@@ -80,6 +82,13 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
+
+
   const handleClick = async() => {
     console.log('Button Clicked')
     onClose()
@@ -87,22 +96,63 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
     const minutesID = localStorage.getItem('minutesID');
     const chatHistoryID = localStorage.getItem('chatHistoryID')
 
-    // glossary details
-    if (stateValue.hasOwnProperty('glossary')) {
-        var abbreviation = stateValue.glossary.split("-")[0].trim().toUpperCase();
-        var meaning = stateValue.glossary.split("-")[1].trim().toLowerCase();
+    // glossary try again
+    if (dataValue.hasOwnProperty('glossary')) {
+        var abbreviation = dataValue.glossary.split("-")[0].trim().toUpperCase();
+        var meaning = dataValue.glossary.split("-")[1].trim().toLowerCase();
         // @ts-ignore
         var response = await buttonFunction(minutesID, chatHistoryID, abbreviation, meaning)
         if (response !== undefined) {
             console.log(response.ERROR)
             setTimeout(() => {
-                toast.glossaryAddFail(stateValue.glossary, toast)
+                toast.glossaryAddFail(dataValue.glossary, toast)
             }, 1000)
           } else {
             setTimeout(() => {
                 toast.glossaryAdd()
             }, 1000)
           }
+    } else if (dataValue.hasOwnProperty('agenda')) {
+      //agenda try again
+      var agendaItems = dataValue.agenda.items        
+      // @ts-ignore
+      var response = await buttonFunction(minutesID, chatHistoryID, agendaItems)
+      if (response !== undefined) {
+        console.log(response.ERROR)
+        setTimeout(() => {
+            toast.agendaSaveFail(dataValue.agenda, false, toast)
+        }, 1000)
+      }
+    } else if (dataValue.hasOwnProperty('meetingDetails')) {
+      //meeting Details try again
+      // @ts-ignore
+      var response = await buttonFunction(minutesID, chatHistoryID, dataValue.meetingDetails.location, dataValue.meetingDetails.participants)
+      if (response !== undefined) {
+        console.log(response.ERROR)
+        setTimeout(() => {
+            toast.meetingSaveFail(dataValue.meetingDetails, false, toast)
+        }, 1000)
+      }
+    } else if (dataValue.hasOwnProperty('minutesDetails')) {
+      //minutes details try again
+      //@ts-ignore
+      var response = await buttonFunction(dataValue.minutesDetails.reqData, //@ts-ignore
+                                          toast, //@ts-ignore
+                                          dataValue.minutesDetails.agendaInaccuracyCounter, //@ts-ignore
+                                          dataValue.minutesDetails.setAgendaInaccuracyCounter, //@ts-ignore
+                                          dataValue.minutesDetails.topicInaccuracyCounter, //@ts-ignore
+                                          dataValue.minutesDetails.setTopicInaccuracyCounter, //@ts-ignore
+                                          dataValue.minutesDetails.onAddTopicArea,
+                                          [],
+                                          undefined,
+                                          true //ignoring alerts
+                                          )
+      if (response !== undefined) {
+        console.log(response.ERROR)
+        setTimeout(() => {
+            toast.minutesSaveFail(dataValue.minutesDetails, false, toast)
+        }, 1000)
+      }
     }
   }
   

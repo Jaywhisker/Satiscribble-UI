@@ -67,6 +67,9 @@ export async function updateMinutes(
   topicInaccuracyCounter:number,
   setTopicInaccuracyCounter:any,
   onAddTopicArea: () => void,
+  alertCounters: number[],
+  setalertCounters: any,
+  ignoreAlerts: boolean,
 ) {
   try {
     if (reqData.minutes.length <= 0) {
@@ -77,17 +80,35 @@ export async function updateMinutes(
     const response = await axios.post("/api/update", reqData);
     console.log(response);
     
-    if (!response.data.agenda) {
+    let newAlertCounters = [...alertCounters] || []
+    console.log(ignoreAlerts)
+    if (!response.data.agenda && !ignoreAlerts) {
+      console.log('updating agenda')
       //update agenda error
       //call alert
-      toast.agenda(agendaInaccuracyCounter, setAgendaInaccuracyCounter)
+      if (alertCounters !== undefined && alertCounters[0] === 2) {
+        toast.agenda(agendaInaccuracyCounter, setAgendaInaccuracyCounter)
+        newAlertCounters[0] = 0
+      } else {
+        newAlertCounters[0] += 1
+      }
     }
 
-    if (!response.data.topic) {
+    if (!response.data.topic && !ignoreAlerts) {
+      console.log('updating topic')
       //update topic error
-      //call alert
-      toast.changeTopic(topicInaccuracyCounter, setTopicInaccuracyCounter, onAddTopicArea)
+      //call alerts
+      if (alertCounters !== undefined && alertCounters[1] === 2) {
+        toast.changeTopic(topicInaccuracyCounter, setTopicInaccuracyCounter, onAddTopicArea)
+        newAlertCounters[1] = 0
+      } else {
+        newAlertCounters[1] += 1
+      }
+    }
 
+    if (setalertCounters !== undefined) {
+      console.log("alert counters", alertCounters)
+      setalertCounters(newAlertCounters)
     }
 
     if (response.data.abbreviation != null) {

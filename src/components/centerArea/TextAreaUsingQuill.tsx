@@ -57,8 +57,12 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [quillRefHeight, setQuillRefHeight] = useState(null);
   const [contentChanged, setContentChanged] = useState(false);
 
+  const [alertCounters, setAlertCounters] = useState([0,0])
+
   const [agendaInaccuracyCounter, setAgendaInaccuracyCounter] = useState(0);
   const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0);
+
+  const [errorExist, setErrorExist] = useState(false)
 
   const toast = useToast();
 
@@ -138,7 +142,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     setQuillDisplayed(false);
     setLoadingSummary(true);
     setSummaryContent("");
-    await handleBlurring();
+    await handleBlurring(true);
     var response = await summariseTopic(
       props.minutesID,
       props.chatHistoryID,
@@ -148,8 +152,8 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       setSummaryContent(response);
       setLoadingSummary(false);
     } else {
-      console.log(typeof response);
-      console.log("error summarising content");
+      console.log(response.ERROR)
+      setSummaryContent("Error generating summary, please try again")
     }
   };
 
@@ -158,7 +162,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     setTopic(props.title);
   }, [props.title]);
 
-  const handleBlurring = async () => {
+  const handleBlurring = async (ignoreAlerts) => {
     const quillEditor = quillRef.current.getEditor();
     const rawText = quillEditor.getText();
     const backendDelta = deltaToBackend(rawText);
@@ -171,16 +175,26 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       props.minutesID,
       props.chatHistoryID
     );
-    var response = await handleUpdateMinutes(backendDelta, lastAbbreviation);
+    await handleUpdateMinutes(backendDelta, lastAbbreviation, ignoreAlerts || false);
   };
 
   const handleFocus = () => {
     setContentChanged(false);
+    var minutesFailedAlert = toast.alertContainer.filter(
+      (alert) => alert.type === "minutesSaveFail" && alert.stateValue == false && alert.message.reqData.topicID == props.id
+    )
+    console.log(minutesFailedAlert)
+    if (minutesFailedAlert.length > 0) {
+      //update to remove the minutesFailedAlert
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", null, null, true)
+      setErrorExist(true)
+    }
     console.log("clicked in");
   };
 
-  const handleUpdateMinutes = async (backendDelta, lastAbbreviation) => {
-    if (contentChanged) {
+  const handleUpdateMinutes = async (backendDelta, lastAbbreviation, ignoreAlerts) => {
+    console.log('ignoreAlerts?', ignoreAlerts)
+    if (contentChanged || errorExist) {
       console.log("Content has been changed, updating");
       setContentChanged(false);
       var reqData = {
@@ -199,15 +213,26 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         setAgendaInaccuracyCounter,
         topicInaccuracyCounter,
         setTopicInaccuracyCounter,
-        props.onAddTopicArea
+        props.onAddTopicArea,
+        alertCounters,
+        setAlertCounters,
+        ignoreAlerts
       );
 
       if (response !== undefined) {
         //handle error
         console.log("Minutes Update Error:", response.ERROR);
+        toast.minutesSaveFail({
+          reqData: reqData,
+          agendaInaccuracyCounter: agendaInaccuracyCounter,
+          setAgendaInaccuracyCounter: setAgendaInaccuracyCounter,
+          topicInaccuracyCounter: topicInaccuracyCounter,
+          setTopicInaccuracyCounter: setTopicInaccuracyCounter,
+          onAddTopicArea: props.onAddTopicArea
+        }, false, toast)
+      } else {
+        setErrorExist(false)
       }
-
-      return response;
     } else {
       console.log("Content has not been changed");
     }
@@ -230,6 +255,15 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       setTooLong(false);
     }
 
+    var minutesFailedAlert = toast.alertContainer.filter(
+      (alert) => alert.type === "minutesSaveFail" && alert.stateValue == false && alert.message.reqData.topicID == props.id
+    )
+    if (minutesFailedAlert.length > 0) {
+      //update to remove the minutesFailedAlert on key down
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", null, null, true)
+      setErrorExist(true)
+    }
+
     // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
       // console.log(props.content);
@@ -237,7 +271,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     } else if (event.key === "Enter") {
       const backendDelta = deltaToBackend(rawText);
       const lastAbbreviation = detectLastAbbreviation(backendDelta);
-      var response = await handleUpdateMinutes(backendDelta, lastAbbreviation);
+      var response = await handleUpdateMinutes(backendDelta, lastAbbreviation, false);
 
       // console.log(backendDelta);
       const range = quillEditor.getSelection();
@@ -381,7 +415,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           }, 0);
         }
       }
-    }
+    } 
   };
 
   function handleDeleteButton() {
@@ -396,6 +430,14 @@ function TextAreaQuill(props: TextAreaQuillProps) {
 
   function actualDeletefunction() {
     setDeleteMode(false);
+    var minutesFailedAlert = toast.alertContainer.filter(
+      (alert) => alert.type === "minutesSaveFail" && alert.stateValue == false && alert.message.reqData.topicID == props.id
+    )
+    if (minutesFailedAlert.length > 0) {
+      //update to remove the minutesFailedAlert on key down
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", null, null, true)
+      setErrorExist(true)
+    }
     props.onDelete();
     document.body.style.overflow = "auto";
     props.setShowCover(false);
@@ -510,7 +552,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
               onChange={handleQuillValueChange}
               onFocus={handleFocus}
               onKeyDown={handleKeyDown} // Add the onKeyUp prop here
-              onBlur={handleBlurring} // Added onBlur handler
+              onBlur={() => handleBlurring(false)} // Added onBlur handler
             />
           </div>
           <button

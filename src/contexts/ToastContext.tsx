@@ -11,6 +11,9 @@ export type ToastContextType = {
     addTopicfail: (stateValue:boolean, message?: string) => void;
     glossaryAdd: (message?: string) => void;
     glossaryAddFail: (message: string, toast:any) => void;
+    agendaSaveFail: (message: string | {}, stateValue:boolean, toast:any) => void;
+    meetingSaveFail: (message: string | {}, stateValue:boolean, toast:any) => void;
+    minutesSaveFail: (message: string | {}, stateValue:boolean, toast:any) => void;
     remove: (id: number) => void;
     update : (id: number, type: string, message?: string, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any) => void
     alertContainer: any[];
@@ -24,7 +27,7 @@ interface ToastContextProps {
 interface Toast {
     id: string;
     type: string;
-    message?: string;
+    message?: string | {};
 }
 
 const initialState = {
@@ -39,7 +42,7 @@ type ToastAction =
 export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) => {
     const [state, dispatch] = useReducer(toastReducer, initialState);
 
-    const addToast = (type: string, message?: string, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {
+    const addToast = (type: string, message?: string | {}, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {
         //logic on checking notification container size will be here
         //probably using toast.states to check the size 
         //if yes, allow for dispatch else do remove function
@@ -54,7 +57,7 @@ export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) 
         }, 500)
     };
 
-    const update = (id: number, type: string, message?: string, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {
+    const update = (id: number, type: string, message?: string | {}, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {
         dispatch({type: "UPDATE_TOAST", payload: { id, message, type, inactivityRef, stateValue, setState, createNewTopic, toast} })
     }
     
@@ -67,7 +70,10 @@ export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) 
         topicLength: (message?: string) => addToast("topicLength", message),
         addTopicfail: (stateValue:boolean, message?: string) => addToast("addTopicfail", message=message, stateValue=stateValue),
         glossaryAdd: (message?: string) => addToast("glossaryAdd", message),
-        glossaryAddFail: (message: string, toast:any) => addToast("glossaryAddFail", message, toast),
+        glossaryAddFail: (message: string, toast:any) => addToast("glossaryAddFail", message, toast=toast),
+        agendaSaveFail: (message: string | {}, stateValue:boolean, toast:any) => addToast("agendaSaveFail", message, null, stateValue, null, null, toast),
+        meetingSaveFail: (message: string | {}, stateValue:boolean, toast:any) => addToast("meetingSaveFail", message, null, stateValue, null, null, toast),
+        minutesSaveFail: (message: string | {}, stateValue:boolean, toast:any) => addToast("minutesSaveFail", message, null, stateValue, null, null, toast),
         remove,
         update,
         alertContainer: state.toasts
