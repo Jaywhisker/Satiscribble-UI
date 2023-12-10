@@ -124,9 +124,13 @@ export default function AgendaBlock(props: AgendaProps) {
     // Remove addTopicfail alert
     if (agendaBlock.style.outline == `2px solid var(--Alert-Red)`) {
       agendaBlock.style.outline = "none";
-      var topicAddFailedAlert = toast.alertContainer.filter(
-        (alert) => alert.type === "addTopicfail" && alert.stateValue === false
-      );
+    }
+
+    var topicAddFailedAlert = toast.alertContainer.filter(
+      (alert) => alert.type === "addTopicfail" && alert.stateValue === false
+    ); 
+    console.log(topicAddFailedAlert)
+    if (topicAddFailedAlert.length > 0) {
       toast.update(topicAddFailedAlert[0].id, "addTopicfail", null, null, true);
     }
     props.setAgendaItems(newAgendaItems);
