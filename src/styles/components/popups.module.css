@@ -20,6 +20,8 @@
     gap: var(--blockGap);
     height:fit-content;
     z-index: 3;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 .greyNotif {

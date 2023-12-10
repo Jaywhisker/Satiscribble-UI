@@ -25,9 +25,9 @@ export default function AgendaBlock(props: AgendaProps) {
 
   const [nextId, setNextId] = useState(0);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const [focused, setFocused] = useState(true);
+  const [focused, setFocused] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
-  const [noDelete, setNoDelete] = useState(false)
+  const [noDelete, setNoDelete] = useState(false);
 
   const textInputRefs = useRef([]);
 
@@ -43,36 +43,40 @@ export default function AgendaBlock(props: AgendaProps) {
   // Adding mouse arrow key functionality
   useEffect(() => {
     const handleKeyDown = (event) => {
-      switch (event.key) {
-        case 'ArrowUp':
-          console.log('up')
-          var newIndex = Math.max(focusedIndex-1, 0);
-          setFocusedIndex(newIndex);
-          textInputRefs.current[newIndex]?.focus()
-          break;
-        case 'ArrowDown':
-          console.log('down')
-          var newIndex = Math.min(focusedIndex+1, nextId-1);
-          setFocusedIndex(newIndex);
-          textInputRefs.current[newIndex]?.focus()
-          break;
-        default:
-          break;
+      if (focused) {
+        switch (event.key) {
+          case "ArrowUp":
+            console.log("up");
+            var newIndex = Math.max(focusedIndex - 1, 0);
+            setFocusedIndex(newIndex);
+            textInputRefs.current[newIndex]?.focus();
+            break;
+          case "ArrowDown":
+            console.log("down");
+            var newIndex = Math.min(focusedIndex + 1, nextId - 1);
+            setFocusedIndex(newIndex);
+            textInputRefs.current[newIndex]?.focus();
+            break;
+          default:
+            break;
+        }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [focusedIndex])
+  }, [focusedIndex]);
 
   // Update the refs array when the agenda items change
   useEffect(() => {
-    textInputRefs.current = textInputRefs.current.slice(0, props.agendaItems.length);
-  }, [props.agendaItems])
-
+    textInputRefs.current = textInputRefs.current.slice(
+      0,
+      props.agendaItems.length
+    );
+  }, [props.agendaItems]);
 
   //updating agenda when unfocused
   useEffect(() => {
@@ -90,7 +94,7 @@ export default function AgendaBlock(props: AgendaProps) {
         );
         if (response !== undefined) {
           console.log("ERROR:", response.ERROR);
-          toast.agendaSaveFail({'items': agendaContent}, false, toast)
+          toast.agendaSaveFail({ items: agendaContent }, false, toast);
         }
       }
     }, 1000);
@@ -100,7 +104,6 @@ export default function AgendaBlock(props: AgendaProps) {
       clearTimeout(newTimeoutId);
     };
   }, [focused]);
-
 
   //outline the agenda block on alert
   useEffect(() => {
@@ -115,7 +118,6 @@ export default function AgendaBlock(props: AgendaProps) {
       agendaBlock.style.outline = "none";
     }
   }, [toast.alertContainer]);
-
 
   const updateAgendaItems = (newAgendaItems) => {
     // Function to update agenda items
@@ -157,8 +159,7 @@ export default function AgendaBlock(props: AgendaProps) {
       e.preventDefault();
       addNewAgendaItem(index);
       setNoDelete(false);
-    } 
-    else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
+    } else if (e.key === "Backspace" && props.agendaItems[index].name === "") {
       // Delete row if row is empty
       e.preventDefault();
       if (props.agendaItems.length > 1) {
@@ -166,12 +167,13 @@ export default function AgendaBlock(props: AgendaProps) {
         deleteAgendaItem(index, focusIndex);
         //add focus on modulartextfileagenda with id-1
       }
-    }
-    else if (e.key === "Backspace") {
+    } else if (e.key === "Backspace") {
       // Prevent agenda from being empty if there are minutes
       if (
         props.agendaItems[0].name.length === 1 &&
-        props.agendaItems.slice(0, index).every((item) => item.name.length === 0) &&
+        props.agendaItems
+          .slice(0, index)
+          .every((item) => item.name.length === 0) &&
         props.topicContent.length > 0
       ) {
         e.preventDefault();
@@ -182,11 +184,10 @@ export default function AgendaBlock(props: AgendaProps) {
     }
   };
 
-
   // Function to add a new agenda item
   const addNewAgendaItem = (index) => {
     const newAgendaItems = [...props.agendaItems];
-    const newAgendaItem = { id: `item-${nextId}`, name: '', completed: false };
+    const newAgendaItem = { id: `item-${nextId}`, name: "", completed: false };
     if (index !== null && index !== undefined) {
       newAgendaItems.splice(index + 1, 0, newAgendaItem);
     } else {
@@ -197,35 +198,36 @@ export default function AgendaBlock(props: AgendaProps) {
 
     // Set focus on the new item's input field
     setTimeout(() => {
-      const newItemIndex = index !== null && index !== undefined ? index + 1 : newAgendaItems.length - 1;
+      const newItemIndex =
+        index !== null && index !== undefined
+          ? index + 1
+          : newAgendaItems.length - 1;
       textInputRefs.current[newItemIndex]?.focus();
     }, 0);
   };
 
-
-// Function to delete an agenda item
+  // Function to delete an agenda item
   const deleteAgendaItem = (index, focusIndex) => {
     const newAgendaItems = props.agendaItems.filter((_, i) => i !== index);
     updateAgendaItems(newAgendaItems);
 
     // Set focus on the previous (or next if the first was deleted) item's input field
     setTimeout(() => {
-        textInputRefs.current[focusIndex]?.focus();
+      textInputRefs.current[focusIndex]?.focus();
     }, 0);
   };
 
-
   const handleFocus = (index) => {
-    setFocusedIndex(index)
-    setFocused(true)
+    setFocusedIndex(index);
+    setFocused(true);
     // Remove agendaSaveFail alert
     var agendaFailedAlert = toast.alertContainer.filter(
       (alert) => alert.type === "agendaSaveFail"
-    )
+    );
     if (agendaFailedAlert.length > 0) {
-      toast.update(agendaFailedAlert[0].id, "agendaSaveFail", null, null, true)
+      toast.update(agendaFailedAlert[0].id, "agendaSaveFail", null, null, true);
     }
-  }
+  };
 
   return (
     <div className={DynamicStyles.genericBlockHolder}>
@@ -266,7 +268,9 @@ export default function AgendaBlock(props: AgendaProps) {
               onChange={(e) => handleAgendaChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onFocus={() => handleFocus(index)}
-              onBlur={() => {setFocused(false), setFocusedIndex(null)}}
+              onBlur={() => {
+                setFocused(false), setFocusedIndex(null);
+              }}
             />
           </div>
         ))}
