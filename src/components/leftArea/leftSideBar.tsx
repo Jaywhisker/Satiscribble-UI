@@ -15,7 +15,7 @@ interface LeftSideProps {
 export default function LeftSideBar(props: LeftSideProps) {
   return (
     <div className={LeftBar.leftBarContainer}>
-      <ContainerWithBorder text="HCI MEETING ON 23/10" />
+      <ContainerWithBorder text="Satiscribble" />
       <Agenda
         agendaList={props.agendaContent}
         setAgendaList={props.setAgendaContent}

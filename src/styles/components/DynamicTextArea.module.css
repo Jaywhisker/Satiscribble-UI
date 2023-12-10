@@ -73,7 +73,7 @@
 .emptyBlockText{
   padding: 0;
   color: var(--Nice_Blue);
-  font: var(--ui-text);
+  font: var(--ui-bold-text);
   margin-top: 1vh;
   margin-bottom: 1vh;
 }

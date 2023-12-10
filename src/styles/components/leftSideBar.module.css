@@ -11,12 +11,12 @@
   width: 80%;
   margin-left: 10%;
   margin-top: 5vh;
-  font: var(--ui-comment);
+  font: var(--ui-bold-text);
   color: var(--Nice_Blue);
   text-align: center;
   border: 1px solid var(--Nice_Blue); 
-  padding: 0.75vh 0; /* 2px */ 
-  border-radius: 3px;
+  padding: 0; /* 2px */ 
+  border-radius: 5px;
 }
 
 .OutlineContainer,

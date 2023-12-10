@@ -229,7 +229,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         chatHistoryID: props.chatHistoryID,
         abbreviation: lastAbbreviation,
         topicID: props.id,
-        topicTitle: props.title,
+        topicTitle: props.title || `Topic ${props.id + 1}`,
         minutes: backendDelta,
       };
 

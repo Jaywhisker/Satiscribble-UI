@@ -35,7 +35,7 @@ export default function AssistantResponse(props: assistantResponse) {
                     key={index}
                     onClick={props.setSelectedMinutes(null)}
                   >
-                    {topic.title || `Topic ${topic.id + 1}`}
+                    {topic.title || topic.placeholder || 'No sources'}
                   </li>
                 );
               }

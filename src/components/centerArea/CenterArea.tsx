@@ -34,7 +34,7 @@ function CenterArea(props: centerAreaProps) {
     if (!showCover && filledAgendaContent.length > 0) {
       props.setTopicTitles((prevTopicAreas) => [
         ...prevTopicAreas,
-        { title: "", id: topicCount },
+        { title: "", id: topicCount, placeholder: `Topic ${topicCount + 1}` },
       ]);
       props.setTopicContent((prevTopicContent) => [
         ...prevTopicContent,
