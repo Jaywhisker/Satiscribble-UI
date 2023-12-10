@@ -3,13 +3,13 @@ import styles from "@/styles/components/leftSideBar.module.css"
 
 
 interface outlineProps {
-  taskList: [{title:string, id:number}]
+  taskList: [{title:string, id:number, placeholder:string}]
   setSelectedTask: any
 }
 
 export default function Outline(props: outlineProps) {
   const [dropDownOpen, setDropDownOpen] = useState(true);
-  const filteredTasks = props.taskList.filter(item => item.title.trim() !== ''); // Filter out empty task lists
+  // const filteredTasks = props.taskList.filter(item => item.title.trim() !== ''); // Filter out empty task lists
 
   const toggleDropDown = () => {
     setDropDownOpen(prev => !prev);
@@ -32,10 +32,10 @@ export default function Outline(props: outlineProps) {
       </div>
       {dropDownOpen && (
         <div className={styles.dropDownContainer}>
-          {filteredTasks.length > 0 ? (
-            filteredTasks.map(task => (
+          {props.taskList.length > 0 ? (
+            props.taskList.map(task => (
               <div className={styles.taskContainer} key={task.id} onClick={() => handleTaskSelect(task.id)}>
-                <p className={`${styles.dropDownText} ${styles.clickableText}`}>{task.title}</p>
+                <p className={`${styles.dropDownText} ${styles.clickableText}`}>{task.title || task.placeholder}</p>
               </div>
               ))
           ) : (

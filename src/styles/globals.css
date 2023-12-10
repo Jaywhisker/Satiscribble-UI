@@ -24,7 +24,3 @@ p{
 :root{
   font-size: 16px;
 }
-
-li{
-  font: var(--ui-text)
-}
