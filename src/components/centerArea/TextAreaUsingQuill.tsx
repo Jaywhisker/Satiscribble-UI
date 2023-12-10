@@ -64,6 +64,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0);
 
   const [errorExist, setErrorExist] = useState(false);
+  const [summaryWarning, setSummaryWarning] = useState(false);
 
   const toast = useToast();
 
@@ -95,6 +96,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   }, [props.content]);
 
   const handleQuillValueChange = (newValue) => {
+    setSummaryWarning(false)
     setQuillValue(newValue);
     props.updateBlockContent(newValue);
   };
@@ -139,33 +141,29 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   }, [isSummaryVisible, quillDisplayed]);
 
   const toggleSummaryVisibility = async () => {
-    if (!deleteMode) {
+    if (!deleteMode && props.content !== "<ul><li><br></li></ul>") {
       setIsSummaryVisible(true);
       setQuillDisplayed(false);
       setLoadingSummary(true);
       setSummaryContent("");
       await handleBlurring(true);
-      if (props.content == "<ul><li><br></li></ul>") {
-        setSummaryContent(
-          "Please key content into the block, before hitting the summarise button."
-        );
+      var response = await summariseTopic(
+        props.minutesID,
+        props.chatHistoryID,
+        String(props.id)
+      );
+      if (typeof response == "string") {
+        setSummaryContent(response);
         setLoadingSummary(false);
       } else {
-        var response = await summariseTopic(
-          props.minutesID,
-          props.chatHistoryID,
-          String(props.id)
-        );
-        if (typeof response == "string") {
-          setSummaryContent(response);
-          setLoadingSummary(false);
-        } else {
-          console.log(response.ERROR);
-          setSummaryContent("Error generating summary, please try again");
-        }
+        console.log(response.ERROR);
+        setSummaryContent("Error generating summary, please try again");
       }
+    } else if (props.content == "<ul><li><br></li></ul>") {
+      setSummaryWarning(true)
     }
   };
+  
 
   //handling updating of minutes ------------------------------
   useEffect(() => {
@@ -583,6 +581,9 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           ref={fullMinutesRef}
         >
           <div className={styles.topicBlockReactQuillHolder} ref={minutesRef}>
+            {summaryWarning && (
+            <p className={styles.summaryWarning}>* Your minutes block shouldn't be empty for summarisation!</p>
+            )}
             <ReactQuill
               className={styles.genericPText}
               forwardedRef={quillRef}
