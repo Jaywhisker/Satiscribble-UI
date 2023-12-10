@@ -278,7 +278,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     const range = quillEditor.getSelection();
     if (range) {
       const array = quillEditor.getContents(0, range.index)["ops"];
-      console.log(array);
       setLastHeardItem(array[array.length - 1]);
     }
 
@@ -315,7 +314,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       // console.log(props.content);
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
-      console.log(lastheardItem);
       const backendDelta = deltaToBackend(rawText);
       const lastAbbreviation = detectLastAbbreviation(backendDelta);
       // var response = await handleUpdateMinutes(
@@ -335,15 +333,11 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         // console.log("updatedProcessDelta :" + "\n" + updatedProcessedDelta);
         // console.log("quillvalue:" + "\n" + quillValue);
         const result = quillValue.replace(updatedProcessedDelta, "");
-        console.log(quillValue);
-        console.log(updatedProcessedDelta);
-        console.log(result);
 
         const previousCursorPosition = range.index;
 
         if (result.startsWith("</ul><p><br></p>")) {
           // The case of pressing enter
-          console.log(contentUpToCursor);
           const indexOfSubstring =
             result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
           let textAfter = result.substring(indexOfSubstring);
@@ -360,7 +354,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             newLiElements = `<li${classAttribute}><br></li><li${classAttribute}><br></li>`;
           } else {
             // The case of enter in an indented block
-            console.log("the case of enter in an indented block");
             newLiElements = `<li><br></li>`;
             offset = 0;
           }
