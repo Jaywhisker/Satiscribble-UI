@@ -115,7 +115,7 @@ export const deltaToBackend = (rawText) => {
 
 export const detectLastAbbreviation = (text) => {
   // Regular expression to match the abbreviations as per the new rules
-  const abbreviationRegex = /\b(?:[A-Z]{3,}|(?:[A-Z]\.[A-Z])+)\b/g;
+  const abbreviationRegex = /\b[A-Z]{2,}\b/g;
 
   // Match all occurrences of the new abbreviation pattern in the text
   const matches = text.match(abbreviationRegex);

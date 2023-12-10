@@ -5,7 +5,7 @@
 }
 
 .warningText{
-  color: var(--Alert-Red-75);
+  color: var(--Red);
   font: var(--ui-text);
   margin: 0;
 }

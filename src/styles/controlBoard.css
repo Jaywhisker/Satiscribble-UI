@@ -46,6 +46,11 @@
     padding: 0px!important;
   }
   
-  .ql-editor ul{
-    padding-left: 0!important;
-  }
+.ql-editor ul{
+  padding-left: 1vw!important;
+}
+
+li{
+  font: var(--ui-text);
+  line-height: 2;
+}

@@ -70,6 +70,14 @@
   align-items: center;
 }
 
+.emptyBlockText{
+  padding: 0;
+  color: var(--Nice_Blue);
+  font: var(--ui-text);
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+}
+
 /*  */
 /* topicBlock */
 /*  */

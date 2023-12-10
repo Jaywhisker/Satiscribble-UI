@@ -12,7 +12,11 @@ function EmptyBlock(props: emptyBlockProps) {
       <div
         className={styles.genericBlock}
         style={{ marginTop: "var(--firstBlockMarginFromTop)" }}
-      ></div>
+      >
+        <p className={styles.emptyBlockText}>
+          Autosave is enabled. Any edits will be automatically saved.
+        </p>
+      </div>
     </div>
   );
 }

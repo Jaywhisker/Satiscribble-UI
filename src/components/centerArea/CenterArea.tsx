@@ -24,17 +24,17 @@ function CenterArea(props: centerAreaProps) {
   const [topicCount, setTopCount] = useState(0);
   const [showCover, setShowCover] = useState(false); //prevent editing when there is a delete topic
 
-  const toast = useToast()
+  const toast = useToast();
 
   const handleAddTopicArea = () => {
     var filledAgendaContent = props.agendaContent
-    .map((agenda) => agenda.name)
-    .filter((items) => items.trim() !== "")
-    
+      .map((agenda) => agenda.name)
+      .filter((items) => items.trim() !== "");
+
     if (!showCover && filledAgendaContent.length > 0) {
       props.setTopicTitles((prevTopicAreas) => [
         ...prevTopicAreas,
-        { title: `Topic ${topicCount}`, id: topicCount },
+        { title: "", id: topicCount },
       ]);
       props.setTopicContent((prevTopicContent) => [
         ...prevTopicContent,
@@ -42,7 +42,7 @@ function CenterArea(props: centerAreaProps) {
       ]);
       setTopCount(topicCount + 1);
     } else if (filledAgendaContent.length <= 0) {
-      toast.addTopicfail(false)
+      toast.addTopicfail(false);
     }
   };
 
