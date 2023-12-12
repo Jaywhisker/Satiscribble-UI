@@ -1,7 +1,7 @@
 import PopUp from '@/components/popup';
 import styles from '@/styles/popups.module.css';
 import { useToast } from '@/hooks/useToast';
-import { useState } from "react";
+import React, { useState, useEffect  } from "react";
 
 export interface ToastProps {
     type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail' | 'glossaryAdd';
@@ -11,15 +11,21 @@ export interface ToastProps {
 
 const Toast: React.FC<ToastProps> = ({ type, id, message }) => {
     const toast = useToast()
-
     const [dismissed, setDismissed] = useState(false);
 
     const handleDismiss = () => {
         setDismissed(true);
         setTimeout(() => {
             toast.remove(id);
-        }, 500);  // Adjust the duration based on your CSS animation duration
+        }, 500);
     };
+
+    useEffect(() => {
+        const autoDismissTimeout = type === 'detectAbbrev' && setTimeout(handleDismiss, 15000);
+        return () => {
+            clearTimeout(autoDismissTimeout);
+        };
+    }, [type, id, toast]);
 
     // Declare toastTypes
     const toastTypes = {

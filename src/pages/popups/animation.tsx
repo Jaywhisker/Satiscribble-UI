@@ -17,7 +17,7 @@ const NotificationButton: React.FC = () => {
             <Button size="medium" fillBorderVariant="fill" onClick={() => {console.log('changeTopic button clicked');toast.changeTopic()}}>
                 Change Topic
             </Button>
-            <Button size="medium" fillBorderVariant="fill" onClick={() => {console.log('detectAbbrev button clicked'); toast.detectAbbrev('LOL - League of Legend')}}>
+            <Button size="medium" fillBorderVariant="fill" onClick={() => {console.log('detectAbbrev button clicked'); toast.detectAbbrev('LOL - League of Legends')}}>
                 Detect Abbrev
             </Button>
             <Button size="medium" fillBorderVariant="fill" onClick={() => {console.log('topicLength button clicked');toast.topicLength()}}>
