@@ -1,18 +1,17 @@
 import React from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
-import styles from '@/styles/popups.module.css';
+import styles from '@/styles/components/popups.module.css';
 
 interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
+  inaccuracyValue: number;
+  setInaccuracyValue: any;
+  createNewTopic: () => void;
 }
 
-const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
-  // Placeholder function for isOpen
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
+const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue, createNewTopic}) => {
 
   // Placeholder function for onClose
   const handleClose = () => {
@@ -21,12 +20,14 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   };
 
   const handleReport = () => {
-    console.log('Reporting inaccuracy');
+    console.log('Reporting topic inaccuracy, inaccuracy count', inaccuracyValue+1);
+    setInaccuracyValue(inaccuracyValue + 1)
     onClose();
   };
 
   const handleCreate = () => {
     console.log('Creating new topic');
+    createNewTopic()
     onClose();
   };
 
@@ -59,7 +60,7 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
       </span>
       <p className={styles.messageContent}>A topic change has been detected. Please select one of the following actions:</p>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleReport}>
+      <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleReport}>
           REPORT INACCURATE
         </Button>
         <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleCreate}>

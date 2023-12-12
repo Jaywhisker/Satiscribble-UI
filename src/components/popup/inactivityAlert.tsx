@@ -1,28 +1,28 @@
 import React from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
-import styles from '@/styles/popups.module.css';
+import styles from '@/styles/components/popups.module.css';
 
 interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
+  inactivityRef: any;
 }
 
-const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose, inactivityRef }) => {
 
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
 
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
     onClose();
+    inactivityRef.current = 'active'
   };
 
   const handleSnooze = () => {
     console.log('Snooze for 15 minutes');
     onClose();
+    inactivityRef.current = 'snooze'
   };
 
   if (!isOpen) {
@@ -47,8 +47,8 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
-          onClick={() => { handleClose() }}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
+          onClick={() => {handleClose()}}
         ></Button>
       </span>
       <p className={styles.messageContent}>

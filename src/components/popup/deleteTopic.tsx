@@ -1,23 +1,23 @@
-import React, { ReactNode } from 'react';
-import { Button } from '../buttons';
-import Icons from '../icons/icons';
-import styles from '@/styles/popups.module.css';
+import React, { ReactNode } from "react";
+import { Button } from "../buttons";
+import Icons from "../icons/icons";
+import styles from "@/styles/components/popups.module.css";
 
 interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
 }
 
-const DeleteTopic: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const DeleteTopic: React.FC<PopupProps> = ({ isOpen, onClose, onDelete }) => {
   // Placeholder functions
   const handleClose = () => {
-    console.log('Closing the popup');
+    console.log("Closing the popup");
     onClose();
   };
 
   const handleDelete = () => {
-    console.log('Deleting topic');
-    onClose();
+    console.log("Deleting topic");
+    onDelete();
   };
 
   if (!isOpen) {
@@ -26,13 +26,30 @@ const DeleteTopic: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className={`${styles.confirmPopup} ${styles.greyNotif}`}>
-      <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }} >Delete Topic?</p>
-      <p className={styles.messageContent} style={{ alignSelf: "center" }}>This action cannot be undone.</p>
+      <p
+        className={styles.messageHeader}
+        style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }}
+      >
+        Delete Topic?
+      </p>
+      <p className={styles.messageContent} style={{ alignSelf: "center" }}>
+        This action cannot be undone.
+      </p>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant='white' onClick={handleClose}>
+        <Button
+          size="small"
+          fillBorderVariant="border"
+          colorVariant="white"
+          onClick={handleClose}
+        >
           CANCEL
         </Button>
-        <Button size="small" fillBorderVariant="fill" colorVariant='red' onClick={handleDelete}>
+        <Button
+          size="small"
+          fillBorderVariant="fill"
+          colorVariant="red"
+          onClick={handleDelete}
+        >
           DELETE
         </Button>
       </span>

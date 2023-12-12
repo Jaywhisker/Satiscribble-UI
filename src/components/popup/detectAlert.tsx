@@ -1,19 +1,18 @@
 import React from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
-import styles from '@/styles/popups.module.css';
+import styles from '@/styles/components/popups.module.css';
+
+import { createGlossaryEntry } from '@/functions/api/glossaryActions';
 
 interface PopupProps {
   detectedAbbrev?: string;
   isOpen?: boolean;
   onClose: () => void;
+  toast: any;
 }
 
-const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose }) => {
-
-  const handleIsOpen = () => {
-    console.log('Popup is now open and is shown');
-  };
+const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, toast }) => {
 
   // Placeholder function for onClose
   const handleClose = () => {
@@ -21,9 +20,28 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     onClose();
   };
 
-  const handleAdd = () => {
+
+  const handleAdd = async() => {
     console.log('Adding abbreviation');
     onClose();
+
+    const minutesID = localStorage.getItem('minutesID');
+    const chatHistoryID = localStorage.getItem('chatHistoryID')
+    var abbreviation = detectedAbbrev.split("-")[0].trim().toUpperCase();
+    var meaning = detectedAbbrev.split("-")[1].trim().toLowerCase();
+    
+    var response = await createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)
+    console.log(response)
+    if (response !== undefined) {
+      console.log(response.ERROR)
+      setTimeout(() => {
+        toast.glossaryAddFail(detectedAbbrev, toast)
+      }, 1000)
+    } else {
+      setTimeout(() => {
+        toast.glossaryAdd()
+      }, 1000)
+    }
   };
 
   if (!isOpen) {
@@ -48,8 +66,8 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name='cancel' />}
-          onClick={() => { handleClose() }}
+          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
+          onClick={() => {handleClose()}}
         ></Button>
       </span>
       <span className={styles.messageContent}>

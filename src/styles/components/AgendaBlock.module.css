@@ -1,0 +1,35 @@
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.warningText{
+  color: var(--Red);
+  font: var(--ui-text);
+  margin: 0;
+}
+
+.checkboxImage {
+  cursor: pointer;
+  height: 3vh;
+  object-fit: contain; 
+}
+
+.editButton {
+  cursor: pointer;
+  width: 1.8vw; 
+  height: 3.2vh; 
+  margin-left: 0.78vw;
+}
+
+.deleteButton {
+  cursor: pointer;
+  width: 1.5vw; 
+  height: 2.6vh; 
+  margin-left: 0.78vw;
+}
+
+.margin {
+  margin-bottom: 2.78vh;
+}

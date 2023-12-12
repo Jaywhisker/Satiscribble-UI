@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
-import styles from '@/styles/popups.module.css';
+import styles from '@/styles/components/popups.module.css';
 
 
 interface PopupProps {
@@ -14,6 +14,7 @@ interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
   children?: ReactNode;
+  stateValue?: boolean;
 }
 
 const colorMapping = {
@@ -55,15 +56,17 @@ const BasicAlert: React.FC<PopupProps> = ({
   isOpen,
   onClose,
   children,
+  stateValue,
   ...rest
 }: PopupProps) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(isOpen);
+  
+  // const [isPopupOpen, setIsPopupOpen] = useState(isOpen);
 
-  useEffect(() => {
-    if (isPopupOpen) {
-      console.log("Popup is now open and is shown");
-    }
-  }, [isPopupOpen]);
+  // useEffect(() => {
+  //   if (isPopupOpen) {
+  //     console.log("Popup is now open and is shown");
+  //   }
+  // }, [isPopupOpen]);
 
   const getIcon = () => {
     const IconComponent = Icons.GeneralIcon;
@@ -76,11 +79,22 @@ const BasicAlert: React.FC<PopupProps> = ({
   };
 
   const handleClose = () => {
-    setIsPopupOpen(false);
+    console.log('Closing the popup')
     onClose();
   };
 
-  return isPopupOpen ? (
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
+  
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
     <div className={`${styles.Notif} ${styles[colorVariant + 'Notif']}`}>
       <span className={styles.topRow}>
         <span className={styles.titleCol}>
@@ -99,7 +113,7 @@ const BasicAlert: React.FC<PopupProps> = ({
       </span>
       <p className={styles.messageContent}>{messageContent}</p>
     </div>
-  ) : null;
+  ) 
 };
 
 export default BasicAlert;

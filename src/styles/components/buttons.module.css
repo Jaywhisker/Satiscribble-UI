@@ -1,16 +1,16 @@
 .button-small {
-    width: 7.39vw;
+    width: var(--smallButtonWidth);
     /* width: 8vw; */
 }
 
 .button-medium {
-    width: 14.27vw;
+    width: var(--mediumButtonWidth);
     /* width: 15vw; */
 }
 
 .button-large {
     /* width: 25vw; */
-    width: 34.375vw;
+    width: var(--largeButtonWidth);
 }
 
 .purple-fill {
@@ -60,12 +60,12 @@
 
 .button {
     display: flex;
-    min-height: 2.75rem;
-    padding: 1.25vh 0.75vw;
+    min-height: var(--buttonMinHeight);
+    min-width: var(--buttonMinWidth);
+    padding: var(--buttonVerticalPadding) var(--buttonHorizontalPadding);
     justify-content: center;
     align-items: center;
-    gap: 0.3125rem;
-    border-radius: 0.3125rem;
+    border-radius:5px;
     cursor: pointer;
 }
 
@@ -85,8 +85,8 @@
 }
 
 .icon-button-small {
-    width: 1.5vw;
-    height: 1.5vw;
+    height: var(--buttonIconSize);
+    width: var(--buttonIconSize);
 }
 
 .icon-button-large {
@@ -99,13 +99,10 @@
     text-align: center;
 
     /* Button Text */
-    font-family: 'Lato', sans-serif;
-    ;
-    font-size: 0.8rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 0.8rem;
-    letter-spacing: 0.1rem;
+    min-width: calc(var(--buttonMinWidth) - var(--buttonHorizontalPadding));
+    font: var(--ui-comment);
+    line-height: 2vh;
+    letter-spacing: 0.05rem;
     text-transform: uppercase;
 }
 

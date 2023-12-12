@@ -1,0 +1,350 @@
+/*  */
+/* generic */
+/*  */
+
+.genericPText{
+  padding: 0;
+  color: var(--Off_White);
+  font: var(--ui-text);
+}
+
+.genericTitleText{
+  font: var(--ui-heading);
+  margin: 0;
+  color: var(--Nice_Blue);
+}
+
+.genericBlock {
+  padding-top: var(--internalVerticalPadding);
+  padding-bottom: var(--internalVerticalPadding);
+  padding-left: var(--internalHorizontalPadding);
+  padding-right: var(--internalHorizontalPadding);
+  margin-right: var(--blockSideMargin);
+  margin-left: var(--blockSideMargin);
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  gap:var(--verticalGap);
+  background-color: var(--Dark_Grey);
+  border-radius:8px;
+  min-height: 1.5vh;
+  scroll-margin-block-start: 10vh; /* for scrolling */
+}
+
+.genericBlockHolder{
+  width:auto;
+  height: fit-content;
+  position: relative;
+}
+
+.genericBlockCover{
+  z-index: 2;
+  position: absolute;
+  width:calc(100% - var(--blockSideMargin)*2);
+  height: 100%;
+  top: 0;
+  margin-right: var(--blockSideMargin);
+  margin-left: var(--blockSideMargin);
+  border-radius:8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*  */
+/* EmptyBlock */
+/*  */
+
+.emptyBlockCover{
+  z-index: 2;
+  position: absolute;
+  width:calc(100% - var(--blockSideMargin)*2);
+  height: calc(100% - var(--firstBlockMarginFromTop));
+  top: 0;
+  margin-right: var(--blockSideMargin);
+  margin-left: var(--blockSideMargin);
+  margin-top: var(--firstBlockMarginFromTop);
+  border-radius:8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyBlockText{
+  padding: 0;
+  color: var(--Nice_Blue);
+  font: var(--ui-bold-text);
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+}
+
+/*  */
+/* topicBlock */
+/*  */
+.topicBlockLoadingSummaryText,
+.topicBlockSummaryText{
+  padding: 0;
+  color: var(--Off_White);
+  font: var(--ui-text);
+  margin:0;
+}
+
+
+.topicBlockLoadingSummaryText:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 1.5s infinite;      
+  animation: ellipsis steps(4,end) 1.5s infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1vw;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1vw;    
+  }
+}
+
+.topicBlockReactQuillHolder{
+  width:95%;
+  min-height: var(--magicWandButtonSize);
+}
+
+.topicBlockTooooooooooooooooooooooooggleSummaryButton{
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  height: var(--toggleQuillButtonSize);
+  background: none
+}
+
+.topicBlockTooooooooooooooooooooooooggleSummaryButton img{
+  height: 100%;
+  width: auto;
+}
+
+.topicBlockSummariserButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  width: var(--magicWandButtonSize);
+  background: none
+}
+
+.topicBlockSummariserButton img {
+  height: auto; /* Set the width as needed */
+  width: 100%; /* Maintain aspect ratio */
+}
+
+.topicBlockDeleteButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none; /* Removes the border */
+  cursor: pointer; /* Changes the cursor on hover */
+  padding: 0;
+  width: var(--magicWandButtonSize);
+  background: none
+}
+
+.topicBlockDeleteButton:focus{
+  outline:none;
+}
+
+.topicBlockDeleteButton:focus .deleteIcon{
+  stroke-width: 2;
+  height: var(--deleteButtonFocusSize);
+  object-fit: contain;
+}
+
+.deleteIcon{
+  stroke-width: 1.5;
+  height: var(--deleteButtonSize);
+  object-fit: contain;
+}
+
+
+
+.topicBlockHeaderContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+}
+
+.topicBlockSummaryContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--summaryButtonGap);
+  /* Oso contains animated transitions */
+  overflow: hidden;
+  width: calc(100% - var(--magicWandButtonSize))
+}
+
+.topicBlockMinutesContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  /* Oso contains animated transitions */
+  overflow: hidden;
+}
+
+.topicBlockTopicInput {
+  width: 95%;
+  box-sizing: border-box;
+  overflow: hidden;
+  resize: none; /* Prevent user resizing of textarea */
+  background: none;
+  border:none;
+}
+
+.topicBlockTopicInput:focus {
+  outline:none;
+  border:none;
+}
+
+.topicBlockDeleteOverlay {
+  background-color: var(--Black_60);
+  z-index: 2;
+  width: calc(100% - var(--blockSideMargin)*2);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  margin-right: var(--blockSideMargin);
+  margin-left: var(--blockSideMargin);
+  border-radius:8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topicBlockBigHolder{
+  height: fit-content;
+  position: relative;
+}
+/*  */
+/* detailBlock */
+/*  */
+
+.detailBlockMain{
+  width:100%;
+  gap:var(--horizontalGap);
+  display:flex;
+  flex-direction: row;
+  margin:0;
+}
+
+.detailBlockText{
+  margin:auto;
+  height:fit-content; 
+  color: var(--Off_White);
+  font: var(--ui-text);
+}
+
+
+.detailBlockInput{
+  width:100%;
+  background: transparent;
+  resize:none;
+  line-height: 1;
+  height: var(--headersize);
+  border: none; 
+  outline: none; 
+  padding-top: calc(var(--psize)/8);
+  color: var(--Off_White);
+  font: var(--ui-text);
+
+}
+
+/*  */
+/* mainArea */
+/*  */
+
+.mainAreaContainer{
+  display: flex;
+  flex-direction: column;
+  gap: var(--betweenBlockGap);
+  width: var(--overallWidth);
+  margin-bottom: 75vh;
+  margin-left: 15vw;
+}
+
+.mainAreaAddNewBlockButton{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  border: none; /* Removes the border */
+  padding-top: var(--internalVerticalPadding);
+  padding-bottom: var(--internalVerticalPadding);
+  padding-left: var(--internalHorizontalPadding);
+  padding-right: var(--internalHorizontalPadding);
+  margin-right: var(--blockSideMargin);
+  margin-left: var(--blockSideMargin);
+  width: calc(100% - var(--blockSideMargin)*2);
+  gap:var(--horizontalGap);
+  background-color: var(--Dark_Grey);
+  border-radius:8px;
+}
+
+.mainAreaAddNewBlockButton:hover{
+  background-color: var(--Dark_Grey_50);
+  cursor: pointer; /* Changes the cursor on hover */
+}
+
+.topicBlockSummariserButton:disabled{
+  cursor: wait;
+  border: 0.5px solid var(--Nice_Blue);
+  width: var(--magicWandButtonSize);
+  height: var(--magicWandButtonSize);
+  border-radius: 50%;
+}
+
+.loadingCursor {
+  width: 1.25vh;
+  height: 1.25vh;
+  border: 2px solid transparent;
+  border-top-color: var(--Off_White);
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+
+.agendaBlockTextFieldHolder {
+  width:100%;
+  gap:var(--horizontalGap);
+  align-items: center;
+  display:flex;
+  flex-direction: row;
+  margin:0;
+}
+
+.summaryWarning{
+  margin: 0;
+  font: var(--ui-text);
+  color: var(--Red);
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '@/styles/components/popups.module.css';
 
 interface IconProps {
   name?: string;
@@ -13,7 +14,7 @@ const getIconPath = (color: string, icon: string, size: string) => {
 
 
 export const GeneralIcon: React.FC<IconProps> = ({ alt, color = 'white', size = 'small', name ='check'}) => (
-  <img src={getIconPath(color!, name! , size!)} alt={alt} />
+  <img className={styles.iconSize} src={getIconPath(color!, name! , size!)} alt={alt} />
 );
 
 const Icons = {

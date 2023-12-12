@@ -1,0 +1,56 @@
+:root{
+
+    /* Center Area */
+    /* Button Sizes */
+    --magicWandButtonSize: 4vh;
+    --deleteButtonSize: 2.5vh;
+    --deleteButtonFocusSize: 3vh;
+    --toggleQuillButtonSize: 2.5vh;
+
+    /* Individual Block */
+    --summaryButtonGap: 1vh;
+    --verticalGap: 2vh;
+    --horizontalGap: 2vh;
+    --internalVerticalPadding: 2vh;
+    --internalHorizontalPadding: 5vh;
+
+    /* Overall Style */
+    --firstBlockMarginFromTop: 2vh;
+    --overallWidth: 60vw;
+    --betweenBlockGap: 2vh;
+    --blockSideMargin: 2vh;
+
+    /* RightSideBar */
+    --rightSideWidth: 25vw;
+
+    /* Alert stuff */
+    --blockGap: 1vh;
+    --alertVerticalPadding: 2vh;
+    --alertHorizontalPadding: 1vw;
+    --popUpWidth: 24vw;
+    --buttonIconSize: 2.75vh;
+
+    /* button stuff */
+    --smallButtonWidth: 7.39vw;
+    --mediumButtonWidth: 14.27vw;
+    --largeButtonWidth: 34.375vw;
+    --buttonVerticalPadding: 0.75vh;
+    --buttonHorizontalPadding: 4.5vw;
+    --buttonMinHeight: 4.5vh;
+    --buttonMinWidth: 10vw;
+}
+
+
+/* For quillarea */
+.ql-editor {
+    padding: 0px!important;
+  }
+  
+.ql-editor ul{
+  padding-left: 0vw!important;
+}
+
+li{
+  font: var(--ui-text);
+  line-height: 1.5;
+}

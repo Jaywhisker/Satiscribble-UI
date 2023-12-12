@@ -18,7 +18,7 @@ export default function Home() {
      setResponse('')
   
      // make a POST call to our api route
-     let res = await fetch('/api/hello', {
+     let res = await fetch('/api/streamingExample', {
       method: 'POST',
       headers: {
        'Content-type': 'application/json',
@@ -65,7 +65,7 @@ export default function Home() {
     <div>
       <p>Testing page works!</p>
       <button onClick={handleSubmit}>Test</button>
-      <p>{response}</p>
+      <p style={{color: 'white'}}>{response}</p>
     </div>
   )
 }
