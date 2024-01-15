@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -48,6 +48,12 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     return null;
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      handleAdd()
+    }, 5000)
+  }, [])
+
   return (
     <div className={`${styles.Notif} ${styles.greyNotif}`}>
       <span className={styles.topRow}>
@@ -71,7 +77,7 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
         ></Button>
       </span>
       <span className={styles.messageContent}>
-        <p style={{ marginBlock: "0" }}>Abbreviation will be added with no response:</p>
+        <p style={{ marginBlock: "0" }}>Abbreviation will be automatically added in 5 seconds:</p>
         <p style={{ marginBlock: "0" }}>{detectedAbbrev}</p>
       </span>
       <span className={styles.actionButtons}>

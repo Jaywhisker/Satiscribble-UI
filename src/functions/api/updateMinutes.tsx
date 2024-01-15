@@ -89,7 +89,8 @@ export async function updateMinutes(
       )
 
       //track agenda
-      if (agendaAlert.length < 1 && alertCounters !== undefined && alertCounters[0] === 2) {
+      // if (agendaAlert.length < 1 && alertCounters !== undefined && alertCounters[0] === 2) {
+      if (agendaAlert.length < 1) {
         toast.agenda(agendaInaccuracyCounter, setAgendaInaccuracyCounter)
         newAlertCounters[0] = 0
       } else {
