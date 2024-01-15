@@ -82,7 +82,7 @@ export default function AgendaBlock(props: AgendaProps) {
   useEffect(() => {
     clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(async () => {
-      if (!focused) {
+      if (!focused &&  props.agendaItems.length > 0 ) {
         var agendaContent = props.agendaItems
           .map((agenda) => agenda.name)
           .filter((items) => items.trim() !== "");
@@ -131,7 +131,6 @@ export default function AgendaBlock(props: AgendaProps) {
     var topicAddFailedAlert = toast.alertContainer.filter(
       (alert) => alert.type === "addTopicfail" && alert.stateValue === false
     ); 
-    console.log(topicAddFailedAlert)
     if (topicAddFailedAlert.length > 0) {
       toast.update(topicAddFailedAlert[0].id, "addTopicfail", null, null, true);
     }

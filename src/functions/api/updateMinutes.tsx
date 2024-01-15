@@ -87,6 +87,8 @@ export async function updateMinutes(
       var agendaAlert = toast.alertContainer.filter(
         (alert) => alert.type === "agenda"
       )
+
+      //track agenda
       if (agendaAlert.length < 1 && alertCounters !== undefined && alertCounters[0] === 2) {
         toast.agenda(agendaInaccuracyCounter, setAgendaInaccuracyCounter)
         newAlertCounters[0] = 0
@@ -101,6 +103,8 @@ export async function updateMinutes(
       var topicAlert = toast.alertContainer.filter(
         (alert) => alert.type === "changeTopic"
       )
+
+      //only show the notification when above 3 topic
       if (topicAlert.length < 1 && alertCounters !== undefined && alertCounters[1] === 2) {
         toast.changeTopic(topicInaccuracyCounter, setTopicInaccuracyCounter, onAddTopicArea)
         newAlertCounters[1] = 0
