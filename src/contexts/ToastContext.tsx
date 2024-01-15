@@ -47,6 +47,10 @@ export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) 
         //probably using toast.states to check the size 
         //if yes, allow for dispatch else do remove function
         const id = Math.floor(Math.random() * 10000000);
+
+        if (state.toasts.length >= 2) {
+            update(state.toasts[0].id, state.toasts[0].type, null, null, true)
+        } 
         console.log('Dispatching ADD_TOAST action');
         dispatch({ type: "ADD_TOAST", payload: { id, message, type, inactivityRef, stateValue, setState, createNewTopic, toast} });
     };
@@ -54,7 +58,7 @@ export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) 
     const remove = ( id: number): void => {
         setTimeout(() => {
             dispatch({ type: "DELETE_TOAST", payload: id });
-        }, 500)
+        }, 1000)
     };
 
     const update = (id: number, type: string, message?: string | {}, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {

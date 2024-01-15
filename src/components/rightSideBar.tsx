@@ -382,6 +382,9 @@ export default function RightSideBar(props: rightSideBarProps) {
         height: "100vh",
         width: `var(--rightSideWidth)`,
         backgroundColor: `var(--Dark_Grey_50)`,
+        position: 'fixed',
+        bottom: '0',
+        right: '0'
       }}
     >
       {deleteMode && (
@@ -672,7 +675,7 @@ export default function RightSideBar(props: rightSideBarProps) {
             </div>
           </div>
         ) : selected == "Glossary" ? (
-          <div>
+          <div className={rightBar.glossaryBlock}>
             <div className={rightBar.backgroundIconContainer}>
               <p className={rightBar.backgroundText}>GLOSSARY</p>
               <SirLogo mode="glossary" />

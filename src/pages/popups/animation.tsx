@@ -34,11 +34,9 @@ const NotificationButton: React.FC = () => {
 };
 
 const AnimationPage: React.FC = () => (
-    <React.StrictMode>
         <ToastContextProvider>
             <NotificationButton />
         </ToastContextProvider>
-    </React.StrictMode>
 );
 
 export default AnimationPage;

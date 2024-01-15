@@ -9,6 +9,7 @@ export async function readID(setMinutesID:any, setChatHistoryID:any) {
         setChatHistoryID(response.chatHistoryID)
     }
     else {
+        console.log(minutesID, chatHistoryID)
         setMinutesID(minutesID)
         setChatHistoryID(chatHistoryID)
     }
