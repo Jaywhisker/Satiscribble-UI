@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useRef, useEffect } from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -90,6 +90,17 @@ const BasicAlert: React.FC<PopupProps> = ({
     }
   }, [stateValue])
   
+  const initialized = useRef(false)
+  useEffect(() => {
+    if (!initialized.current && messageTitle=="Glossary Addition Successful") {
+      initialized.current = true
+      setTimeout(() => {
+        handleClose()
+      }, 3000)
+    }
+  }, [])
+
+
   if (!isOpen) {
     return null;
   }

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -13,6 +13,8 @@ interface PopupProps {
 }
 
 const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, toast }) => {
+
+  const initialized = useRef(false)
 
   // Placeholder function for onClose
   const handleClose = () => {
@@ -49,9 +51,13 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      handleAdd()
-    }, 5000)
+    if (!initialized.current) {
+      initialized.current = true
+      setTimeout(() => {
+        console.log('hi')
+        handleAdd()
+      }, 5000)
+    }
   }, [])
 
   return (
