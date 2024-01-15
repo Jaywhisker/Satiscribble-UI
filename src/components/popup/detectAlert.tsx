@@ -9,10 +9,11 @@ interface PopupProps {
   detectedAbbrev?: string;
   isOpen?: boolean;
   onClose: () => void;
+  stateValue?: boolean;
   toast: any;
 }
 
-const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, toast }) => {
+const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, stateValue, toast }) => {
 
   const initialized = useRef(false)
 
@@ -21,6 +22,13 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     console.log('Closing the popup');
     onClose();
   };
+
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
 
 
   const handleAdd = async() => {

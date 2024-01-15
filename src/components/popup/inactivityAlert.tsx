@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useEffect }from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -7,9 +7,10 @@ interface PopupProps {
   isOpen?: boolean;
   onClose: () => void;
   inactivityRef: any;
+  stateValue?: boolean;
 }
 
-const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose, inactivityRef }) => {
+const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose, stateValue, inactivityRef }) => {
 
 
   // Placeholder function for onClose
@@ -18,6 +19,13 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose, inactivityRef 
     onClose();
     inactivityRef.current = 'active'
   };
+
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
 
   const handleSnooze = () => {
     console.log('Snooze for 15 minutes');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -9,15 +9,23 @@ interface PopupProps {
   inaccuracyValue: number;
   setInaccuracyValue: any;
   createNewTopic: () => void;
+  stateValue?: boolean;
 }
 
-const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue, createNewTopic}) => {
+const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue, createNewTopic, stateValue }) => {
 
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
     onClose();
   };
+
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
 
   const handleReport = () => {
     console.log('Reporting topic inaccuracy, inaccuracy count', inaccuracyValue+1);
