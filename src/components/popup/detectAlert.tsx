@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -9,16 +9,26 @@ interface PopupProps {
   detectedAbbrev?: string;
   isOpen?: boolean;
   onClose: () => void;
+  stateValue?: boolean;
   toast: any;
 }
 
-const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, toast }) => {
+const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, stateValue, toast }) => {
+
+  const initialized = useRef(false)
 
   // Placeholder function for onClose
   const handleClose = () => {
     console.log('Closing the popup');
     onClose();
   };
+
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
 
 
   const handleAdd = async() => {
@@ -35,11 +45,11 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     if (response !== undefined) {
       console.log(response.ERROR)
       setTimeout(() => {
-        toast.glossaryAddFail(detectedAbbrev, toast)
+        toast.glossaryAddFail(false, detectedAbbrev)
       }, 1000)
     } else {
       setTimeout(() => {
-        toast.glossaryAdd()
+        toast.glossaryAdd(false)
       }, 1000)
     }
   };
@@ -49,9 +59,13 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      handleAdd()
-    }, 5000)
+    if (!initialized.current) {
+      initialized.current = true
+      setTimeout(() => {
+        console.log('hi')
+        handleAdd()
+      }, 5000)
+    }
   }, [])
 
   return (

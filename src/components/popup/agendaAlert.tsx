@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -8,9 +8,10 @@ interface PopupProps {
   onClose: () => void;
   inaccuracyValue: number;
   setInaccuracyValue: any;
+  stateValue?: boolean;
 }
 
-const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue }) => {
+const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, setInaccuracyValue, stateValue }) => {
 
 
   // Placeholder functions
@@ -25,6 +26,12 @@ const AgendaAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyValue, s
     onClose();
   };
 
+  useEffect(() => {
+    console.log(stateValue)
+    if (stateValue) {
+      handleClose()
+    }
+  }, [stateValue])
 
   if (!isOpen) {
     return null;

@@ -47,7 +47,7 @@ export default function Home() {
 
     inactivityTimeoutRef.current = setTimeout(() => {
       if (inactivityStatusRef.current === "active") {
-        toast.inactivity(inactivityStatusRef);
+        toast.inactivity(false, inactivityStatusRef);
         inactivityStatusRef.current = "inactive";
       }
     }, timeout5MinTime);

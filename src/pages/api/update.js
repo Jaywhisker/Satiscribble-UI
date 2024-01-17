@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default async function handler(req, res) {
 
-    var requestData = req.body.data ||  req.body 
+    var requestData = req.body 
     console.log(requestData)
     
     if (requestData.hasOwnProperty('agenda')) {

@@ -382,6 +382,9 @@ export default function RightSideBar(props: rightSideBarProps) {
         height: "100vh",
         width: `var(--rightSideWidth)`,
         backgroundColor: `var(--Dark_Grey_50)`,
+        position: 'fixed',
+        bottom: '0',
+        right: '0'
       }}
     >
       {deleteMode && (
@@ -672,7 +675,7 @@ export default function RightSideBar(props: rightSideBarProps) {
             </div>
           </div>
         ) : selected == "Glossary" ? (
-          <div>
+          <div className={rightBar.glossaryBlock}>
             <div className={rightBar.backgroundIconContainer}>
               <p className={rightBar.backgroundText}>GLOSSARY</p>
               <SirLogo mode="glossary" />
@@ -680,18 +683,20 @@ export default function RightSideBar(props: rightSideBarProps) {
 
             <div>
               {glossaryData.map((data, index) => (
-                <GlossaryModal
-                  type={glossaryMode[index]}
-                  abbreviation={data.abbreviation}
-                  meaning={data.meaning}
-                  id={index}
-                  glossaryType={glossaryMode}
-                  setGlossaryType={setGlossaryMode}
-                  glossaryData={glossaryData}
-                  setGlossaryData={setGlossaryData}
-                  minutesID={props.minutesID}
-                  chatHistoryID={props.chatHistoryID}
-                />
+                <div key={index}>
+                  <GlossaryModal
+                    type={glossaryMode[index]}
+                    abbreviation={data.abbreviation}
+                    meaning={data.meaning}
+                    id={index}
+                    glossaryType={glossaryMode}
+                    setGlossaryType={setGlossaryMode}
+                    glossaryData={glossaryData}
+                    setGlossaryData={setGlossaryData}
+                    minutesID={props.minutesID}
+                    chatHistoryID={props.chatHistoryID}
+                  />
+                </div>
               ))}
             </div>
           </div>
