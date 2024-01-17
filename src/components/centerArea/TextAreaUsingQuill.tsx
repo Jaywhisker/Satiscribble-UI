@@ -54,6 +54,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
   const [tooLong, setTooLong] = useState(false);
+  const [oldAbbreviation, setOldAbbreviation] = useState(null);
 
   const [quillRefHeight, setQuillRefHeight] = useState(null);
   const [contentChanged, setContentChanged] = useState(false);
@@ -200,11 +201,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     console.log(minutesFailedAlert);
     if (minutesFailedAlert.length > 0) {
       //update to remove the minutesFailedAlert
-      toast.update(
-        minutesFailedAlert[0].id,
-        "meetingSaveFail",
-        true
-      );
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
       setErrorExist(true);
     }
     console.log("clicked in");
@@ -244,17 +241,14 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       if (response !== undefined) {
         //handle error
         console.log("Minutes Update Error:", response.ERROR);
-        toast.minutesSaveFail(
-          false,
-          {
-            reqData: reqData,
-            agendaInaccuracyCounter: agendaInaccuracyCounter,
-            setAgendaInaccuracyCounter: setAgendaInaccuracyCounter,
-            topicInaccuracyCounter: topicInaccuracyCounter,
-            setTopicInaccuracyCounter: setTopicInaccuracyCounter,
-            onAddTopicArea: props.onAddTopicArea,
-          },
-        );
+        toast.minutesSaveFail(false, {
+          reqData: reqData,
+          agendaInaccuracyCounter: agendaInaccuracyCounter,
+          setAgendaInaccuracyCounter: setAgendaInaccuracyCounter,
+          topicInaccuracyCounter: topicInaccuracyCounter,
+          setTopicInaccuracyCounter: setTopicInaccuracyCounter,
+          onAddTopicArea: props.onAddTopicArea,
+        });
       } else {
         setErrorExist(false);
       }
@@ -292,11 +286,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     );
     if (minutesFailedAlert.length > 0) {
       //update to remove the minutesFailedAlert on key down
-      toast.update(
-        minutesFailedAlert[0].id,
-        "meetingSaveFail",
-        true
-      );
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
       setErrorExist(true);
     }
 
@@ -307,7 +297,11 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
       const backendDelta = deltaToBackend(rawText);
-      const lastAbbreviation = detectLastAbbreviation(backendDelta);
+      let lastAbbreviation = detectLastAbbreviation(backendDelta);
+      if (lastAbbreviation == oldAbbreviation) {
+        lastAbbreviation = null;
+      }
+      setOldAbbreviation(lastAbbreviation);
       // var response = await handleUpdateMinutes(
       var response = handleUpdateMinutes(backendDelta, lastAbbreviation, false);
 
@@ -464,11 +458,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     );
     if (minutesFailedAlert.length > 0) {
       //update to remove the minutesFailedAlert on key down
-      toast.update(
-        minutesFailedAlert[0].id,
-        "meetingSaveFail",
-        true
-      );
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
       setErrorExist(true);
     }
     props.onDelete();
