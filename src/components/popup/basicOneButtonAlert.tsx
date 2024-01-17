@@ -105,11 +105,11 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
         if (response !== undefined) {
             console.log(response.ERROR)
             setTimeout(() => {
-                toast.glossaryAddFail(dataValue.glossary, toast)
+                toast.glossaryAddFail(false, dataValue.glossary)
             }, 1000)
           } else {
             setTimeout(() => {
-                toast.glossaryAdd()
+                toast.glossaryAdd(false)
             }, 1000)
           }
     } else if (dataValue.hasOwnProperty('agenda')) {
@@ -120,7 +120,7 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
       if (response !== undefined) {
         console.log(response.ERROR)
         setTimeout(() => {
-            toast.agendaSaveFail(dataValue.agenda, false, toast)
+            toast.agendaSaveFail(false, dataValue.agenda)
         }, 1000)
       }
     } else if (dataValue.hasOwnProperty('meetingDetails')) {
@@ -130,7 +130,7 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
       if (response !== undefined) {
         console.log(response.ERROR)
         setTimeout(() => {
-            toast.meetingSaveFail(dataValue.meetingDetails, false, toast)
+            toast.meetingSaveFail(false, dataValue.meetingDetails)
         }, 1000)
       }
     } else if (dataValue.hasOwnProperty('minutesDetails')) {
@@ -150,7 +150,7 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
       if (response !== undefined) {
         console.log(response.ERROR)
         setTimeout(() => {
-            toast.minutesSaveFail(dataValue.minutesDetails, false, toast)
+            toast.minutesSaveFail(false, dataValue.minutesDetails)
         }, 1000)
       }
     }

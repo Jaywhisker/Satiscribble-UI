@@ -94,7 +94,7 @@ export default function AgendaBlock(props: AgendaProps) {
         );
         if (response !== undefined) {
           console.log("ERROR:", response.ERROR);
-          toast.agendaSaveFail({ items: agendaContent }, false, toast);
+          toast.agendaSaveFail(false, { items: agendaContent });
         }
       }
     }, 1000);
@@ -132,7 +132,7 @@ export default function AgendaBlock(props: AgendaProps) {
       (alert) => alert.type === "addTopicfail" && alert.stateValue === false
     ); 
     if (topicAddFailedAlert.length > 0) {
-      toast.update(topicAddFailedAlert[0].id, "addTopicfail", null, null, true);
+      toast.update(topicAddFailedAlert[0].id, "addTopicfail", true);
     }
     props.setAgendaItems(newAgendaItems);
   };
@@ -224,7 +224,7 @@ export default function AgendaBlock(props: AgendaProps) {
       (alert) => alert.type === "agendaSaveFail"
     );
     if (agendaFailedAlert.length > 0) {
-      toast.update(agendaFailedAlert[0].id, "agendaSaveFail", null, null, true);
+      toast.update(agendaFailedAlert[0].id, "agendaSaveFail", true);
     }
   };
 

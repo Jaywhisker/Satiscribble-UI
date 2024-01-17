@@ -683,18 +683,20 @@ export default function RightSideBar(props: rightSideBarProps) {
 
             <div>
               {glossaryData.map((data, index) => (
-                <GlossaryModal
-                  type={glossaryMode[index]}
-                  abbreviation={data.abbreviation}
-                  meaning={data.meaning}
-                  id={index}
-                  glossaryType={glossaryMode}
-                  setGlossaryType={setGlossaryMode}
-                  glossaryData={glossaryData}
-                  setGlossaryData={setGlossaryData}
-                  minutesID={props.minutesID}
-                  chatHistoryID={props.chatHistoryID}
-                />
+                <div key={index}>
+                  <GlossaryModal
+                    type={glossaryMode[index]}
+                    abbreviation={data.abbreviation}
+                    meaning={data.meaning}
+                    id={index}
+                    glossaryType={glossaryMode}
+                    setGlossaryType={setGlossaryMode}
+                    glossaryData={glossaryData}
+                    setGlossaryData={setGlossaryData}
+                    minutesID={props.minutesID}
+                    chatHistoryID={props.chatHistoryID}
+                  />
+                </div>
               ))}
             </div>
           </div>

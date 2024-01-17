@@ -204,8 +204,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       toast.update(
         minutesFailedAlert[0].id,
         "meetingSaveFail",
-        null,
-        null,
         true
       );
       setErrorExist(true);
@@ -248,6 +246,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         //handle error
         console.log("Minutes Update Error:", response.ERROR);
         toast.minutesSaveFail(
+          false,
           {
             reqData: reqData,
             agendaInaccuracyCounter: agendaInaccuracyCounter,
@@ -256,8 +255,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             setTopicInaccuracyCounter: setTopicInaccuracyCounter,
             onAddTopicArea: props.onAddTopicArea,
           },
-          false,
-          toast
         );
       } else {
         setErrorExist(false);
@@ -282,7 +279,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     if (rawText.length > 3000) {
       setTooLong(true);
       if (!tooLong) {
-        toast.topicLength();
+        toast.topicLength(false);
       }
     } else {
       setTooLong(false);
@@ -299,8 +296,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       toast.update(
         minutesFailedAlert[0].id,
         "meetingSaveFail",
-        null,
-        null,
         true
       );
       setErrorExist(true);
@@ -469,8 +464,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       toast.update(
         minutesFailedAlert[0].id,
         "meetingSaveFail",
-        null,
-        null,
         true
       );
       setErrorExist(true);
@@ -526,26 +519,26 @@ function TextAreaQuill(props: TextAreaQuillProps) {
               <path
                 d="M2.375 5.25H3.95833H16.625"
                 stroke="#D1D1D1"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M6.3335 5.25004V3.66671C6.3335 3.24678 6.50031 2.84405 6.79724 2.54712C7.09418 2.25019 7.4969 2.08337 7.91683 2.08337H11.0835C11.5034 2.08337 11.9061 2.25019 12.2031 2.54712C12.5 2.84405 12.6668 3.24678 12.6668 3.66671V5.25004M15.0418 5.25004V16.3334C15.0418 16.7533 14.875 17.156 14.5781 17.453C14.2811 17.7499 13.8784 17.9167 13.4585 17.9167H5.54183C5.1219 17.9167 4.71918 17.7499 4.42224 17.453C4.12531 17.156 3.9585 16.7533 3.9585 16.3334V5.25004H15.0418Z"
                 stroke="#D1D1D1"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M7.9165 9.20837V13.9584"
                 stroke="#D1D1D1"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M11.0835 9.20837V13.9584"
                 stroke="#D1D1D1"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </button>

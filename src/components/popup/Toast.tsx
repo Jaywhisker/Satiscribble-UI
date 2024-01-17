@@ -8,45 +8,56 @@ import { updateAgenda, updateMeetingDetails, updateMinutes } from '@/functions/a
 export interface ToastProps {
     type: 'agenda' | 'inactivity' | 'changeTopic' | 'detectAbbrev' | 'topicLength' | 'addTopicfail' | 'glossaryAdd';
     id: number;
+    stateValue: number ;
     message?: string;
     inactivityRef?: any;
-    stateValue?: number | boolean | {};
-    setState?: any;
+    inaccuracyValue?: number;
+    setInaccuracyValue?: any;
     createNewTopic?: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateValue, setState, createNewTopic }) => {
+const Toast: React.FC<ToastProps> = ({ id, type, stateValue, message, inactivityRef, inaccuracyValue, setInaccuracyValue, createNewTopic }) => {
     const toast = useToast()
     const [dismissed, setDismissed] = useState(false);
 
     const handleDismiss = () => {
         setDismissed(true);
         toast.remove(id);
-        // setTimeout(() => {
-        //     toast.remove(id);
-        // }, 500);
     };
-
-    useEffect(() => {
-        const autoDismissTimeout = type === 'detectAbbrev' && setTimeout(handleDismiss, 15000);
-        return () => {
-            clearTimeout(autoDismissTimeout);
-        };
-    }, [type, id, toast]);
 
     // Declare toastTypes
     const toastTypes = {
         agenda: {
-            popup: <PopUp.AgendaAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={stateValue} setInaccuracyValue={setState}/>
+            popup: <PopUp.AgendaAlert 
+            isOpen={true} 
+            onClose={handleDismiss} 
+            stateValue={stateValue} 
+            inaccuracyValue={inaccuracyValue} 
+            setInaccuracyValue={setInaccuracyValue}/>
         },
         inactivity: {
-            popup: <PopUp.InactivityAlert isOpen={true} onClose={handleDismiss} inactivityRef={inactivityRef}/>
+            popup: <PopUp.InactivityAlert 
+            isOpen={true} 
+            onClose={handleDismiss} 
+            stateValue={stateValue} 
+            inactivityRef={inactivityRef}/>
         },
         changeTopic: {
-            popup: <PopUp.TopicChangeAlert isOpen={true} onClose={handleDismiss} inaccuracyValue={stateValue} setInaccuracyValue={setState} createNewTopic={createNewTopic}/>
+            popup: <PopUp.TopicChangeAlert 
+            isOpen={true} 
+            onClose={handleDismiss} 
+            stateValue={stateValue} 
+            inaccuracyValue={inaccuracyValue} 
+            setInaccuracyValue={setInaccuracyValue} 
+            createNewTopic={createNewTopic}/>
         },
         detectAbbrev: {
-            popup: <PopUp.DetectAlert detectedAbbrev={message} isOpen={true} onClose={handleDismiss} toast={toast}/>
+            popup: <PopUp.DetectAlert 
+            detectedAbbrev={message} 
+            isOpen={true} 
+            onClose={handleDismiss} 
+            stateValue={stateValue} 
+            toast={toast}/>
         },
         topicLength: {
             popup: <PopUp.BasicAlert
@@ -57,7 +68,9 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 messageContent="The current topic block has exceeded 1000 tokens. Your topic may be too long for effective discussion."
                 messageHeaderColor="Red"
                 isOpen={true}
-                onClose={handleDismiss} />
+                onClose={handleDismiss} 
+                stateValue={stateValue} 
+                />
         },
         addTopicfail: {
             popup: <PopUp.BasicAlert
@@ -69,7 +82,8 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 messageHeaderColor="Red"
                 isOpen={true}
                 onClose={handleDismiss}
-                stateValue={stateValue} />
+                stateValue={stateValue} 
+                />
         },
         glossaryAdd: {
             popup: <PopUp.BasicAlert
@@ -80,7 +94,9 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 messageContent="Great news! Your abbreviation has been successfully added to the glossary."
                 messageHeaderColor="Green"
                 isOpen={true}
-                onClose={handleDismiss} />
+                onClose={handleDismiss} 
+                stateValue={stateValue} 
+                />
         },
         glossaryAddFail: {
             popup: <PopUp.BasicOneButtonAlert
@@ -94,6 +110,7 @@ const Toast: React.FC<ToastProps> = ({ type, id, message, inactivityRef, stateVa
                 onClose={handleDismiss}
                 buttonFunction={(minutesID, chatHistoryID, abbreviation, meaning) => createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)}
                 dataValue={{"glossary": message}}
+                stateValue={stateValue} 
                 toast = {toast} />
         },
         agendaSaveFail: {

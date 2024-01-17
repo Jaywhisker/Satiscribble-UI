@@ -45,11 +45,11 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
     if (response !== undefined) {
       console.log(response.ERROR)
       setTimeout(() => {
-        toast.glossaryAddFail(detectedAbbrev, toast)
+        toast.glossaryAddFail(false, detectedAbbrev)
       }, 1000)
     } else {
       setTimeout(() => {
-        toast.glossaryAdd()
+        toast.glossaryAdd(false)
       }, 1000)
     }
   };

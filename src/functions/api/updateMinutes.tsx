@@ -91,7 +91,7 @@ export async function updateMinutes(
       //track agenda
       // if (agendaAlert.length < 1 && alertCounters !== undefined && alertCounters[0] === 2) {
       if (agendaAlert.length < 1) {
-        toast.agenda(agendaInaccuracyCounter, setAgendaInaccuracyCounter)
+        toast.agenda(false, agendaInaccuracyCounter, setAgendaInaccuracyCounter)
         newAlertCounters[0] = 0
       } else {
         newAlertCounters[0] += 1
@@ -107,7 +107,7 @@ export async function updateMinutes(
 
       //only show the notification when above 3 topic
       if (topicAlert.length < 1 && alertCounters !== undefined && alertCounters[1] === 2) {
-        toast.changeTopic(topicInaccuracyCounter, setTopicInaccuracyCounter, onAddTopicArea)
+        toast.changeTopic(false, topicInaccuracyCounter, setTopicInaccuracyCounter, onAddTopicArea)
         newAlertCounters[1] = 0
       } else {
         newAlertCounters[1] += 1
@@ -140,7 +140,7 @@ export async function updateMinutes(
         //call alert notification if no alert on this
         var existingAlert = toast.alertContainer.some((item) => item.message === `${respAbbreviation} - ${respMeaning}`)
         if (!existingAlert) {
-          toast.detectAbbrev(`${respAbbreviation} - ${respMeaning}`)
+          toast.detectAbbrev(false, `${respAbbreviation} - ${respMeaning}`)
         }
       }
     }
