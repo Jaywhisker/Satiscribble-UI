@@ -11,8 +11,6 @@ export interface assistantResponse {
 }
 
 export default function AssistantResponse(props: assistantResponse) {
-  console.log(props.sourceID);
-
   return (
     <div key={props.id} className={inputChat.assistantContainer}>
       {props.waiting && (
@@ -35,7 +33,7 @@ export default function AssistantResponse(props: assistantResponse) {
                     key={index}
                     onClick={props.setSelectedMinutes(null)}
                   >
-                    {topic.title || topic.placeholder || 'No sources'}
+                    {topic.title || topic.placeholder || "No sources"}
                   </li>
                 );
               }

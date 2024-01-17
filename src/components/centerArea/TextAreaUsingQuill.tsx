@@ -54,6 +54,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
   const [tooLong, setTooLong] = useState(false);
+  const [oldAbbreviation, setOldAbbreviation] = useState(null);
 
   const [quillRefHeight, setQuillRefHeight] = useState(null);
   const [contentChanged, setContentChanged] = useState(false);
@@ -156,7 +157,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         setSummaryContent(response);
         setLoadingSummary(false);
       } else {
-        console.log(response.ERROR);
+        // console.log(response.ERROR);
         setSummaryContent("Error generating summary, please try again");
       }
     } else if (props.content == "<ul><li><br></li></ul>") {
@@ -197,17 +198,11 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         alert.stateValue == false &&
         alert.message.reqData.topicID == props.id
     );
-    console.log(minutesFailedAlert);
     if (minutesFailedAlert.length > 0) {
       //update to remove the minutesFailedAlert
-      toast.update(
-        minutesFailedAlert[0].id,
-        "meetingSaveFail",
-        true
-      );
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
       setErrorExist(true);
     }
-    console.log("clicked in");
   };
 
   const handleUpdateMinutes = async (
@@ -215,9 +210,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     lastAbbreviation,
     ignoreAlerts
   ) => {
-    // console.log("ignoreAlerts?", ignoreAlerts);
     if (contentChanged || errorExist) {
-      console.log("Content has been changed, updating");
       setContentChanged(false);
       var reqData = {
         minutesID: props.minutesID,
@@ -244,22 +237,17 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       if (response !== undefined) {
         //handle error
         console.log("Minutes Update Error:", response.ERROR);
-        toast.minutesSaveFail(
-          false,
-          {
-            reqData: reqData,
-            agendaInaccuracyCounter: agendaInaccuracyCounter,
-            setAgendaInaccuracyCounter: setAgendaInaccuracyCounter,
-            topicInaccuracyCounter: topicInaccuracyCounter,
-            setTopicInaccuracyCounter: setTopicInaccuracyCounter,
-            onAddTopicArea: props.onAddTopicArea,
-          },
-        );
+        toast.minutesSaveFail(false, {
+          reqData: reqData,
+          agendaInaccuracyCounter: agendaInaccuracyCounter,
+          setAgendaInaccuracyCounter: setAgendaInaccuracyCounter,
+          topicInaccuracyCounter: topicInaccuracyCounter,
+          setTopicInaccuracyCounter: setTopicInaccuracyCounter,
+          onAddTopicArea: props.onAddTopicArea,
+        });
       } else {
         setErrorExist(false);
       }
-    } else {
-      // console.log("Content has not been changed");
     }
   };
 
@@ -292,26 +280,22 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     );
     if (minutesFailedAlert.length > 0) {
       //update to remove the minutesFailedAlert on key down
-      toast.update(
-        minutesFailedAlert[0].id,
-        "meetingSaveFail",
-        true
-      );
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
       setErrorExist(true);
     }
 
-    // console.log(event.key);
     if (event.ctrlKey && event.key === "Enter") {
       event.preventDefault();
-      // console.log(props.content);
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
       const backendDelta = deltaToBackend(rawText);
-      const lastAbbreviation = detectLastAbbreviation(backendDelta);
-      // var response = await handleUpdateMinutes(
+      let lastAbbreviation = detectLastAbbreviation(backendDelta);
+      if (lastAbbreviation == oldAbbreviation) {
+        lastAbbreviation = null;
+      }
+      setOldAbbreviation(lastAbbreviation);
       var response = handleUpdateMinutes(backendDelta, lastAbbreviation, false);
 
-      // console.log(backendDelta);
       const range = quillEditor.getSelection();
       if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
@@ -321,20 +305,15 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           quillValue
         );
 
-        // console.log(contentUpToCursor);
-        // console.log("updatedProcessDelta :" + "\n" + updatedProcessedDelta);
-        // console.log("quillvalue:" + "\n" + quillValue);
         const result = quillValue.replace(updatedProcessedDelta, "");
 
         const previousCursorPosition = range.index;
 
         if (result.startsWith("</ul><p><br></p>")) {
-          // The case of pressing enter
           const indexOfSubstring =
             result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
           let textAfter = result.substring(indexOfSubstring);
           if (textAfter.includes("<ul>") && textAfter.includes("</ul>")) {
-            // Strip the <ul></ul> part from textAfter
             textAfter = textAfter.replace(/<ul>|<\/ul>/g, "").trim();
           }
           let classAttribute = lastQuillItemClass
@@ -345,13 +324,11 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           if (classAttribute == "") {
             newLiElements = `<li${classAttribute}><br></li><li${classAttribute}><br></li>`;
           } else {
-            // The case of enter in an indented block
             newLiElements = `<li><br></li>`;
             offset = 0;
           }
           const something =
             updatedProcessedDelta + newLiElements + textAfter + "</ul>";
-          // console.log(something);
 
           // Updating the values and setting the cursor position
           setQuillValue(something);
@@ -363,25 +340,19 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         } else if (result.startsWith("<p><br></p>")) {
           // The case of enter on empty area
           setQuillValue("<ul><li></li></ul>");
-        } else {
-          // console.log("uncaught, handled by quillarea?");
         }
       }
     } else if (event.key === "Backspace") {
-      // console.log("Backspace");
       const range = quillEditor.getSelection();
       if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
-        // console.log(contentUpToCursor);
         const processedDelta = deltaToHTML(contentUpToCursor);
-        // console.log(processedDelta);
-        // console.log(quillValue);
+
         let { updatedProcessedDelta, lastQuillItemClass } = updateListItems(
           processedDelta,
           quillValue
         );
         const result = quillValue.replace(updatedProcessedDelta, "");
-        // console.log(result);
         const previousCursorPosition = range.index;
         const pattern = /<\/ul><p>(.*?)<\/p>([\s\S]*)/;
         const match = result.match(pattern);
@@ -400,7 +371,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           }, 0);
         } else if (result.startsWith("<p><br></p>")) {
           const textAfter = result.substring(11);
-          console.log(textAfter);
           setQuillValue("<ul>" + textAfter);
         } else if (result.startsWith("<p>")) {
           setQuillValue("<ul>" + result + "</ul>");
@@ -464,11 +434,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     );
     if (minutesFailedAlert.length > 0) {
       //update to remove the minutesFailedAlert on key down
-      toast.update(
-        minutesFailedAlert[0].id,
-        "meetingSaveFail",
-        true
-      );
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
       setErrorExist(true);
     }
     props.onDelete();
