@@ -59,8 +59,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [quillRefHeight, setQuillRefHeight] = useState(null);
   const [contentChanged, setContentChanged] = useState(false);
 
-  const [alertCounters, setAlertCounters] = useState([0, 0]);
-
   const [agendaInaccuracyCounter, setAgendaInaccuracyCounter] = useState(0);
   const [topicInaccuracyCounter, setTopicInaccuracyCounter] = useState(0);
 
@@ -229,8 +227,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         topicInaccuracyCounter,
         setTopicInaccuracyCounter,
         props.onAddTopicArea,
-        alertCounters,
-        setAlertCounters,
         ignoreAlerts
       );
 

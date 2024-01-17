@@ -69,8 +69,6 @@ export async function updateMinutes(
   topicInaccuracyCounter: number,
   setTopicInaccuracyCounter: any,
   onAddTopicArea: () => void,
-  alertCounters: number[],
-  setalertCounters: any,
   ignoreAlerts: boolean
 ) {
   try {
@@ -81,7 +79,6 @@ export async function updateMinutes(
 
     const response = await axios.post("/api/update", reqData);
 
-    let newAlertCounters = [...alertCounters] || [];
     if (!response.data.agenda && !ignoreAlerts) {
       //update agenda error
       //call alert
@@ -90,16 +87,12 @@ export async function updateMinutes(
       );
 
       //track agenda
-      // if (agendaAlert.length < 1 && alertCounters !== undefined && alertCounters[0] === 2) {
       if (agendaAlert.length < 1) {
         toast.agenda(
           false,
           agendaInaccuracyCounter,
           setAgendaInaccuracyCounter
         );
-        newAlertCounters[0] = 0;
-      } else {
-        newAlertCounters[0] += 1;
       }
     }
 
@@ -110,27 +103,14 @@ export async function updateMinutes(
         (alert) => alert.type === "changeTopic"
       );
 
-      //only show the notification when above 3 topic
-      if (
-        topicAlert.length < 1 &&
-        alertCounters !== undefined &&
-        alertCounters[1] === 2
-      ) {
+      if (topicAlert.length < 1) {
         toast.changeTopic(
           false,
           topicInaccuracyCounter,
           setTopicInaccuracyCounter,
           onAddTopicArea
         );
-        newAlertCounters[1] = 0;
-      } else {
-        newAlertCounters[1] += 1;
       }
-    }
-
-    if (setalertCounters !== undefined) {
-      console.log("alert counters", alertCounters);
-      setalertCounters(newAlertCounters);
     }
 
     if (response.data.abbreviation != null) {

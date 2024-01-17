@@ -107,7 +107,7 @@ export default function GlossaryModal(props: glossaryDetails ) {
 
 
     return(
-    <div key={props.id} className={glossary.glossaryContainer}>
+    <div key={props.id} className={glossary.glossaryContainer} style={{marginTop: props.id === 0? '5vh': '0'}}>
         {props.type == 'default' ? (
             <div className={glossary.detailsContainer}>
                 <div className={glossary.titleContainer}>
