@@ -96,7 +96,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   }, [props.content]);
 
   const handleQuillValueChange = (newValue) => {
-    setSummaryWarning(false)
+    setSummaryWarning(false);
     setQuillValue(newValue);
     props.updateBlockContent(newValue);
   };
@@ -160,10 +160,9 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         setSummaryContent("Error generating summary, please try again");
       }
     } else if (props.content == "<ul><li><br></li></ul>") {
-      setSummaryWarning(true)
+      setSummaryWarning(true);
     }
   };
-  
 
   //handling updating of minutes ------------------------------
   useEffect(() => {
@@ -218,7 +217,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     lastAbbreviation,
     ignoreAlerts
   ) => {
-    console.log("ignoreAlerts?", ignoreAlerts);
+    // console.log("ignoreAlerts?", ignoreAlerts);
     if (contentChanged || errorExist) {
       console.log("Content has been changed, updating");
       setContentChanged(false);
@@ -263,7 +262,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         setErrorExist(false);
       }
     } else {
-      console.log("Content has not been changed");
+      // console.log("Content has not been changed");
     }
   };
 
@@ -370,7 +369,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           // The case of enter on empty area
           setQuillValue("<ul><li></li></ul>");
         } else {
-          console.log("uncaught, handled by quillarea?");
+          // console.log("uncaught, handled by quillarea?");
         }
       }
     } else if (event.key === "Backspace") {
@@ -405,7 +404,9 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             quillEditor.setSelection(previousCursorPosition, 0);
           }, 0);
         } else if (result.startsWith("<p><br></p>")) {
-          setQuillValue("<ul><li></li></ul>");
+          const textAfter = result.substring(11);
+          console.log(textAfter);
+          setQuillValue("<ul>" + textAfter);
         } else if (match) {
           //ie someone deleted a bullet point with tet there to move it up?
           const pContent = match[1]; // Content inside the <p> tag
@@ -582,7 +583,9 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         >
           <div className={styles.topicBlockReactQuillHolder} ref={minutesRef}>
             {summaryWarning && (
-            <p className={styles.summaryWarning}>* Your minutes block shouldn't be empty for summarisation!</p>
+              <p className={styles.summaryWarning}>
+                * Your minutes block shouldn't be empty for summarisation!
+              </p>
             )}
             <ReactQuill
               className={styles.genericPText}
