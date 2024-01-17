@@ -1,0 +1,47 @@
+Timeline
+Submission date: 9th Feburary
+Need to update design system for the change in UI
+ideally by 18th January by Hubob
+need to code the software by end jan
+take about 1-2 weeks to code out
+finish the software on same day as the deadline for service design studio
+Web experiment by 5th feb
+4 days to evalutate study results
+Jefferson will focus on sds before doing the software
+
+Progress
+Design system is finished
+Need to finalise software user flow
+Change of existing UI
+New design to follow fathom software
+Main issue with current UI is that the live updates of meeting minutes is very distracting
+users will want to check if the auto filling is accurate
+
+New UI design
+New design is to not show the full meeting template during new meeting
+maybe having buttons for users to track for action items during the meeting
+press and hold
+will be used to help the AI
+current button choices are: action items, highlights, key dates and meeting details
+When the meeting ends the full transcript and blocks will be compiled
+if users never press the button its on them (not our problem)
+concern that people usually only realise things are important after they have finished talking about it
+pressing the button will retrieve information that was mention slightly b4 the button is pressed
+
+Software Database
+use a document database because data is not structured
+use a noSQL database
+either scyllaDB or mongoDB
+Decided to do mongoDB because its alot easier and our use case isnt super complex
+will setup as a docker container by morgan by wednesday
+
+Service design studio
+due next friday
+Jefferson still need to code finish the chat feature
+Gen AI stuff for chat is implemented in the backend already as an API
+not integrated to the frontend yet
+Jefferson can finish it by next monday
+will prepare test cases for next thursday meeting with DBS
+Morgan is finishing up the design for the website by wednesday
+left with a few mockups
+resolution is very poor so needs more time to refine
