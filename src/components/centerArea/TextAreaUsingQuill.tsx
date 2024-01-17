@@ -407,6 +407,8 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           const textAfter = result.substring(11);
           console.log(textAfter);
           setQuillValue("<ul>" + textAfter);
+        } else if (result.startsWith("<p>")) {
+          setQuillValue("<ul>" + result + "</ul>");
         } else if (match) {
           //ie someone deleted a bullet point with tet there to move it up?
           const pContent = match[1]; // Content inside the <p> tag
