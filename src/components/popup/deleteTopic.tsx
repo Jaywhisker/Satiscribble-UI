@@ -11,12 +11,10 @@ interface PopupProps {
 const DeleteTopic: React.FC<PopupProps> = ({ isOpen, onClose, onDelete }) => {
   // Placeholder functions
   const handleClose = () => {
-    console.log("Closing the popup");
     onClose();
   };
 
   const handleDelete = () => {
-    console.log("Deleting topic");
     onDelete();
   };
 

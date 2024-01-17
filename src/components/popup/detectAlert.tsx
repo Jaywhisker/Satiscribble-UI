@@ -1,9 +1,9 @@
-import React, {useEffect, useRef} from 'react';
-import { Button } from '../buttons';
-import Icons from '../icons/icons';
-import styles from '@/styles/components/popups.module.css';
+import React, { useEffect, useRef } from "react";
+import { Button } from "../buttons";
+import Icons from "../icons/icons";
+import styles from "@/styles/components/popups.module.css";
 
-import { createGlossaryEntry } from '@/functions/api/glossaryActions';
+import { createGlossaryEntry } from "@/functions/api/glossaryActions";
 
 interface PopupProps {
   detectedAbbrev?: string;
@@ -13,44 +13,50 @@ interface PopupProps {
   toast: any;
 }
 
-const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbreviation as <abbrev> : <full term>', isOpen, onClose, stateValue, toast }) => {
-
-  const initialized = useRef(false)
+const DetectAlert: React.FC<PopupProps> = ({
+  detectedAbbrev = "Detected abbreviation as <abbrev> : <full term>",
+  isOpen,
+  onClose,
+  stateValue,
+  toast,
+}) => {
+  const initialized = useRef(false);
 
   // Placeholder function for onClose
   const handleClose = () => {
-    console.log('Closing the popup');
     onClose();
   };
 
   useEffect(() => {
-    console.log(stateValue)
+    // console.log(stateValue)
     if (stateValue) {
-      handleClose()
+      handleClose();
     }
-  }, [stateValue])
+  }, [stateValue]);
 
-
-  const handleAdd = async() => {
-    console.log('Adding abbreviation');
+  const handleAdd = async () => {
     onClose();
 
-    const minutesID = localStorage.getItem('minutesID');
-    const chatHistoryID = localStorage.getItem('chatHistoryID')
+    const minutesID = localStorage.getItem("minutesID");
+    const chatHistoryID = localStorage.getItem("chatHistoryID");
     var abbreviation = detectedAbbrev.split("-")[0].trim().toUpperCase();
     var meaning = detectedAbbrev.split("-")[1].trim().toLowerCase();
-    
-    var response = await createGlossaryEntry(minutesID, chatHistoryID, abbreviation, meaning)
-    console.log(response)
+
+    var response = await createGlossaryEntry(
+      minutesID,
+      chatHistoryID,
+      abbreviation,
+      meaning
+    );
     if (response !== undefined) {
-      console.log(response.ERROR)
+      console.log(response.ERROR);
       setTimeout(() => {
-        toast.glossaryAddFail(false, detectedAbbrev)
-      }, 1000)
+        toast.glossaryAddFail(false, detectedAbbrev);
+      }, 1000);
     } else {
       setTimeout(() => {
-        toast.glossaryAdd(false)
-      }, 1000)
+        toast.glossaryAdd(false);
+      }, 1000);
     }
   };
 
@@ -60,13 +66,12 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
 
   useEffect(() => {
     if (!initialized.current) {
-      initialized.current = true
+      initialized.current = true;
       setTimeout(() => {
-        console.log('hi')
-        handleAdd()
-      }, 5000)
+        handleAdd();
+      }, 5000);
     }
-  }, [])
+  }, []);
 
   return (
     <div className={`${styles.Notif} ${styles.greyNotif}`}>
@@ -76,9 +81,19 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
             buttonType="icon-button"
             size="small"
             fillBorderVariant="no-background"
-            leftIcon={<Icons.GeneralIcon alt="Check Icon" color="purple" size="small" name='check' />}
+            leftIcon={
+              <Icons.GeneralIcon
+                alt="Check Icon"
+                color="purple"
+                size="small"
+                name="check"
+              />
+            }
           ></Button>
-          <p className={styles.messageHeader} style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }}>
+          <p
+            className={styles.messageHeader}
+            style={{ color: "var(--Nice_Blue, rgb(156,165,216))" }}
+          >
             We've detected an abbreviation
           </p>
         </span>
@@ -86,16 +101,32 @@ const DetectAlert: React.FC<PopupProps> = ({ detectedAbbrev = 'Detected abbrevia
           buttonType="icon-button"
           size="small"
           fillBorderVariant="no-background"
-          leftIcon={<Icons.GeneralIcon alt="Close" color="white" size="small" name = 'cancel'/>}
-          onClick={() => {handleClose()}}
+          leftIcon={
+            <Icons.GeneralIcon
+              alt="Close"
+              color="white"
+              size="small"
+              name="cancel"
+            />
+          }
+          onClick={() => {
+            handleClose();
+          }}
         ></Button>
       </span>
       <span className={styles.messageContent}>
-        <p style={{ marginBlock: "0" }}>Abbreviation will be automatically added in 5 seconds:</p>
+        <p style={{ marginBlock: "0" }}>
+          Abbreviation will be automatically added in 5 seconds:
+        </p>
         <p style={{ marginBlock: "0" }}>{detectedAbbrev}</p>
       </span>
       <span className={styles.actionButtons}>
-        <Button size="small" fillBorderVariant="border" colorVariant="white" onClick={handleAdd}>
+        <Button
+          size="small"
+          fillBorderVariant="border"
+          colorVariant="white"
+          onClick={handleAdd}
+        >
           ADD TO GLOSSARY
         </Button>
       </span>

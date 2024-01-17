@@ -46,13 +46,11 @@ export default function AgendaBlock(props: AgendaProps) {
       if (focused) {
         switch (event.key) {
           case "ArrowUp":
-            console.log("up");
             var newIndex = Math.max(focusedIndex - 1, 0);
             setFocusedIndex(newIndex);
             textInputRefs.current[newIndex]?.focus();
             break;
           case "ArrowDown":
-            console.log("down");
             var newIndex = Math.min(focusedIndex + 1, nextId - 1);
             setFocusedIndex(newIndex);
             textInputRefs.current[newIndex]?.focus();
@@ -82,11 +80,10 @@ export default function AgendaBlock(props: AgendaProps) {
   useEffect(() => {
     clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(async () => {
-      if (!focused &&  props.agendaItems.length > 0 ) {
+      if (!focused && props.agendaItems.length > 0) {
         var agendaContent = props.agendaItems
           .map((agenda) => agenda.name)
           .filter((items) => items.trim() !== "");
-        console.log("Agenda unfocused, updating agenda", agendaContent);
         var response = await updateAgenda(
           props.minutesID,
           props.chatHistoryID,
@@ -130,7 +127,7 @@ export default function AgendaBlock(props: AgendaProps) {
 
     var topicAddFailedAlert = toast.alertContainer.filter(
       (alert) => alert.type === "addTopicfail" && alert.stateValue === false
-    ); 
+    );
     if (topicAddFailedAlert.length > 0) {
       toast.update(topicAddFailedAlert[0].id, "addTopicfail", true);
     }

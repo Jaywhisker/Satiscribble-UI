@@ -73,7 +73,6 @@ export default function Home() {
   }, [timeout5MinTime]);
 
   useEffect(() => {
-    console.log("inactivity status updated to", inactivityStatusRef.current);
     if (inactivityStatusRef.current == "snooze") {
       setTimeout(() => {
         inactivityStatusRef.current = "active";
