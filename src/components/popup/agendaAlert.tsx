@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "../buttons";
 import Icons from "../icons/icons";
 import styles from "@/styles/components/popups.module.css";
@@ -35,6 +35,17 @@ const AgendaAlert: React.FC<PopupProps> = ({
       handleClose();
     }
   }, [stateValue]);
+
+
+  const initialized = useRef(null)
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      setTimeout(() => {
+        handleClose();
+      }, 10000);
+    }
+  }, []);
 
   if (!isOpen) {
     return null;

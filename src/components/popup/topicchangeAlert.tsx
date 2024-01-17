@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useRef }  from 'react';
 import { Button } from '../buttons';
 import Icons from '../icons/icons';
 import styles from '@/styles/components/popups.module.css';
@@ -21,11 +21,20 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyVal
   };
 
   useEffect(() => {
-    console.log(stateValue)
     if (stateValue) {
       handleClose()
     }
   }, [stateValue])
+
+  const initialized = useRef(null)
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      setTimeout(() => {
+        handleClose();
+      }, 10000);
+    }
+  }, []);
 
   const handleReport = () => {
     console.log('Reporting topic inaccuracy, inaccuracy count', inaccuracyValue+1);
