@@ -73,7 +73,7 @@ const DetectAlert: React.FC<PopupProps> = ({
         if (!ignoreHandleAdd) {
           handleAdd();
         }
-      }, 5000);
+      }, 10000);
     }
   }, []);
 
@@ -120,7 +120,7 @@ const DetectAlert: React.FC<PopupProps> = ({
       </span>
       <span className={styles.messageContent}>
         <p style={{ marginBlock: "0" }}>
-          Abbreviation will be automatically added in 5 seconds:
+          Abbreviation will be automatically added in 10 seconds:
         </p>
         <p style={{ marginBlock: "0" }}>{detectedAbbrev}</p>
       </span>
