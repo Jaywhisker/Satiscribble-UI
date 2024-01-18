@@ -47,7 +47,6 @@ export default function RightSideBar(props: rightSideBarProps) {
 
   const toast = useToast();
 
-
   useEffect(() => {
     setGPTResponse("");
     setQueryMode(localStorage.getItem("queryMode") || "document");
@@ -76,13 +75,12 @@ export default function RightSideBar(props: rightSideBarProps) {
     };
     fetchData();
   }, [props.minutesID]);
-  
-    
+
   useEffect(() => {
-    const refetchGlossary = async() => {
+    const refetchGlossary = async () => {
       var newGlossary = toast.alertContainer.some((alert) => {
-        return alert.type === 'glossaryAdd'
-      })
+        return alert.type === "glossaryAdd";
+      });
       if (newGlossary) {
         const glosaryLength = await fetchGlossary(
           props.minutesID,
@@ -92,11 +90,10 @@ export default function RightSideBar(props: rightSideBarProps) {
         // console.log(glosaryLength)
         setGlossaryMode(Array(glosaryLength).fill("default"));
       }
-  }
-  refetchGlossary()
-  }, [toast.alertContainer])
+    };
+    refetchGlossary();
+  }, [toast.alertContainer]);
 
-  
   // useEffect(() => {
   //     if (loadingResponse && !(queryMode === 'document' ? responseError[0] : responseError[1])) {
   //         //loading true and error is false
@@ -157,9 +154,6 @@ export default function RightSideBar(props: rightSideBarProps) {
     }
   }, [query, selected, queryMode, responseError]);
 
-  useEffect(() => {
-    console.log(responseError);
-  }, [responseError]);
 
   useEffect(() => {
     if (loadingResponse && chatResponse.current) {
@@ -382,6 +376,9 @@ export default function RightSideBar(props: rightSideBarProps) {
         height: "100vh",
         width: `var(--rightSideWidth)`,
         backgroundColor: `var(--Dark_Grey_50)`,
+        position: "fixed",
+        bottom: "0",
+        right: "0",
       }}
     >
       {deleteMode && (
@@ -672,7 +669,7 @@ export default function RightSideBar(props: rightSideBarProps) {
             </div>
           </div>
         ) : selected == "Glossary" ? (
-          <div>
+          <div className={rightBar.glossaryBlock}>
             <div className={rightBar.backgroundIconContainer}>
               <p className={rightBar.backgroundText}>GLOSSARY</p>
               <SirLogo mode="glossary" />
@@ -680,18 +677,20 @@ export default function RightSideBar(props: rightSideBarProps) {
 
             <div>
               {glossaryData.map((data, index) => (
-                <GlossaryModal
-                  type={glossaryMode[index]}
-                  abbreviation={data.abbreviation}
-                  meaning={data.meaning}
-                  id={index}
-                  glossaryType={glossaryMode}
-                  setGlossaryType={setGlossaryMode}
-                  glossaryData={glossaryData}
-                  setGlossaryData={setGlossaryData}
-                  minutesID={props.minutesID}
-                  chatHistoryID={props.chatHistoryID}
-                />
+                <div key={index}>
+                  <GlossaryModal
+                    type={glossaryMode[index]}
+                    abbreviation={data.abbreviation}
+                    meaning={data.meaning}
+                    id={index}
+                    glossaryType={glossaryMode}
+                    setGlossaryType={setGlossaryMode}
+                    glossaryData={glossaryData}
+                    setGlossaryData={setGlossaryData}
+                    minutesID={props.minutesID}
+                    chatHistoryID={props.chatHistoryID}
+                  />
+                </div>
               ))}
             </div>
           </div>

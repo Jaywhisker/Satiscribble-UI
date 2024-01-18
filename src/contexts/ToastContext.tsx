@@ -1,21 +1,21 @@
-import React, { createContext, useReducer, Dispatch, ReactNode } from "react";
+import React, { createContext, useReducer, ReactNode } from "react";
 import { toastReducer } from "@/reducers/toastReducer";
 import ToastsContainer from "@/components/popup/ToastsContainer";
 
 export type ToastContextType = {
-    agenda: (inaccurateAgenda:number, setInaccurateAgenda:any, message?: string) => void;
-    inactivity: (inactivityRef: any, message?: string) => void;
-    changeTopic: (inaccurateTopic:number, setInaccurateTopic:any, createNewTopic:()=>void, message?: string) => void;
-    detectAbbrev: (message: string, toast:any) => void;
-    topicLength: (message?: string) => void;
+    agenda: (stateValue:boolean, inaccurateAgenda:number, setInaccurateAgenda:any, message?: string) => void;
+    inactivity: (stateValue:boolean, inactivityRef: any, message?: string) => void;
+    changeTopic: (stateValue:boolean, inaccurateTopic:number, setInaccurateTopic:any, createNewTopic:()=>void, message?: string) => void;
+    detectAbbrev: (stateValue:boolean, message: string) => void;
+    topicLength: (stateValue:boolean, message?: string) => void;
     addTopicfail: (stateValue:boolean, message?: string) => void;
-    glossaryAdd: (message?: string) => void;
-    glossaryAddFail: (message: string, toast:any) => void;
-    agendaSaveFail: (message: string | {}, stateValue:boolean, toast:any) => void;
-    meetingSaveFail: (message: string | {}, stateValue:boolean, toast:any) => void;
-    minutesSaveFail: (message: string | {}, stateValue:boolean, toast:any) => void;
+    glossaryAdd: (stateValue:boolean, message?: string) => void;
+    glossaryAddFail: (stateValue:boolean, message: string) => void;
+    agendaSaveFail: (stateValue:boolean, message: string | {}) => void;
+    meetingSaveFail: (stateValue:boolean, message: string | {}) => void;
+    minutesSaveFail: (stateValue:boolean, message: string | {}) => void;
     remove: (id: number) => void;
-    update : (id: number, type: string, message?: string, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any) => void
+    update : (id: number, type: string, stateValue:boolean, message?: string, inactivityRef?: any , inAccuracyValue?: number, setInaccuracyState?:any, createNewTopic? :() => void) => void
     alertContainer: any[];
 };
 
@@ -25,9 +25,13 @@ interface ToastContextProps {
 }
 
 interface Toast {
-    id: string;
-    type: string;
-    message?: string | {};
+    type: string, 
+    message?: string | {}, 
+    inactivityRef?: any, 
+    stateValue?:number | boolean, 
+    inaccuracyValue?: number, 
+    setInaccuracyValue?:any, 
+    createNewTopic? :() => void
 }
 
 const initialState = {
@@ -36,44 +40,64 @@ const initialState = {
 
 type ToastAction =
     | { type: "ADD_TOAST"; payload: Toast }
-    | { type: "DELETE_TOAST"; payload: number };
+    | { type: "DELETE_TOAST"; payload: number }
+    | { type: "UPDATE_TOAST"; payload: Toast };
 
 
 export const ToastContextProvider: React.FC<ToastContextProps> = ({ children }) => {
     const [state, dispatch] = useReducer(toastReducer, initialState);
 
-    const addToast = (type: string, message?: string | {}, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {
+    const addToast = (type: string, 
+        stateValue:boolean, 
+        message?: string | {}, 
+        inactivityRef?: any, 
+        inaccuracyValue?: number, 
+        setInaccuracyValue?:any, 
+        createNewTopic? :() => void): void => {
         //logic on checking notification container size will be here
         //probably using toast.states to check the size 
         //if yes, allow for dispatch else do remove function
         const id = Math.floor(Math.random() * 10000000);
+
+        if (state.toasts.length >= 2) {
+            console.log(state.toasts)
+            update(state.toasts[0].id, state.toasts[0].type, true)
+        } 
         console.log('Dispatching ADD_TOAST action');
-        dispatch({ type: "ADD_TOAST", payload: { id, message, type, inactivityRef, stateValue, setState, createNewTopic, toast} });
+        dispatch({ type: "ADD_TOAST", payload: { id, type, stateValue, message, inactivityRef, inaccuracyValue, setInaccuracyValue, createNewTopic} });
     };
     
     const remove = ( id: number): void => {
         setTimeout(() => {
             dispatch({ type: "DELETE_TOAST", payload: id });
-        }, 500)
+        }, 1000)
     };
 
-    const update = (id: number, type: string, message?: string | {}, inactivityRef?: any, stateValue?:number | boolean, setState?:any, createNewTopic? :() => void, toast?:any): void => {
-        dispatch({type: "UPDATE_TOAST", payload: { id, message, type, inactivityRef, stateValue, setState, createNewTopic, toast} })
+    const update = (id: number, 
+        type: string, 
+        stateValue:Boolean, 
+        message?: string | {}, 
+        inactivityRef?: any, 
+        inaccuracyValue?: number, 
+        setInaccuracyValue?:any, 
+        createNewTopic? :() => void): void => {
+            console.log('updating')
+            dispatch({type: "UPDATE_TOAST", payload:{ id, type, stateValue, message, inactivityRef, inaccuracyValue, setInaccuracyValue, createNewTopic} })
     }
     
     
     const value: ToastContextType = {
-        agenda: (inaccurateAgenda:number, setInaccurateAgenda:any, message?: string) => addToast("agenda", message, null, inaccurateAgenda, setInaccurateAgenda),
-        inactivity: (inactivityRef: any, message?: string) => addToast("inactivity", message, inactivityRef),
-        changeTopic: (inaccurateTopic:number, setInaccurateTopic:any, createNewTopic:()=> void, message?: string) => addToast("changeTopic", message, null, inaccurateTopic, setInaccurateTopic, createNewTopic),
-        detectAbbrev: (message: string, toast:any) => addToast("detectAbbrev", message, null, null, null, null, toast),
-        topicLength: (message?: string) => addToast("topicLength", message),
-        addTopicfail: (stateValue:boolean, message?: string) => addToast("addTopicfail", message, null, stateValue),
-        glossaryAdd: (message?: string) => addToast("glossaryAdd", message),
-        glossaryAddFail: (message: string, toast:any) => addToast("glossaryAddFail", message, null, null, null, null, toast),
-        agendaSaveFail: (message: string | {}, stateValue:boolean, toast:any) => addToast("agendaSaveFail", message, null, stateValue, null, null, toast),
-        meetingSaveFail: (message: string | {}, stateValue:boolean, toast:any) => addToast("meetingSaveFail", message, null, stateValue, null, null, toast),
-        minutesSaveFail: (message: string | {}, stateValue:boolean, toast:any) => addToast("minutesSaveFail", message, null, stateValue, null, null, toast),
+        agenda: (stateValue:boolean, inaccurateAgenda:number, setInaccurateAgenda:any, message?: string) => addToast("agenda", stateValue, message, null, inaccurateAgenda, setInaccurateAgenda),
+        inactivity: (stateValue:boolean, inactivityRef: any, message?: string) => addToast("inactivity", stateValue, message, inactivityRef),
+        changeTopic: (stateValue:boolean, inaccurateTopic:number, setInaccurateTopic:any, createNewTopic:()=> void, message?: string) => addToast("changeTopic", stateValue, message, null, inaccurateTopic, setInaccurateTopic, createNewTopic),
+        detectAbbrev: (stateValue:boolean, message: string) => addToast("detectAbbrev", stateValue, message),
+        topicLength: (stateValue:boolean, message?: string) => addToast("topicLength", stateValue, message),
+        addTopicfail: (stateValue:boolean, message?: string) => addToast("addTopicfail", stateValue, message),
+        glossaryAdd: (stateValue:boolean, message?: string) => addToast("glossaryAdd", stateValue, message),
+        glossaryAddFail: (stateValue:boolean, message: string) => addToast("glossaryAddFail", stateValue, message),
+        agendaSaveFail: (stateValue:boolean, message: string | {}) => addToast("agendaSaveFail", stateValue, message),
+        meetingSaveFail: (stateValue:boolean, message: string | {}) => addToast("meetingSaveFail", stateValue, message),
+        minutesSaveFail: (stateValue:boolean, message: string | {}) => addToast("minutesSaveFail", stateValue, message),
         remove,
         update,
         alertContainer: state.toasts

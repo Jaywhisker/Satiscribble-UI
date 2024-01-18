@@ -47,7 +47,7 @@ export default function Home() {
 
     inactivityTimeoutRef.current = setTimeout(() => {
       if (inactivityStatusRef.current === "active") {
-        toast.inactivity(inactivityStatusRef);
+        toast.inactivity(false, inactivityStatusRef);
         inactivityStatusRef.current = "inactive";
       }
     }, timeout5MinTime);
@@ -73,7 +73,6 @@ export default function Home() {
   }, [timeout5MinTime]);
 
   useEffect(() => {
-    console.log("inactivity status updated to", inactivityStatusRef.current);
     if (inactivityStatusRef.current == "snooze") {
       setTimeout(() => {
         inactivityStatusRef.current = "active";

@@ -34,8 +34,6 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
         toast.update(
           meetingDetailsFailedAlert[0].id,
           "meetingSaveFail",
-          null,
-          null,
           true
         );
       }
@@ -75,10 +73,9 @@ function MeetingDetailBlocks(props: meetingDetailBlockProps) {
         //handle error
         console.log("Meeting Details Error:", response.ERROR);
         toast.meetingSaveFail(
-          { location: locationValue, participants: participantsValue },
           false,
-          toast
-        );
+          { location: locationValue, participants: participantsValue },
+          );
       } else {
         setIsEditing(false);
       }

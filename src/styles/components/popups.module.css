@@ -84,7 +84,7 @@
 .toastsContainer {
     display: flex;
     flex-direction: column-reverse;
-    row-gap: 12px;
+    row-gap: 1vh;
     z-index: 9999;
     position: fixed;
     top: 16px;
@@ -109,6 +109,7 @@
 
 .toast-dismissed {
     animation: slide-out 0.4s ease-in-out forwards;
+    
 }
 
 @keyframes slide-out {
