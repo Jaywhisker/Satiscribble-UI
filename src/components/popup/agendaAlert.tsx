@@ -30,7 +30,6 @@ const AgendaAlert: React.FC<PopupProps> = ({
   };
 
   useEffect(() => {
-    console.log(stateValue);
     if (stateValue) {
       handleClose();
     }
@@ -43,7 +42,7 @@ const AgendaAlert: React.FC<PopupProps> = ({
       initialized.current = true;
       setTimeout(() => {
         handleClose();
-      }, 10000);
+      }, 15000);
     }
   }, []);
 

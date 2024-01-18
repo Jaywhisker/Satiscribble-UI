@@ -32,7 +32,7 @@ const TopicChangeAlert: React.FC<PopupProps> = ({ isOpen, onClose, inaccuracyVal
       initialized.current = true;
       setTimeout(() => {
         handleClose();
-      }, 10000);
+      }, 15000);
     }
   }, []);
 

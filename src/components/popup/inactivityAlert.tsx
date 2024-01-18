@@ -21,7 +21,6 @@ const InactivityAlert: React.FC<PopupProps> = ({ isOpen, onClose, stateValue, in
   };
 
   useEffect(() => {
-    console.log(stateValue)
     if (stateValue) {
       handleClose()
     }
