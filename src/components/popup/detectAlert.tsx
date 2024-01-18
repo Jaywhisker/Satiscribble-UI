@@ -21,9 +21,11 @@ const DetectAlert: React.FC<PopupProps> = ({
   toast,
 }) => {
   const initialized = useRef(false);
+  let ignoreHandleAdd = false;
 
   // Placeholder function for onClose
   const handleClose = () => {
+    ignoreHandleAdd = true
     onClose();
   };
 
@@ -68,7 +70,9 @@ const DetectAlert: React.FC<PopupProps> = ({
     if (!initialized.current) {
       initialized.current = true;
       setTimeout(() => {
-        handleAdd();
+        if (!ignoreHandleAdd) {
+          handleAdd();
+        }
       }, 5000);
     }
   }, []);
@@ -110,7 +114,7 @@ const DetectAlert: React.FC<PopupProps> = ({
             />
           }
           onClick={() => {
-            handleClose();
+            handleAdd();
           }}
         ></Button>
       </span>
@@ -125,9 +129,9 @@ const DetectAlert: React.FC<PopupProps> = ({
           size="small"
           fillBorderVariant="border"
           colorVariant="white"
-          onClick={handleAdd}
+          onClick={handleClose}
         >
-          ADD TO GLOSSARY
+          IGNORE ABBREVIATION
         </Button>
       </span>
     </div>
