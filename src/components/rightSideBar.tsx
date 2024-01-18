@@ -154,10 +154,6 @@ export default function RightSideBar(props: rightSideBarProps) {
     }
   }, [query, selected, queryMode, responseError]);
 
-  // ???? Why is this here?
-  useEffect(() => {
-    // console.log(responseError);
-  }, [responseError]);
 
   useEffect(() => {
     if (loadingResponse && chatResponse.current) {

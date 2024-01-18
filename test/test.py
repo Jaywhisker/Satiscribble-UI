@@ -5,6 +5,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import time
 
 agenda = ["Decide timeline for HCI submission", "Finalise UI design", "Finalise HCI software design"]
 
@@ -50,13 +51,14 @@ def inputTopicTextFromFile(driver,filepath):
             else:
                 if title:
                     textInTopicBlock(driver, line)
+                    time.sleep(3)
                 else:
                     newTopicTitle(driver, line)
                     title= True
 
 driver = launchSelenium()
 setAgendaItems(driver, agenda)
-inputTopicTextFromFile(driver, "text.txt")
+inputTopicTextFromFile(driver, "misc/text.txt")
 seleniumCloser(driver)
 
 

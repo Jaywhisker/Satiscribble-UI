@@ -334,8 +334,12 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             quillEditor.setSelection(previousCursorPosition + offset, 0);
           }, 0);
         } else if (result.startsWith("<p><br></p>")) {
-          // The case of enter on empty area
-          setQuillValue("<ul><li></li></ul>");
+          console.log(result);
+          let textAfter = result.substring(11);
+          console.log(textAfter);
+          setQuillValue(
+            "<ul>" + "<li><br></li><li><br></li>" + textAfter + "</ul>"
+          );
         }
       }
     } else if (event.key === "Backspace") {
@@ -352,6 +356,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         const previousCursorPosition = range.index;
         const pattern = /<\/ul><p>(.*?)<\/p>([\s\S]*)/;
         const match = result.match(pattern);
+        console.log(result);
         if (result.startsWith("</ul><p><br></p>")) {
           const indexOfSubstring =
             result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
@@ -365,11 +370,10 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             const quillEditor = quillRef.current.getEditor();
             quillEditor.setSelection(previousCursorPosition, 0);
           }, 0);
-        } else if (result.startsWith("<p><br></p>")) {
-          const textAfter = result.substring(11);
-          setQuillValue("<ul>" + textAfter);
         } else if (result.startsWith("<p>")) {
           setQuillValue("<ul>" + result + "</ul>");
+        } else if (result.startsWith("<p><br></p>")) {
+          setQuillValue("<ul><p><br></p></ul>");
         } else if (match) {
           //ie someone deleted a bullet point with tet there to move it up?
           const pContent = match[1]; // Content inside the <p> tag
