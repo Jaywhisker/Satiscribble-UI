@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 
 import LeftSidebar from "@/components/leftArea/leftSideBar";
-import RightSideBar from "@/components/rightSideBar";
+import RightSideBar from "@/components/rightArea/rightSideBar";
 import CenterArea from "@/components/centerArea/CenterArea";
 
-import { ToastContextProvider } from "@/contexts/ToastContext";
 import { useToast } from "@/hooks/useToast";
 
 import { readID } from "@/functions/IDHelper";
@@ -26,14 +24,6 @@ export default function Home() {
   const inactivityStatusRef = useRef("active");
   const timeout5MinTime = 5 * 60 * 1000;
   const timeout15MinTime = 15 * 60 * 1000;
-
-  // useEffect(() => {
-  //   console.log(topicContent, topicTitles);
-  // }, [topicContent]);
-
-  // useEffect(() => {
-  //   console.log(topicTitles, topicContent);
-  // }, [topicTitles]);
 
   useEffect(() => {
     readID(setMinutesID, setChatHistoryID);

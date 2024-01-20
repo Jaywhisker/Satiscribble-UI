@@ -321,7 +321,7 @@ export default function RightSideBar(props: rightSideBarProps) {
                 setGPTResponse("");
               } else if (queryMode === "document") {
                 var newDocumentChat = [...documentChatHistory];
-                var sourceIDs = res.headers.get("sourceID");
+                var sourceIDs = res.headers.get("source_id");
                 const sourceIDsList = sourceIDs
                   .slice(1, -1)
                   .split(", ")
