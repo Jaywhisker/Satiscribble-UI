@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             req.body.requestData,
             {responseType: 'stream',}
             )
-            res.setHeader('SourceID', response.headers['source_id']);
+            res.setHeader('source_id', response.headers['source_id']);
             res.status(200);
             response.data.pipe(res)
             response.data.on('end', () => {
