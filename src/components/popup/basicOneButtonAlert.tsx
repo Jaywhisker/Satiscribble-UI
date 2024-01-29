@@ -106,8 +106,9 @@ const BasicOneButtonAlert: React.FC<PopupProps> = ({
 
     // glossary try again
     if (dataValue.hasOwnProperty("glossary")) {
-      var abbreviation = dataValue.glossary.split("-")[0].trim().toUpperCase();
-      var meaning = dataValue.glossary.split("-")[1].trim().toLowerCase();
+      var abbreviation = dataValue.glossary.substring(0, dataValue.glossary.indexOf("-")).trim().toUpperCase();
+      var meaning = dataValue.glossary.substring(dataValue.glossary.indexOf("-")+1, dataValue.glossary.length).trim().toLowerCase();
+
       // @ts-ignore
       var response = await buttonFunction(
         minutesID,

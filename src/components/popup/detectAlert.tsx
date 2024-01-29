@@ -41,8 +41,8 @@ const DetectAlert: React.FC<PopupProps> = ({
 
     const minutesID = localStorage.getItem("minutesID");
     const chatHistoryID = localStorage.getItem("chatHistoryID");
-    var abbreviation = detectedAbbrev.split("-")[0].trim().toUpperCase();
-    var meaning = detectedAbbrev.split("-")[1].trim().toLowerCase();
+    var abbreviation = detectedAbbrev.substring(0, detectedAbbrev.indexOf("-")).trim().toUpperCase();
+    var meaning = detectedAbbrev.substring(detectedAbbrev.indexOf("-")+1, detectedAbbrev.length).trim().toLowerCase();
 
     var response = await createGlossaryEntry(
       minutesID,
