@@ -133,7 +133,7 @@ function CenterArea(props: centerAreaProps) {
         />
       ))}
 
-      <div className={styles.genericBlockHolder}>
+      <div className={styles.genericBlockHolder} style={{marginBottom: '75vh'}}>
         {showCover && <div className={styles.genericBlockCover}></div>}
         <button
           className={styles.mainAreaAddNewBlockButton}

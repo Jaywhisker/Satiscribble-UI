@@ -278,8 +278,18 @@
   flex-direction: column;
   gap: var(--betweenBlockGap);
   width: var(--overallWidth);
-  margin-bottom: 75vh;
   margin-left: 15vw;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.mainAreaContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.mainAreaContainer {
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
 }
 
 
