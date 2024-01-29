@@ -157,6 +157,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       } else {
         // console.log(response.ERROR);
         setSummaryContent("Error generating summary, please try again");
+        setLoadingSummary(false);
       }
     } else if (props.content == "<ul><li><br></li></ul>") {
       setSummaryWarning(true);

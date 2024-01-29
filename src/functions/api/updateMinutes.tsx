@@ -122,6 +122,7 @@ export async function updateMinutes(
         reqData.chatHistoryID
       );
       var respAbbMeaning = response.data.abbreviation.split(":");
+      console.log(respAbbMeaning)
       var respAbbreviation = respAbbMeaning[0].trim().toUpperCase();
       var respMeaning = respAbbMeaning[1].trim().toLowerCase();
 
@@ -132,7 +133,7 @@ export async function updateMinutes(
       });
 
       if (exists) {
-        //ignore if exist? or are we gna js alert
+        //ignore
       } else {
         //call alert notification if no alert on this
         var existingAlert = toast.alertContainer.some(
