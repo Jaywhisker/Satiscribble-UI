@@ -1,10 +1,11 @@
-import rightBar from '@/styles/components/rightSideBar.module.css'
+import rightBar from '@/styles/components/rightSideBar/rightSideBar.module.css'
 
 export interface LogoProps {
     mode: string
 }
 
-
+//Used to return the correct SVG file without overcramming the main rightSideBar code file
+//Should not be edited, for the sizes, please edit the CSS
 export default function SirLogo(props:LogoProps ) {
     return(
     <>

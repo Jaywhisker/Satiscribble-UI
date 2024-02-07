@@ -1,9 +1,14 @@
 import {useState, useEffect, useRef} from 'react'
-import glossary from '@/styles/components/glossary.module.css'
-import { updateGlossaryEntry, deleteGlossaryEntry } from '@/functions/api/glossaryActions'
+
+import glossary from '@/styles/components/rightSideBar/glossary.module.css'
+
+import { 
+    updateGlossaryEntry, 
+    deleteGlossaryEntry 
+} from '@/functions/api/glossaryActions'
 
 export interface glossaryDetails {
-    type: string
+    type: string //edit or default
     abbreviation: string
     meaning: string
     id: number
@@ -18,40 +23,82 @@ export interface glossaryDetails {
 
 export default function GlossaryModal(props: glossaryDetails ) {
 
-    const [glossaryMeaning, setGlossaryMeaning] = useState(null)
+    //Use States
+    const [newGlossaryMeaning, setNewGlossaryMeaning] = useState(null)
     const [warning, setWarning] = useState(false)
     const meaningTextArea = useRef(null)
 
-    //esc key to discard (original meaning)
-    //underline for edit
-    //cannot save is length = 0
-    
-    useEffect(() => {
-        if (props.type == 'edit') {
-            const textarea = meaningTextArea.current;
-            textarea.style.height = 'auto';
-            textarea.style.height = `${textarea.scrollHeight}px`;
-        }
-      }, [glossaryMeaning, props.type]);
 
-
+    //Initialisation, set the useState newGlossaryMeaning to the current meaning
     useEffect(() => {
-        setGlossaryMeaning(props.meaning)
+        setNewGlossaryMeaning(props.meaning)
     }, [props.meaning])
 
 
+
+    // ------------------------------------------------------------------------
+    //
+    //                        Glossary - Text Area
+    //
+    // ------------------------------------------------------------------------
+  
+    //Update Glossary Type to edit 
     function handleEdit(index) {
         var newGlossaryType = [...props.glossaryType]
         newGlossaryType[index] = 'edit'
         props.setGlossaryType(newGlossaryType)
     }
 
+    //Auto updating of the height of text area
+    useEffect(() => {
+        if (props.type == 'edit') {
+            const textarea = meaningTextArea.current;
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+      }, [newGlossaryMeaning, props.type]);
+
+    //Editing query input
+    function handleEditMeaning(event) {
+        var value = event.target.value
+        setNewGlossaryMeaning(value)
+    }
+
+    //Enter will be considered as a submit and escape will be cancel
+    function handleSubmit(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); 
+            handleSave(props.id);
+        } else if (event.key === 'Escape') {
+            handleCancel(props.id);
+        }
+        else {
+            null
+        }
+        }
+
+    //Cancel changes, revert back to initial value
+    function handleCancel(index) {
+        setNewGlossaryMeaning(props.meaning)
+        var newGlossaryType = [...props.glossaryType]
+        newGlossaryType[index] = 'default'
+        props.setGlossaryType(newGlossaryType)
+    }
+    
+
+    // ------------------------------------------------------------------------
+    //
+    //                        Glossary - Backend Function
+    //
+    // ------------------------------------------------------------------------
+
+    //Updating New Glossary Meaning
     async function handleSave(index)  {
-        if (glossaryMeaning.length <= 0) {
-            setWarning(true)
+        if (newGlossaryMeaning.length <= 0) {
+            setWarning(true) //prevent saving
         } else {
             setWarning(false)
-            var response = await updateGlossaryEntry(props.minutesID, props.chatHistoryID, props.abbreviation, glossaryMeaning)
+            var response = await updateGlossaryEntry(props.minutesID, props.chatHistoryID, props.abbreviation, newGlossaryMeaning)
             if (response === undefined) {
                 var newGlossaryType = [...props.glossaryType]
                 newGlossaryType[index] = 'default'
@@ -63,11 +110,13 @@ export default function GlossaryModal(props: glossaryDetails ) {
         }
     }
 
+    //Deleting Glossary Entry
     async function handleDelete(index) {
         var response = await deleteGlossaryEntry(props.minutesID, props.chatHistoryID, props.abbreviation, props.meaning)
         if (response === undefined) {
+            //Remove entry from useStates of GlossaryType and GlossaryData
             var newGlossaryType = [...props.glossaryType]
-            newGlossaryType.splice(index, 1)
+            newGlossaryType.splice(index, 1) 
             props.setGlossaryType(newGlossaryType)
     
             var newGlossaryData = [...props.glossaryData]
@@ -78,31 +127,6 @@ export default function GlossaryModal(props: glossaryDetails ) {
             console.log('Delete glossary error', response.ERROR)
         }
     }
-
-    function handleCancel(index) {
-        setGlossaryMeaning(props.meaning)
-        
-        var newGlossaryType = [...props.glossaryType]
-        newGlossaryType[index] = 'default'
-        props.setGlossaryType(newGlossaryType)
-    }
-
-    function handleEditMeaning(event) {
-        var value = event.target.value
-        setGlossaryMeaning(value)
-    }
-
-    function handleSubmit(event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); 
-            handleSave(props.id);
-        } else if (event.key === 'Escape') {
-            handleCancel(props.id);
-        }
-        else {
-            null
-        }
-      }
 
 
 
@@ -128,7 +152,7 @@ export default function GlossaryModal(props: glossaryDetails ) {
                     </div>
                 </div>
 
-                <p className={glossary.meaningText}>{glossaryMeaning}</p>
+                <p className={glossary.meaningText}>{newGlossaryMeaning}</p>
             </div>
         ) : props.type == 'edit' ? (
             <div className={glossary.detailsContainer}>
@@ -149,10 +173,14 @@ export default function GlossaryModal(props: glossaryDetails ) {
                         
                     </div>
                 </div>
-
+                {
+                    warning && (
+                        <p className={glossary.warningText}>Your glossary cannot be empty!</p>
+                    )
+                }
                 <textarea 
                     className={glossary.meaningText}
-                    value = {glossaryMeaning}
+                    value = {newGlossaryMeaning}
                     placeholder = "Glossary meaning here..."
                     onChange = {handleEditMeaning}
                     rows = {1}

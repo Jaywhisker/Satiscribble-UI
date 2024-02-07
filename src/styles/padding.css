@@ -1,5 +1,4 @@
 :root{
-
     /* Center Area */
     /* Button Sizes */
     --magicWandButtonSize: 4vh;
@@ -38,19 +37,4 @@
     --buttonHorizontalPadding: 4.5vw;
     --buttonMinHeight: 4.5vh;
     --buttonMinWidth: 10vw;
-}
-
-
-/* For quillarea */
-.ql-editor {
-    padding: 0px!important;
-  }
-  
-.ql-editor ul{
-  padding-left: 0vw!important;
-}
-
-li{
-  font: var(--ui-text);
-  line-height: 1.5;
 }

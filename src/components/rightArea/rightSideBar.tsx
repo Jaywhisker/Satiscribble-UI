@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import PopUp from "@/components/popup";
-
-import rightBar from "@/styles/components/rightSideBar.module.css";
-
 import SirLogo from "./chatContainer/sirLogos";
-import UserChat from "./chatContainer/userInput";
+import UserQuery from "./chatContainer/userInput";
 import AssistantResponse from "./chatContainer/assistantResponse";
 import GlossaryModal from "./glossary/glossaryModal";
+
+import rightBar from "@/styles/components/rightSideBar/rightSideBar.module.css";
 
 import {
   fetchChatHistory,
@@ -25,37 +24,55 @@ interface rightSideBarProps {
 }
 
 export default function RightSideBar(props: rightSideBarProps) {
-  const [expanded, setExpanded] = useState(true);
-  const [selected, setSelected] = useState("CuriousCat");
-  const [queryMode, setQueryMode] = useState(null);
-  const [query, setQuery] = useState("");
-  const [showMore, setShowMore] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
 
+  // Display Variables 
+  const [expanded, setExpanded] = useState(true); //Show right side bar or not
+  const [selected, setSelected] = useState("CuriousCat"); //Selected tab (CuriousCat or Glossary)
+  const [queryMode, setQueryMode] = useState(null); //document or web query
+
+  // Curious Cat - Chat History
   const [documentChatHistory, setDocumentChatHistory] = useState([]);
-  const [webChatHistory, setWebChatHistory] = useState([]);
+  const [webChatHistory, setWebChatHistory] = useState([]); 
+  const [showMore, setShowMore] = useState(false); //show clear chat button
+  const [deleteMode, setDeleteMode] = useState(false); //show delete chat history pop-up
+
+  //Curious Cat - Query and Response
+  const [query, setQuery] = useState("");
   const [gptResponse, setGPTResponse] = useState("");
-  const [loadingResponse, setLoadingResponse] = useState(false);
-  const [waitingResponse, setWaitingResponse] = useState(false);
-  const [responseError, setResponseError] = useState([false, false]);
+  const [loadingResponse, setLoadingResponse] = useState(false); //loading for response
+  const [waitingResponse, setWaitingResponse] = useState(false); //waiting for streaming to end
+  const [responseError, setResponseError] = useState([false, false]); //error handling
 
+  //Glossary
   const [glossaryData, setGlossaryData] = useState([]);
-  const [glossaryMode, setGlossaryMode] = useState([]);
+  const [glossaryMode, setGlossaryMode] = useState([]); //Normal or Edit mode
 
+  //Reference Containers
   const queryInputArea = useRef(null);
   const chatResponse = useRef(null);
 
+  //Notification toasts
   const toast = useToast();
 
+
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Initialisation Functions
+  //
+  // ------------------------------------------------------------------------
+  
+  //Function to initialise the queryMode of users based on their last chosen curious cat mode, else default document
   useEffect(() => {
     setGPTResponse("");
     setQueryMode(localStorage.getItem("queryMode") || "document");
-    window.addEventListener("click", closeModal);
-    return () => {
-      window.removeEventListener("click", closeModal);
-    };
+    document.addEventListener('click', handleClick) //event listener for clear chat button
+    return(() => {
+      document.removeEventListener('click', handleClick)
+    })
   }, []);
 
+  //Collect Chat history and Glossary Data
   useEffect(() => {
     const fetchData = async () => {
       if (props.minutesID != null) {
@@ -65,114 +82,27 @@ export default function RightSideBar(props: rightSideBarProps) {
           setDocumentChatHistory,
           setWebChatHistory
         );
-        const glosaryLength = await fetchGlossary(
+        const glosaryLength = 
+        await fetchGlossary(
           props.minutesID,
           props.chatHistoryID,
           setGlossaryData
         );
-        setGlossaryMode(Array(glosaryLength).fill("default"));
+        setGlossaryMode(Array(glosaryLength).fill("default")); //Set all the glossary entries to default mode
       }
     };
     fetchData();
   }, [props.minutesID]);
 
-  useEffect(() => {
-    const refetchGlossary = async () => {
-      var newGlossary = toast.alertContainer.some((alert) => {
-        return alert.type === "glossaryAdd";
-      });
-      if (newGlossary) {
-        const glosaryLength = await fetchGlossary(
-          props.minutesID,
-          props.chatHistoryID,
-          setGlossaryData
-        );
-        // console.log(glosaryLength)
-        setGlossaryMode(Array(glosaryLength).fill("default"));
-      }
-    };
-    refetchGlossary();
-  }, [toast.alertContainer]);
-
-  // useEffect(() => {
-  //     if (loadingResponse && !(queryMode === 'document' ? responseError[0] : responseError[1])) {
-  //         //loading true and error is false
-  //         fetchQueryResponse(query)
-  //     } else if (loadingResponse && (queryMode === 'document' ? responseError[0] : responseError[1]) && query.length > 0) {
-  //         //send a new query instead of retrying
-  //         //need to remove old query that failed
-  //         fetchQueryResponse(query)
-  //     }
-  // }, [loadingResponse])
-
-  useEffect(() => {
-    if (loadingResponse) {
-      let errorIndex;
-      const updatedResponseError = [...responseError];
-      if (queryMode === "document") {
-        errorIndex = 0;
-      } else if (queryMode === "web") {
-        errorIndex = 1;
-      }
-      updatedResponseError[errorIndex] = false;
-      setResponseError(updatedResponseError);
-      fetchQueryResponse(query);
-    }
-  }, [loadingResponse]);
-
-  useEffect(() => {
-    if (selected === "CuriousCat") {
-      const textarea = queryInputArea.current;
-      textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-
-      var inputHeight = Math.min(
-        textarea.scrollHeight,
-        window.innerHeight * 0.25
-      );
-      const bottomTabElement = document.querySelector(
-        "#bottomTab"
-      ) as HTMLElement;
-      const chatContainerElement = document.querySelector(
-        "#chatContainer"
-      ) as HTMLElement;
-
-      if (queryMode === "document" ? responseError[0] : responseError[1]) {
-        //if error, chatContainer height is smaller
-        chatContainerElement.style.height = `${
-          window.innerHeight * 0.64 - inputHeight
-        }px`;
-        var buttonElementHeight = window.innerHeight * 0.804 - inputHeight;
-      } else {
-        chatContainerElement.style.height = `${
-          window.innerHeight * 0.69 - inputHeight
-        }px`;
-        var buttonElementHeight = window.innerHeight * 0.86 - inputHeight;
-      }
-      bottomTabElement.style.top = `${buttonElementHeight}px`;
-      //insert scrolling logic if desired
-    }
-  }, [query, selected, queryMode, responseError]);
 
 
-  useEffect(() => {
-    if (loadingResponse && chatResponse.current) {
-      chatResponse.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    }
-  }, [gptResponse, loadingResponse]);
+  // ------------------------------------------------------------------------
+  //
+  //                        State Helper Functions
+  //
+  // ------------------------------------------------------------------------
 
-  function closeModal(event) {
-    if (event.target.id == "showMore") {
-      setShowMore(!showMore);
-    } else {
-      setShowMore(false);
-    }
-  }
-
+  //Animation for Expanding the Right side bar (slide up and down)
   function handleExpand() {
     const dropDownContainerElement = document.querySelector(
       "#rightSideBar"
@@ -199,10 +129,13 @@ export default function RightSideBar(props: rightSideBarProps) {
     setExpanded(!expanded);
   }
 
+  //Change between CuriousCat and glossary
   function handleTabChange(tabName) {
     setSelected(tabName);
   }
 
+  //Change the queryMode between web and document
+  //Also sets the current selected tab as a local storage item to allow for previous access
   function handleQueryChange(queryMode) {
     if (!loadingResponse) {
       setQueryMode(queryMode);
@@ -210,6 +143,155 @@ export default function RightSideBar(props: rightSideBarProps) {
     }
   }
 
+
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Glossary Functions
+  //
+  // ------------------------------------------------------------------------
+  
+  //Reload Glossary tab when there are alerts about successful Glossary addition (signifies new glossary terms)
+  useEffect(() => {
+    const refetchGlossary = async () => {
+      var newGlossary = toast.alertContainer.some((alert) => {
+        return alert.type === "glossaryAdd";
+      });
+      if (newGlossary) {
+        const glosaryLength = await fetchGlossary(
+          props.minutesID,
+          props.chatHistoryID,
+          setGlossaryData
+        );
+        setGlossaryMode(Array(glosaryLength).fill("default"));
+      }
+    };
+    refetchGlossary();
+  }, [toast.alertContainer]);
+
+  
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Curious Cat Functions - UI
+  //
+  // ------------------------------------------------------------------------
+  
+
+  //Scroll into view when the GPT response longer than the page height
+  useEffect(() => {
+    if (loadingResponse && chatResponse.current) {
+      chatResponse.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      });
+    }
+  }, [gptResponse, loadingResponse]);
+
+  //When a query is submitted, reset the error for the specific queryMode
+  useEffect(() => {
+    if (loadingResponse) {
+      let errorIndex;
+      const updatedResponseError = [...responseError];
+      if (queryMode === "document") {
+        errorIndex = 0;
+      } else if (queryMode === "web") {
+        errorIndex = 1;
+      }
+      updatedResponseError[errorIndex] = false;
+      setResponseError(updatedResponseError);
+      fetchQueryResponse(query);
+    }
+  }, [loadingResponse]);
+
+  
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Curious Cat Functions - Clear Chat
+  //
+  // ------------------------------------------------------------------------
+  
+  //Determining the clear chat (if the ... rectangle was click, should the clear chat button or hide if its shown)
+  //However, if the user clicks anywhere else, if the clear chat button was already visible, should be hidden
+  function handleClick(event) {
+    if (event.target.id == 'showMore') {
+      setShowMore(!showMore)
+    } else {
+      setShowMore(false)
+    }
+  }
+
+  //Submit the clear chat history to Next.js backend
+  async function handleClearChat() {
+    try {
+      var requestData = {
+        type: queryMode,
+        minutesID: props.minutesID,
+        chatHistoryID: props.chatHistoryID,
+      };
+      await axios.post("/api/clear", requestData);
+      await fetchChatHistory(
+        props.minutesID,
+        props.chatHistoryID,
+        setDocumentChatHistory,
+        setWebChatHistory
+      );
+      setDeleteMode(false); //remove popup 
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Curious Cat Functions - Query Input
+  //
+  // ------------------------------------------------------------------------
+  
+  //Update the textarea input
+  function handleInputChange(event) {
+    setQuery(event.target.value);
+  }
+  
+  //Function to adjust the height of the query input
+  //The height of the chat container must decrease as well (so that previous chat does not get cut off randomly)
+  //Same goes for the error message if there are errors (note that the height required is smaller)
+  useEffect(() => {
+    if (selected === "CuriousCat") {
+      const textarea = queryInputArea.current;
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+
+      var inputHeight = Math.min(
+        textarea.scrollHeight,
+        window.innerHeight * 0.25
+      );
+      const bottomTabElement = document.querySelector("#bottomTab") as HTMLElement;
+      const chatContainerElement = document.querySelector("#chatContainer") as HTMLElement;
+
+      if (queryMode === "document" ? responseError[0] : responseError[1]) {
+        //if error, chatContainer height is smaller
+        chatContainerElement.style.height = `${
+          window.innerHeight * 0.64 - inputHeight
+        }px`;
+        var buttonElementHeight = window.innerHeight * 0.804 - inputHeight;
+      } else {
+        chatContainerElement.style.height = `${
+          window.innerHeight * 0.69 - inputHeight
+        }px`;
+        var buttonElementHeight = window.innerHeight * 0.86 - inputHeight;
+      }
+      bottomTabElement.style.top = `${buttonElementHeight}px`;
+      //insert scrolling of the chat container to the bottom when height changes logic here if desired
+    }
+  }, [query, selected, queryMode, responseError]);
+
+  //Changing query input keyboard shortcuts, if shift enter allow for a line break
+  //If enter is selected we will submit query
   function handleKeyDown(event) {
     if (event.shiftKey && event.key === "Enter") {
       event.preventDefault();
@@ -220,6 +302,7 @@ export default function RightSideBar(props: rightSideBarProps) {
     }
   }
 
+  //Insert line break at where the cursor is at
   function insertLineBreak() {
     const textarea = document.getElementById(
       "queryInput"
@@ -232,11 +315,9 @@ export default function RightSideBar(props: rightSideBarProps) {
     textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
     setQuery(textarea.value);
   }
-
-  function handleInputChange(event) {
-    setQuery(event.target.value);
-  }
-
+  
+  //Updating the Chat History and Loading Response (Triggers the useEffect to submit query)
+  //Checking for error handling, if ther was an error, remove the old user query that failed
   function handleSubmitQuery() {
     if (queryMode == "document") {
       var newDocumentHistory = [...documentChatHistory];
@@ -253,30 +334,11 @@ export default function RightSideBar(props: rightSideBarProps) {
       newWebHistory.push({ user: query });
       setWebChatHistory(newWebHistory);
     }
-    setLoadingResponse(true);
+    setLoadingResponse(true); //set the loading and waiting response as true
     setWaitingResponse(true);
   }
 
-  async function handleClearChat() {
-    try {
-      var requestData = {
-        type: queryMode,
-        minutesID: props.minutesID,
-        chatHistoryID: props.chatHistoryID,
-      };
-      await axios.post("/api/clear", requestData);
-      await fetchChatHistory(
-        props.minutesID,
-        props.chatHistoryID,
-        setDocumentChatHistory,
-        setWebChatHistory
-      );
-      setDeleteMode(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  //Submit the query to the Next.js backend
   async function fetchQueryResponse(query) {
     var requestData = {
       type: queryMode,
@@ -284,6 +346,8 @@ export default function RightSideBar(props: rightSideBarProps) {
       minutesID: props.minutesID,
       chatHistoryID: props.chatHistoryID,
     };
+    console.log("Starting Curious Cat Query")
+    //Setting up the errorIndex just in case there is an error after this
     let errorIndex;
     const updatedResponseError = [...responseError];
     if (queryMode === "document") {
@@ -292,7 +356,7 @@ export default function RightSideBar(props: rightSideBarProps) {
       errorIndex = 1;
     }
     setQuery("");
-
+    //Sending query to the backend
     try {
       let res = await fetch("/api/query", {
         method: "POST",
@@ -302,7 +366,7 @@ export default function RightSideBar(props: rightSideBarProps) {
         body: JSON.stringify({ requestData }),
       });
       if (res.ok) {
-        setWaitingResponse(false);
+        setWaitingResponse(false); //Starting to receive response
         const reader = res.body.getReader();
         const processStream = async () => {
           let fullResponse;
@@ -312,7 +376,6 @@ export default function RightSideBar(props: rightSideBarProps) {
             const { done, value } = await reader.read();
 
             if (done) {
-              console.log(fullResponse);
               setLoadingResponse(false);
               if (queryMode === "web") {
                 var newWebChat = [...webChatHistory];
@@ -332,46 +395,34 @@ export default function RightSideBar(props: rightSideBarProps) {
                 });
                 setDocumentChatHistory(newDocumentChat);
                 setGPTResponse("");
+                console.log(`Curious Cat Query Success: ${fullResponse.slice(9)}`);
               }
               break;
             }
             let chunk = new TextDecoder("utf-8").decode(value);
-
-            // append to the response
+            // Append to the response
             setGPTResponse((prev) => prev + chunk);
             fullResponse += chunk;
           }
         };
-        processStream().catch((err) => console.log("--stream error--", err));
-      } else {
+        processStream().catch((err) => console.log("Curious Cat Query Error:", err));
+      } else { 
+        //If error, set the waiting and loading states to false but setup the useState to false
         setLoadingResponse(false);
         setWaitingResponse(false);
         updatedResponseError[errorIndex] = true;
         setResponseError(updatedResponseError);
-        console.log("ERROR");
+        console.log("Curious Cat Query Error: Response not OK");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Curious Cat Query Error:", error);
     }
   }
 
-  // function retryQuery() {
-  //     setQuery('')
-  //     setWaitingResponse(true)
-  //     setLoadingResponse(true)
-  //     if (queryMode == 'document') {
-  //         //submit query already added the userQuery to the document chat history
-  //         var lastQuery = documentChatHistory[documentChatHistory.length - 1]
-  //         var userQuery = lastQuery.user
-  //     } else if (queryMode == 'web') {
-  //         var lastQuery = webChatHistory[webChatHistory.length -1]
-  //         var userQuery = lastQuery.user
-  //     }
-  //     fetchQueryResponse(userQuery)
-  // }
 
+  //HTML 
   return (
-    <div
+    <div 
       style={{
         height: "100vh",
         width: `var(--rightSideWidth)`,
@@ -511,14 +562,14 @@ export default function RightSideBar(props: rightSideBarProps) {
               {queryMode === "document" &&
                 documentChatHistory.map((chatDetail, index) =>
                   chatDetail.hasOwnProperty("user") ? (
-                    <UserChat text={chatDetail.user} id={index} />
+                    <UserQuery text={chatDetail.user} id={index} />
                   ) : (
                     <AssistantResponse
                       text={chatDetail.assistant}
-                      sourceID={chatDetail.sourceID.map(
+                      sourceIDTitle={chatDetail.sourceID.map(
                         (data) => props.topicTitles[parseInt(data, 10)]
                       )}
-                      copyable={false}
+                      sourceIDs = {chatDetail.sourceID}
                       id={index}
                       setSelectedMinutes={props.setSelectedMinutes}
                     />
@@ -529,7 +580,6 @@ export default function RightSideBar(props: rightSideBarProps) {
                 <div ref={chatResponse} style={{ scrollMarginBottom: "5vh" }}>
                   <AssistantResponse
                     text={gptResponse}
-                    copyable={true}
                     id={documentChatHistory.length + 1}
                     waiting={waitingResponse}
                   />
@@ -539,11 +589,10 @@ export default function RightSideBar(props: rightSideBarProps) {
               {queryMode === "web" &&
                 webChatHistory.map((chatDetail, index) =>
                   chatDetail.hasOwnProperty("user") ? (
-                    <UserChat text={chatDetail.user} id={index} />
+                    <UserQuery text={chatDetail.user} id={index} />
                   ) : (
                     <AssistantResponse
                       text={chatDetail.assistant}
-                      copyable={true}
                       id={index}
                     />
                   )
@@ -553,7 +602,6 @@ export default function RightSideBar(props: rightSideBarProps) {
                 <div ref={chatResponse} style={{ scrollMarginBottom: "5vh" }}>
                   <AssistantResponse
                     text={gptResponse}
-                    copyable={true}
                     id={webChatHistory.length + 1}
                     waiting={waitingResponse}
                   />
@@ -568,14 +616,14 @@ export default function RightSideBar(props: rightSideBarProps) {
                   <br />
                   Please try again.
                 </p>
-              ) : // Button if you need to have it, look at responseError
+              ) : 
               queryMode == "web" && responseError[1] ? (
                 <p className={rightBar.errorText}>
                   Oops! Something went wrong while generating a response.
                   <br />
                   Please try again.
-                </p> // Button if you need to have it, look at responseError
-              ) : // Button if you need to have it, look at responseError
+                </p> 
+              ) : 
               null}
               <div
                 className={rightBar.buttonContainer}
