@@ -1,5 +1,7 @@
 import {useState, useEffect, useRef} from 'react'
 
+import ErrorMessage from '../errorMessages'
+
 import glossary from '@/styles/components/rightSideBar/glossary.module.css'
 
 import { 
@@ -79,6 +81,7 @@ export default function GlossaryModal(props: glossaryDetails ) {
 
     //Cancel changes, revert back to initial value
     function handleCancel(index) {
+        setWarning(false)
         setNewGlossaryMeaning(props.meaning)
         var newGlossaryType = [...props.glossaryType]
         newGlossaryType[index] = 'default'
@@ -131,18 +134,18 @@ export default function GlossaryModal(props: glossaryDetails ) {
 
 
     return(
-    <div key={props.id} className={glossary.glossaryContainer} style={{marginTop: props.id === 0? '5vh': '0'}}>
+    <div key={props.id} className={glossary['gloss-mainContainer']} style={{marginTop: props.id === 0? '5vh': '0'}}>
         {props.type == 'default' ? (
-            <div className={glossary.detailsContainer}>
-                <div className={glossary.titleContainer}>
-                    <p className={glossary.abbreviationText}>{props.abbreviation}</p>
-                    <div className={glossary.iconContainer}>
-                        <svg className={glossary.editIcon} onClick={() => handleEdit(props.id)} viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className={glossary['gloss-tab']}>
+                <div className={glossary['gloss-tabHeaderContainer']}>
+                    <p className={glossary['gloss-tabHeaderAbbreviationText']}>{props.abbreviation}</p>
+                    <div className={glossary['gloss-tabHeaderIconContainer']}>
+                        <svg className={glossary['gloss-editIcon']} onClick={() => handleEdit(props.id)} viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <title>edit</title>
                             <path d="M5.64085 4.72498L8.27502 7.35915L3.63417 12H1V9.36583L5.64085 4.72498ZM11.8162 2.93574L10.0643 1.18377C10.0065 1.12554 9.93779 1.07932 9.86209 1.04778C9.78638 1.01624 9.70518 1 9.62316 1C9.54115 1 9.45995 1.01624 9.38424 1.04778C9.30853 1.07932 9.23982 1.12554 9.18207 1.18377L7.39282 2.97301L10.027 5.60718L11.8162 3.81793C11.8745 3.76018 11.9207 3.69147 11.9522 3.61576C11.9838 3.54005 12 3.45885 12 3.37684C12 3.29482 11.9838 3.21362 11.9522 3.13791C11.9207 3.06221 11.8745 2.99349 11.8162 2.93574Z" fill="#D1D1D1" stroke="#D1D1D1" strokeWidth="0.621265" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                         
-                        <svg className={glossary.deleteIcon} onClick={() => handleDelete(props.id)} viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg className={glossary['gloss-deleteIcon']} onClick={() => handleDelete(props.id)} viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <title>delete</title>
                             <path d="M2.375 5.25H3.95833H16.625" stroke="#D1D1D1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             <path d="M6.3335 5.25004V3.66671C6.3335 3.24678 6.50031 2.84405 6.79724 2.54712C7.09418 2.25019 7.4969 2.08337 7.91683 2.08337H11.0835C11.5034 2.08337 11.9061 2.25019 12.2031 2.54712C12.5 2.84405 12.6668 3.24678 12.6668 3.66671V5.25004M15.0418 5.25004V16.3334C15.0418 16.7533 14.875 17.156 14.5781 17.453C14.2811 17.7499 13.8784 17.9167 13.4585 17.9167H5.54183C5.1219 17.9167 4.71918 17.7499 4.42224 17.453C4.12531 17.156 3.9585 16.7533 3.9585 16.3334V5.25004H15.0418Z" stroke="#D1D1D1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -152,20 +155,19 @@ export default function GlossaryModal(props: glossaryDetails ) {
                     </div>
                 </div>
 
-                <p className={glossary.meaningText}>{newGlossaryMeaning}</p>
+                <p className={glossary['gloss-tabMeaningText']}>{newGlossaryMeaning}</p>
             </div>
         ) : props.type == 'edit' ? (
-            <div className={glossary.detailsContainer}>
-                    <div className={glossary.titleContainer}>
-                    <p className={glossary.abbreviationText}>{props.abbreviation}</p>
-
-                    <div className={glossary.iconContainer}>
-                        <svg className={glossary.saveIcon} onClick={() => handleSave(props.id)} viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className={glossary['gloss-tab']}>
+                <div className={glossary['gloss-tabHeaderContainer']}>
+                    <p className={glossary['gloss-tabHeaderAbbreviationText']}>{props.abbreviation}</p>
+                    <div className={glossary['gloss-tabHeaderIconContainer']}>
+                        <svg className={glossary['gloss-saveIcon']} onClick={() => handleSave(props.id)} viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <title>save</title>
                             <path d="M1.5 5.525L4.8107 9.375L11.25 1.875" stroke="#D1D1D1" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                         
-                        <svg className={glossary.cancelIcon} onClick={() => handleCancel(props.id)} viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg className={glossary['gloss-cancelIcon']} onClick={() => handleCancel(props.id)} viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <title>cancel</title>
                             <path d="M13.5 1.5L1.5 13.5" stroke="#DE5C64" strokeWidth="3" strokeLinecap="round"/>
                             <path d="M1.5 1.5L13.5 13.5" stroke="#DE5C64" strokeWidth="3" strokeLinecap="round"/>
@@ -175,11 +177,13 @@ export default function GlossaryModal(props: glossaryDetails ) {
                 </div>
                 {
                     warning && (
-                        <p className={glossary.warningText}>Your glossary cannot be empty!</p>
-                    )
+                        <ErrorMessage
+                            type='Glossary'
+                        />
+                        )
                 }
                 <textarea 
-                    className={glossary.meaningText}
+                    className={glossary['gloss-editTextArea']}
                     value = {newGlossaryMeaning}
                     placeholder = "Glossary meaning here..."
                     onChange = {handleEditMeaning}

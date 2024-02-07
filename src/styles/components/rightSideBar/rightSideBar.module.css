@@ -1,13 +1,13 @@
-.overallContainer{
-    width: 25vw;
-    position: fixed;
-    right: 0;
-    background-color: var(--Dark_Grey);
+.rsb-background{
     height: 100vh;
+    width: var(--rightSideWidth);
+    background-color: var(--Dark_Grey_50);
+    position: fixed;
     bottom: 0;
+    right: 0;
 }
 
-.deleteOverlay{
+.rsb-deleteChatHistoryOverlay{
     background-color: var(--Black_60);
     z-index: 2;
     width: var(--rightSideWidth);
@@ -19,6 +19,25 @@
     justify-content: center;
     align-items: center;
     color:white;
+}
+
+.rsb-overallContainer{
+    width: 25vw;
+    position: fixed;
+    right: 0;
+    background-color: var(--Dark_Grey);
+    height: 100vh;
+    bottom: 0;
+}
+
+.rsb-dropDownTab{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: var(--verticalGap) 0;
+    border-bottom: 2px solid var(--Grey);
+    z-index: 999;
 }
 
 @keyframes scrollUp {
@@ -41,41 +60,29 @@
     }
 }
 
-.dropDownContainer{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 2vh 0;
-    border-bottom: 2px solid var(--Grey);
-    z-index: 999;
-}
-
-
-.dropDownIcon{
+.rsb-dropDownIcon{
     height: 1.2vh;
     object-fit: contain;
     transition: transform 0.75s ease-in-out;
 }
 
-.tabOverallContainer{
+.rsb-tabContainer{
     display: flex;
     flex-direction: row;
 }
 
-.tabContainer{
+.rsb-tab{
     width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-
-.tabText{
+.rsb-tabText{
     margin: 0;
     /* font-size: 2.5vmin; */
     font: var(--ui-heading);
-    margin: 1.5vh 0;
+    margin: var(--textGap) 0;
     max-width: 80%;
     word-break: break-word;
     cursor: pointer;
@@ -86,7 +93,7 @@
     width: 100%;
 }
 
-.backgroundIconContainer{
+.rsb-backgroundIconContainer{
     z-index: 1;
     top:50vh;
     position: absolute;
@@ -98,93 +105,91 @@
     justify-content: center;
 }
 
-.backgroundText{
+.rsb-backgroundIconText{
     color: var(--Dark_Purple_Blue);
     font: var(--ui-background-text);
     max-width: 80%;
     word-break: break-word;
     letter-spacing: 1px;
-    margin-bottom: 1.5vh;
+    margin-bottom: var(--textGap);
 }
 
-.backgroundIcon{
+.rsb-backgroundCuriousCatIcon{
     width: 75%;
     object-fit: contain;
 }
 
 
-.backgroundGlossaryIcon{
+.rsb-backgroundGlossaryIcon{
     width: 55%;
     object-fit: contain;
 }
 
 
-.moreContainer{
+.rsb-moreOptionsContainer{
     z-index: 999;
     width: 100%;
-    padding: 1.5vh 0;
+    padding: var(--textGap) 0;
     display: flex;
     justify-content: flex-end;
     background-color: var(--Dark_Grey);
 }
 
-.moreIcon{
+.rsb-moreIcon{
     z-index: 999;
     padding-right: 6%;
     height: 3.5vh;
     object-fit: contain;
 }
 
-.moreIcon:hover{
+.rsb-moreIcon:hover{
     cursor: pointer;
     fill-opacity: 0.25;
 }
 
-.chatContainer{
-    z-index: 2;
-    position: relative;
-    width: 88%;
-    margin:auto;
-    overflow-y: scroll;
-}
-
-
-.chatContainer::-webkit-scrollbar {
-    display: none;
-}
-  
-.chatContainer {
-    scrollbar-width: none;  /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-}
-
-.hoverable:hover{
+.rsb-moreOptionsHoverableContainer:hover{
     fill-opacity: 0.25 !important;
 }
 
-.clearChatContainer{
+.rsb-clearChatContainer{
     position: absolute;
     top: 18vh;
     right: 6%;
     background-color: var(--Grey);
     padding: 1vh 1vw;
-    border-radius: 3.5px;
+    border-radius: var(--smallBorderRadius);
     z-index: 5;
 }
 
-.clearChatContainer:hover{
+.rsb-clearChatContainer:hover{
     cursor: pointer;
     background-color: var(--Dark_Purple_Blue);
 }
 
-.clearChatText{
+.rsb-clearChatText{
     color: var(--Off_White);
     letter-spacing: 0.5px;
     font: var(--ui-comment);
     margin: 0;
 }
 
-.inputContainer{
+
+.rsb-queryChatContainer{
+    z-index: 2;
+    position: relative;
+    width: 88%;
+    margin:auto;
+    overflow-y: scroll;
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+
+.rsb-queryChatContainer::-webkit-scrollbar {
+    display: none;
+}
+  
+.rsb-queryBottomContainer{
     z-index: 999;
     position: fixed;
     width: 25vw;
@@ -193,31 +198,51 @@
     justify-content: space-evenly;
     align-items: center;
     background-color: var(--Dark_Grey);
-    padding-top: 2vh;
+    padding-top: var(--verticalGap);
 }
 
-.buttonContainer{
+.rsb-errorTextSmall{
+    color: var(--Red);
+    font: var(--ui-captions);
+    text-align: center;
+    margin: 0;
+    margin-bottom: var(--verticalGap);
+}
+
+.rsb-errorText{
+    color: var(--Red);
+    font: var(--ui-alertText);
+    text-align: left;
+    margin: 0;
+    margin-bottom: var(--textGap);
+}
+
+
+.rsb-queryModeContainer{
     display: flex;
     flex-direction: row;
     width: 84%;
     align-items: center;
-    border-radius: 3.5px;
+    border-radius: var(--smallBorderRadius);
     border: 1.5px solid var(--Nice_Blue);
-    margin-bottom: 2vh;
+    margin-bottom: var(--verticalGap);
 }
 
-.buttonContainer:hover{
+.rsb-dropDownTab:hover,
+.rsb-tab:hover,
+.rsb-queryModeContainer:hover,
+.rsb-sendIcon:hover{
     cursor: pointer;
 }
 
-.button{
+.rsb-queryModeToggle{
     width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.buttonText{
+.rsb-queryModeText{
     letter-spacing: 0.5px;
     font: var(--ui-comment);
     margin: 0.5vh 0;
@@ -225,7 +250,7 @@
     cursor: pointer;
 }
 
-.inputTextContainer{
+.rsb-queryInputContainer{
     width: 84%;
     display: flex;
     flex-direction: row;
@@ -236,7 +261,7 @@
     border-radius: 3.5px;
 }
 
-.queryContainer{
+.rsb-queryInputTextArea{
     max-height: 25vh;
     width: 88%;
     border:none;
@@ -247,44 +272,22 @@
     color: var(--Off_White);
     overflow: hidden;
     height: auto;
-    padding: 0.75vh 0 0vh 0.5vw;
+    padding: var(--tabVerticalGap) 0 0vh 0.5vw;
 }
 
-.queryContainer:focus{
+.rsb-queryInputTextArea:focus{
     border: none;
     outline: none;
     box-shadow: none;
 }
 
-.sendIcon{
-    width: 5%;
-    object-fit: contain;
-    margin-bottom: 0.75vh;
-    margin-right: 2%;
-}
-
-.warningText{
-    width: 84%;
-    /* font: 400 1.5vmin 'Lato'; */
-    font: var(--ui-captions);
-    color: var(--Off_White);
-    text-align: center;
-}
-
-
-.dropDownContainer:hover,
-.tabContainer:hover,
-.sendIcon:hover{
-    cursor: pointer;
-}
-
-.loadingAnimation{
+.rsb-inputContainerLoadingAnimation{
     display: flex;
     flex-direction: row;
     margin-right: 0.5vw;
 }
 
-.loadingAnimation span{
+.rsb-inputContainerLoadingAnimation span{
     width: 0.45vmin;
     height: 0.45vmin;
     border-radius: 50%;
@@ -294,11 +297,11 @@
     animation: jump 1.5s linear infinite 0.5s
 }
 
-.loadingAnimation span:nth-child(2){
+.rsb-inputContainerLoadingAnimation span:nth-child(2){
     animation-delay: 0.75s;
 }
 
-.loadingAnimation span:last-child{
+.rsb-inputContainerLoadingAnimation span:last-child{
     animation-delay: 1s;
 }
 
@@ -309,28 +312,31 @@
         transform: translateY(-0.15vh);
     } 75% {
         transform: translateY(0);
-      }
+    }
 }
 
-.errorText{
-    color: var(--Red);
+.rsb-sendIcon{
+    width: 5%;
+    object-fit: contain;
+    margin-bottom: var(--tabVerticalGap);
+    margin-right: 2%;
+}
+
+.rsb-curiousCatCautionText{
+    width: 84%;
     font: var(--ui-captions);
+    color: var(--Off_White);
     text-align: center;
-    margin: 0;
-    margin-bottom: 2vh;
 }
 
-.glossaryBlock{
+.rsb-glossaryContainer{
     height: 85%;
     overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 
-.glossaryBlock::-webkit-scrollbar {
+.rsb-glossaryContainer::-webkit-scrollbar {
     display: none; /* for Chrome, Safari and Opera */
-}
-
-.glossaryBlock{
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
 }

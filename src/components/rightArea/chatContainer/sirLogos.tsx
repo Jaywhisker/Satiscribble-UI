@@ -10,7 +10,7 @@ export default function SirLogo(props:LogoProps ) {
     return(
     <>
         { props.mode === "qna" ? (
-            <svg className={rightBar.backgroundIcon} viewBox="0 0 325 216" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className={rightBar['rsb-backgroundCuriousCatIcon']} viewBox="0 0 325 216" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M115.442 30.11C114.464 32.511 113.479 34.8923 113.033 37.4635C112.732 39.2048 111.264 44.0705 112.414 42.7288C116.184 38.331 117.673 30.0055 120.745 24.8747" stroke="#343541" strokeWidth="3" strokeLinecap="round"/>
                 <path d="M124.605 17.9951C130.656 20.4606 134.587 26.8674 139.237 31.3529" stroke="#343541" strokeWidth="3" strokeLinecap="round"/>
                 <path d="M141.586 33.3663C142.688 31.635 144.724 30.5992 146.585 29.8855C155.342 26.527 165.054 24.7683 174.256 23.1985C180.704 22.0987 187.626 20.5568 194.177 20.9842" stroke="#343541" strokeWidth="3" strokeLinecap="round"/>
@@ -47,7 +47,7 @@ export default function SirLogo(props:LogoProps ) {
                 <path d="M186.262 161.604C188.752 163.867 190.785 166.68 192.846 169.337C194.896 171.981 197.397 174.41 199.208 177.22C199.922 178.328 200.664 180 200.951 177.776C201.142 176.299 201.461 174.192 202.287 172.954" stroke="#4E599C" strokeWidth="3" strokeLinecap="round"/>
             </svg>
         ) : (
-            <svg className={rightBar.backgroundGlossaryIcon} viewBox="0 0 213 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className={rightBar['rsb-backgroundGlossaryIcon']} viewBox="0 0 213 210" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M51.1333 27.8203C52.9409 21.8553 54.1395 15.689 56.1308 9.7738C56.9623 7.30382 56.9456 4.92418 59.4624 3.66576" stroke="#343541" strokeWidth="3.75" strokeLinecap="round"/>
                 <path d="M64.4602 1.99996C68.726 1.99996 71.2637 7.36249 73.5529 10.4911C74.9003 12.3326 76.392 14.2329 77.6017 16.1595C78.385 17.4069 79.6794 18.6953 80.2856 19.9076" stroke="#343541" strokeWidth="3.75" strokeLinecap="round"/>
                 <path d="M89.8643 19.4912C100.274 19.4912 111.027 18.8908 121.099 21.9899" stroke="#343541" strokeWidth="3.75" strokeLinecap="round"/>

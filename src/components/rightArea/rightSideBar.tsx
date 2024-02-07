@@ -6,6 +6,7 @@ import SirLogo from "./chatContainer/sirLogos";
 import UserQuery from "./chatContainer/userInput";
 import AssistantResponse from "./chatContainer/assistantResponse";
 import GlossaryModal from "./glossary/glossaryModal";
+import ErrorMessage from "./errorMessages";
 
 import rightBar from "@/styles/components/rightSideBar/rightSideBar.module.css";
 
@@ -377,18 +378,19 @@ export default function RightSideBar(props: rightSideBarProps) {
 
             if (done) {
               setLoadingResponse(false);
-              if (queryMode === "web") {
+              if (queryMode === "web") { 
                 var newWebChat = [...webChatHistory];
-                newWebChat.push({ assistant: fullResponse.slice(9) });
+                newWebChat.push({ assistant: fullResponse.slice(9) }); //Add response to chatHistory, remove the first 9 characters - undefined
                 setWebChatHistory(newWebChat);
                 setGPTResponse("");
-              } else if (queryMode === "document") {
+              } 
+              else if (queryMode === "document") {
                 var newDocumentChat = [...documentChatHistory];
-                var sourceIDs = res.headers.get("source_id");
-                const sourceIDsList = sourceIDs
-                  .slice(1, -1)
+                var sourceIDs = res.headers.get("source_id"); //DocumentQuery need the source_id headers as well
+                const sourceIDsList = sourceIDs 
+                  .slice(1, -1) //Remove the ' ' as the sourceIDsList is a list of strings instead of int ['0', '1', '2'] etc
                   .split(", ")
-                  .map((value) => value.slice(1, -1));
+                  .map((value) => value.slice(1, -1)); 
                 newDocumentChat.push({
                   assistant: fullResponse.slice(9),
                   sourceID: sourceIDsList,
@@ -422,18 +424,9 @@ export default function RightSideBar(props: rightSideBarProps) {
 
   //HTML 
   return (
-    <div 
-      style={{
-        height: "100vh",
-        width: `var(--rightSideWidth)`,
-        backgroundColor: `var(--Dark_Grey_50)`,
-        position: "fixed",
-        bottom: "0",
-        right: "0",
-      }}
-    >
+    <div className={rightBar["rsb-background"]}>
       {deleteMode && (
-        <div className={rightBar.deleteOverlay}>
+        <div className={rightBar["rsb-deleteChatHistoryOverlay"]}>
           <PopUp.ClearChat
             isOpen={true}
             onClose={() => setDeleteMode(false)}
@@ -441,10 +434,10 @@ export default function RightSideBar(props: rightSideBarProps) {
           />
         </div>
       )}
-      <div className={rightBar.overallContainer} id="rightSideBar">
-        <div className={rightBar.dropDownContainer} onClick={handleExpand}>
+      <div className={rightBar["rsb-overallContainer"]} id="rightSideBar">
+        <div className={rightBar["rsb-dropDownTab"]} onClick={handleExpand}>
           <svg
-            className={rightBar.dropDownIcon}
+            className={rightBar["rsb-dropDownIcon"]}
             style={{ transform: expanded ? "none" : "rotate(180deg)" }}
             viewBox="0 0 19 10"
             fill="none"
@@ -459,9 +452,9 @@ export default function RightSideBar(props: rightSideBarProps) {
           </svg>
         </div>
 
-        <div className={rightBar.tabOverallContainer}>
+        <div className={rightBar['rsb-tabContainer']}>
           <div
-            className={rightBar.tabContainer}
+            className={rightBar['rsb-tab']}
             onClick={() => handleTabChange("CuriousCat")}
             style={{
               backgroundColor:
@@ -469,7 +462,7 @@ export default function RightSideBar(props: rightSideBarProps) {
             }}
           >
             <p
-              className={rightBar.tabText}
+              className={rightBar['rsb-tabText']}
               style={{
                 color:
                   selected === "CuriousCat"
@@ -479,9 +472,10 @@ export default function RightSideBar(props: rightSideBarProps) {
             >
               CuriousCat
             </p>
+
           </div>
           <div
-            className={rightBar.tabContainer}
+            className={rightBar['rsb-tab']}
             onClick={() => handleTabChange("Glossary")}
             style={{
               backgroundColor:
@@ -489,7 +483,7 @@ export default function RightSideBar(props: rightSideBarProps) {
             }}
           >
             <p
-              className={rightBar.tabText}
+              className={rightBar['rsb-tabText']}
               style={{
                 color:
                   selected === "Glossary"
@@ -503,15 +497,15 @@ export default function RightSideBar(props: rightSideBarProps) {
         </div>
 
         {selected == "CuriousCat" ? (
-          <div className={rightBar.tabDetailsContainer}>
-            <div className={rightBar.backgroundIconContainer}>
-              <p className={rightBar.backgroundText}>CURIOUSCAT</p>
+          <div style={{width: "100%"}}>
+            <div className={rightBar['rsb-backgroundIconContainer']}>
+              <p className={rightBar['rsb-backgroundIconText']}>CURIOUSCAT</p>
               <SirLogo mode="qna" />
             </div>
 
-            <div className={rightBar.moreContainer}>
+            <div className={rightBar['rsb-moreOptionsContainer']}>
               <svg
-                className={rightBar.moreIcon}
+                className={rightBar['rsb-moreIcon']}
                 viewBox="0 0 36 36"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -521,7 +515,7 @@ export default function RightSideBar(props: rightSideBarProps) {
                   height="36"
                   rx="5"
                   fill="#9CA5D8"
-                  className={rightBar.hoverable}
+                  className={rightBar['rsb-moreOptionsHoverableContainer']}
                   id="showMore"
                   style={{ fillOpacity: showMore ? 0.35 : 0.1 }}
                 />
@@ -551,18 +545,21 @@ export default function RightSideBar(props: rightSideBarProps) {
 
             {showMore && (
               <div
-                className={rightBar.clearChatContainer}
+                className={rightBar['rsb-clearChatContainer']}
                 onClick={() => setDeleteMode(true)}
               >
-                <p className={rightBar.clearChatText}>Clear Chat</p>
+                <p className={rightBar['rsb-clearChatText']}>Clear Chat</p>
               </div>
             )}
 
-            <div id="chatContainer" className={rightBar.chatContainer}>
+            <div id="chatContainer" className={rightBar['rsb-queryChatContainer']}>
               {queryMode === "document" &&
                 documentChatHistory.map((chatDetail, index) =>
                   chatDetail.hasOwnProperty("user") ? (
-                    <UserQuery text={chatDetail.user} id={index} />
+                    <UserQuery 
+                    text={chatDetail.user} 
+                    id={index} 
+                    />
                   ) : (
                     <AssistantResponse
                       text={chatDetail.assistant}
@@ -609,42 +606,37 @@ export default function RightSideBar(props: rightSideBarProps) {
               )}
             </div>
 
-            <div className={rightBar.inputContainer} id="bottomTab">
+            <div className={rightBar['rsb-queryBottomContainer']} id="bottomTab">
               {queryMode == "document" && responseError[0] ? (
-                <p className={rightBar.errorText}>
-                  Oops! Something went wrong while generating a response.
-                  <br />
-                  Please try again.
-                </p>
+                <ErrorMessage
+                  type="CuriousCat"
+                />
               ) : 
               queryMode == "web" && responseError[1] ? (
-                <p className={rightBar.errorText}>
-                  Oops! Something went wrong while generating a response.
-                  <br />
-                  Please try again.
-                </p> 
+                <ErrorMessage
+                  type="CuriousCat"
+                />
               ) : 
               null}
               <div
-                className={rightBar.buttonContainer}
+                className={rightBar['rsb-queryModeContainer']}
                 style={{ opacity: loadingResponse ? "0.5" : "1" }}
               >
                 <div
-                  className={rightBar.button}
+                  className={rightBar['rsb-queryModeToggle']}
                   onClick={() => handleQueryChange("document")}
                   style={{
-                    backgroundColor:
-                      queryMode == "document"
-                        ? `var(--Nice_Blue)`
-                        : `var(--Dark_Blue)`,
-                  }}
-                >
+                    backgroundColor: 
+                      queryMode == "document" 
+                        ? `var(--Nice_Blue)` 
+                        : `var(--Dark_Blue)`,}}
+                  >
                   <p
-                    className={rightBar.buttonText}
+                    className={rightBar['rsb-queryModeText']}
                     style={{
-                      color:
-                        queryMode == "document"
-                          ? `var(--Dark_Blue)`
+                      color: 
+                        queryMode == "document" 
+                          ? `var(--Dark_Blue)` 
                           : `var(--Nice_Blue)`,
                     }}
                   >
@@ -653,7 +645,7 @@ export default function RightSideBar(props: rightSideBarProps) {
                 </div>
 
                 <div
-                  className={rightBar.button}
+                  className={rightBar['rsb-queryModeToggle']}
                   onClick={() => handleQueryChange("web")}
                   style={{
                     backgroundColor:
@@ -663,7 +655,7 @@ export default function RightSideBar(props: rightSideBarProps) {
                   }}
                 >
                   <p
-                    className={rightBar.buttonText}
+                    className={rightBar['rsb-queryModeText']}
                     style={{
                       color:
                         queryMode == "web"
@@ -676,10 +668,10 @@ export default function RightSideBar(props: rightSideBarProps) {
                 </div>
               </div>
 
-              <div className={rightBar.inputTextContainer}>
+              <div className={rightBar['rsb-queryInputContainer']}>
                 <textarea
                   id="queryInput"
-                  className={rightBar.queryContainer}
+                  className={rightBar['rsb-queryInputTextArea']}
                   ref={queryInputArea}
                   placeholder="Ask me anything! Shift enter for newline"
                   value={query}
@@ -690,7 +682,7 @@ export default function RightSideBar(props: rightSideBarProps) {
                 />
 
                 {loadingResponse ? (
-                  <div className={rightBar.loadingAnimation}>
+                  <div className={rightBar['rsb-inputContainerLoadingAnimation']}>
                     <span></span>
                     <span></span>
                     <span></span>
@@ -698,7 +690,7 @@ export default function RightSideBar(props: rightSideBarProps) {
                 ) : (
                   <svg
                     onClick={handleSubmitQuery}
-                    className={rightBar.sendIcon}
+                    className={rightBar['rsb-sendIcon']}
                     viewBox="0 0 25 25"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -711,15 +703,15 @@ export default function RightSideBar(props: rightSideBarProps) {
                 )}
               </div>
 
-              <p className={rightBar.warningText}>
+              <p className={rightBar['rsb-curiousCatCautionText']}>
                 CuriousCat can make mistakes. Remember to double check.
               </p>
             </div>
           </div>
         ) : selected == "Glossary" ? (
-          <div className={rightBar.glossaryBlock}>
-            <div className={rightBar.backgroundIconContainer}>
-              <p className={rightBar.backgroundText}>GLOSSARY</p>
+          <div className={rightBar['rsb-glossaryContainer']}>
+            <div className={rightBar['rsb-backgroundIconContainer']}>
+              <p className={rightBar['rsb-backgroundIconText']}>GLOSSARY</p>
               <SirLogo mode="glossary" />
             </div>
 

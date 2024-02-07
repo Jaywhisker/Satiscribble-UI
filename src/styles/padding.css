@@ -37,4 +37,14 @@
     --buttonHorizontalPadding: 4.5vw;
     --buttonMinHeight: 4.5vh;
     --buttonMinWidth: 10vw;
+
+    
+    --textGap: 1.5vh;
+    --tabVerticalGap: 0.75vh;
+
+    /* Border Radius */
+    --smallBorderRadius: 3.5px;
+    --medBorderRadius: 5px;
+    --bigBorderRadius:8px
 }
+
