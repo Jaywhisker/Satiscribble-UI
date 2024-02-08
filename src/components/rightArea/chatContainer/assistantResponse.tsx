@@ -12,28 +12,28 @@ export interface assistantResponse {
 export default function AssistantResponse(props: assistantResponse) {
   
   return (
-    <div key={props.id} className={inputChat.assistantContainer}>
+    <div key={props.id} className={inputChat['cc-responseChatBubble']}>
       
       {/* Loading animtion */}
       {props.waiting && (
-        <div className={inputChat.responseLoadingAnimation}></div>
+        <div className={inputChat['cc-loadingResponseAnimation']}></div>
       )}
 
       {/* Generated Response */}
       <div>
-        <p className={inputChat.assistantText}>{props.text}</p>
+        <p className={inputChat['cc-responseText']}>{props.text}</p>
       </div>
 
       {/* Source IDS if there are any, show the Title */}
       {props.sourceIDTitle && (
-        <div className={inputChat.sourceContainer}>
-          <p className={inputChat.sourceText}>Sources</p>
-          <ul className={inputChat.listIndex}>
+        <div className={inputChat['cc-responseSourceContainer']}>
+          <p className={inputChat['cc-responseSourceHeader']}>Sources</p>
+          <ul className={inputChat['cc-responseSourceList']}>
             {props.sourceIDTitle.map((topic, index) => {
               if (topic) {
                 return (
                   <li
-                    className={inputChat.source}
+                    className={inputChat['cc-responseSourceText']}
                     key={index}
                     onClick={() => props.setSelectedMinutes(props.sourceIDs[index])}
                   >

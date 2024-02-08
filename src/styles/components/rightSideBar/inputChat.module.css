@@ -1,14 +1,15 @@
-.userContainer{
+.cc-queryChatBubble{
     margin: auto;
     margin-right: 0;
     width: 65%;
     padding: 0;
     background-color: var(--Nice_Blue);
     border-radius: 8px;
-    margin-bottom: 2vh;
+    margin-bottom: var(--verticalGap);
 }
 
-.userText{
+
+.cc-queryText{
     margin: 0;
     text-align: left;
     width: 84%;
@@ -20,18 +21,36 @@
     white-space: pre-line;
 }
 
-.assistantContainer{
+.cc-responseChatBubble{
     margin: auto;
     margin-left: 0;
     width: 65%;
-    padding: 2vh 0 1vh 0;
+    padding: var(--verticalGap) 0 1vh 0;
     background-color: var(--Dark_Purple_Blue);
     border-radius: 8px;
-    margin-bottom: 2vh;
+    margin-bottom: var(--verticalGap);
 }
 
+.cc-loadingResponseAnimation{
+    background-color: var(--Off_White);
+    width: 0.15vw;
+    height: var(--verticalGap);
+    margin-left: 8%;
+    opacity: 1;
+    animation: 1s blink step-end infinite;
+}
 
-.assistantText{
+@keyframes blink {
+    from, to {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--Off_White);
+    }
+  }
+
+
+.cc-responseText{
     margin: 0;
     text-align: left;
     width: 84%;
@@ -43,14 +62,14 @@
     white-space: pre-line;
 }
 
-.sourceContainer{
+.cc-responseSourceContainer{
     border-top: 1.5px solid var(--Off_White_10);
     width: 88%;
     margin-left: 6%;
     margin-top: 1vh;
 }
 
-.sourceText{
+.cc-responseSourceHeader{
     margin: 0;
     margin-top: 1vh;
     color: var(--Off_White);
@@ -59,42 +78,24 @@
     margin-bottom: 1vh;
 }
 
-.listIndex{
+.cc-responseSourceList{
     margin: 0;
     padding: 0 8%;
 }
 
-.source{
+.cc-responseSourceText{
     color: var(--Nice_Blue);
     font: var(--ui-subtext);
     letter-spacing: 0.25px;
     margin: 0.5vh 0;
 }
 
-.source:last-child{
+.cc-responseSourceText:last-child{
     padding-bottom: 1vh;
 }
 
-.source:hover{
+.cc-responseSourceText:hover{
     text-decoration: underline;
     cursor: pointer;
 }
 
-.responseLoadingAnimation{
-    background-color: var(--Off_White);
-    width: 0.15vw;
-    height: 2vh;
-    margin-left: 8%;
-    opacity: 1;
-    animation: 1s blink step-end infinite;
-}
-
-
-@keyframes blink {
-    from, to {
-        background-color: transparent;
-    }
-    50% {
-        background-color: var(--Off_White);
-    }
-  }

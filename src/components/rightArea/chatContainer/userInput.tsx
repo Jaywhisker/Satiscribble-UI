@@ -8,7 +8,7 @@ export interface userInput {
 
 export default function UserQuery(props: userInput ) {
     return(
-        <div key={props.id} className={inputChat.userContainer}>
-            <p className={inputChat.userText}>{props.text}</p>
+        <div key={props.id} className={inputChat['cc-queryChatBubble']}>
+            <p className={inputChat['cc-queryText']}>{props.text}</p>
         </div>
 )}
