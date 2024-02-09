@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//create new glossary entry
 export async function createGlossaryEntry(
   minutesID: string,
   chatHistoryID: string,
@@ -21,6 +22,7 @@ export async function createGlossaryEntry(
   }
 }
 
+//updating existing glossary entry
 export async function updateGlossaryEntry(
   minutesID: string,
   chatHistoryID: string,
@@ -42,6 +44,8 @@ export async function updateGlossaryEntry(
   }
 }
 
+
+//delete glossary entry
 export async function deleteGlossaryEntry(
   minutesID: string,
   chatHistoryID: string,
@@ -63,8 +67,12 @@ export async function deleteGlossaryEntry(
   }
 }
 
+//read glossary (different from fetching as they return different things)
+//readGlossary - returns list of glossary entries in the format:
+// [ABBREVIATION (in Caps) - meaning (in lowercase)}]
+// eg. [UI - user interface, UX - user experience]
+//fetchGlossary will return the length of glossary entries
 export async function readGlossary(minutesID: string, chatHistoryID: string) {
-  //reads glossary and essentially returns the abbreviation in caps and the meaning in lower case
   var reqData = {
     minutesID: minutesID,
     chatHistoryID: chatHistoryID,

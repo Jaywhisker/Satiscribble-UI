@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// delete entire topic block
 export async function deleteTopic(
   minutesID: string,
   chatHistoryID: String,
@@ -13,13 +14,13 @@ export async function deleteTopic(
     };
 
     const response = await axios.post("/api/delete", reqData);
-    console.log(response);
   } catch (error) {
     return { ERROR: `Unable to delete topic, ${error.code}` };
   }
 }
 
 
+// summarise topic block
 export async function summariseTopic(
   minutesID: string,
   chatHistoryID: string,

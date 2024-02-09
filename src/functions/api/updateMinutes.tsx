@@ -1,6 +1,7 @@
 import axios from "axios";
 import { readGlossary } from "./glossaryActions";
 
+//updating agenda block
 export async function updateAgenda(
   minutesID: string,
   chatHistoryID: string,
@@ -19,6 +20,11 @@ export async function updateAgenda(
   }
 }
 
+
+//updating meeting block
+//splitting attendees string based off commas
+//appending the date to the current datetime that the request was made
+// TODO: Future iterations can do a fixed date format to convert the date into the datetime object
 export async function updateMeetingDetails(
   minutesID: string,
   chatHistoryID: string,
@@ -30,6 +36,7 @@ export async function updateMeetingDetails(
     if (attendees.length <= 0) {
       participantList = [];
     } else {
+      //splitting participants list by commas
       participantList = attendees.split(",");
       participantList = participantList.map((str) => str.trim());
     }
