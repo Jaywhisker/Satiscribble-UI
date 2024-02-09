@@ -1,0 +1,107 @@
+.agenda-mainContainer,
+.topics-mainContainer{
+  margin-top: var(--outlineVerticalGap);
+  width: 80%;
+  margin-left: 10%;
+}
+
+.agenda-headerContainer,
+.topics-headerContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  font: var(--ui-heading);
+  color: var(--Nice_Blue);
+  border-bottom: 2px solid var(--Nice_Blue);
+}
+
+.agenda-headerContainer:hover,
+.agenda-checkBoxIcons:hover{
+  cursor: pointer;
+}
+
+
+.agenda-headerText,
+.topics-headerText{
+  margin:0
+}
+
+
+.agenda-outlineContainer,
+.topics-outlineContainer{
+  padding: 1vh 0;
+  background-color: var(--Grey);
+}
+
+.agenda-individualOutline,
+.topics-individualOutline{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.agenda-dropDownIcons,
+.topics-dropDownIcons{
+  height: var(--smallIcon);
+  object-fit: contain;
+  transition: transform 0.25s linear; 
+  margin-bottom: 0.5vh;
+}
+
+.agenda-checkBoxIcons{
+  height: var(--largeIcon);
+  object-fit: contain;
+  margin-left:1vw;
+}
+
+.agenda-outlineText,
+.topics-outlineText{
+  font: var(--ui-bold-text);
+  color: var(--Off_White);
+  margin: 1vh 1vw 1vh 0.5vw;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 10vw;
+}
+
+.topics-outlineText{
+  margin: 1vh 1vw 1vh 1.5vw;
+}
+
+.topics-outlineText:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.agenda-defaultText,
+.topics-defaultText{
+  color: var(--Off_White);
+  margin: 1vh 1vw;
+  cursor: default;
+  font: var(--ui-bold-text);
+}
+
+.outline-meetingTitle{
+  width: 80%;
+  margin-left: 10%;
+  margin-top: var(--outlineVerticalGap);
+  font: var(--ui-bold-text);
+  color: var(--Nice_Blue);
+  text-align: center;
+  border: 1px solid var(--Nice_Blue); 
+  padding: 0; 
+  border-radius: var(--medBorderRadius)
+}
+
+.lbs-mainContainer{
+  width: 15vw;
+  background-color: var(--Dark_Grey);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+}
+

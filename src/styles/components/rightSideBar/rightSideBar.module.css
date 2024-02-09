@@ -61,7 +61,7 @@
 }
 
 .rsb-dropDownIcon{
-    height: 1.2vh;
+    height: var(--smallIcon);
     object-fit: contain;
     transition: transform 0.75s ease-in-out;
 }
@@ -316,7 +316,7 @@
 }
 
 .rsb-sendIcon{
-    width: 5%;
+    width: var(--medIcon);
     object-fit: contain;
     margin-bottom: var(--tabVerticalGap);
     margin-right: 2%;

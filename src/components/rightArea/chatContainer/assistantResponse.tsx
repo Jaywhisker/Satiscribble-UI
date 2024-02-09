@@ -4,7 +4,7 @@ export interface assistantResponse {
   text: string;
   sourceIDTitle?: any[];
   sourceIDs?: any[];
-  setSelectedMinutes?: any;
+  setFocusedTopic?: any;
   waiting?: boolean;
   id: number;
 }
@@ -35,7 +35,7 @@ export default function AssistantResponse(props: assistantResponse) {
                   <li
                     className={inputChat['cc-responseSourceText']}
                     key={index}
-                    onClick={() => props.setSelectedMinutes(props.sourceIDs[index])}
+                    onClick={() => props.setFocusedTopic(props.sourceIDs[index])}
                   >
                     {topic.title || topic.placeholder || "No sources"}
                   </li>

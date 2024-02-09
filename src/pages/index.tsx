@@ -16,7 +16,7 @@ export default function Home() {
   const [topicContent, setTopicContent] = useState([]);
   const [agendaContent, setAgendaContent] = useState([]);
 
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [focusedTopic, setFocusedTopic] = useState(null);
 
   const toast = useToast();
 
@@ -76,21 +76,21 @@ export default function Home() {
 
   useEffect(() => {
     //scroll to minutes
-    if (selectedTask !== null) {
+    if (focusedTopic !== null) {
       var minutesElement = document.querySelector(
-        `#minuteID${selectedTask}`
+        `#minuteID${focusedTopic}`
       ) as HTMLElement;
       minutesElement.scrollIntoView({ block: "start", behavior: "smooth" });
     }
-  }, [selectedTask]);
+  }, [focusedTopic]);
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <LeftSidebar
         agendaContent={agendaContent}
         setAgendaContent={setAgendaContent}
-        taskList={topicTitles}
-        setSelectedTask={setSelectedTask}
+        topicTitleList={topicTitles}
+        setFocusedTopic={setFocusedTopic}
       />
 
       <CenterArea
@@ -108,7 +108,7 @@ export default function Home() {
         minutesID={minutesID}
         chatHistoryID={chatHistoryID}
         topicTitles={topicTitles}
-        setSelectedMinutes={setSelectedTask}
+        setFocusedTopic={setFocusedTopic}
       />
     </div>
   );

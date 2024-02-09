@@ -45,7 +45,7 @@
 .gloss-cancelIcon,
 .gloss-deleteIcon,
 .gloss-editIcon{
-    width: 18%;
+    width: var(--medIcon);
     object-fit: contain;
     margin-left: 0.5vw;
 }

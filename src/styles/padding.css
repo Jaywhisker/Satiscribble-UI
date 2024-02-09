@@ -41,10 +41,16 @@
     
     --textGap: 1.5vh;
     --tabVerticalGap: 0.75vh;
+    --outlineVerticalGap:5vh;
 
     /* Border Radius */
     --smallBorderRadius: 3.5px;
     --medBorderRadius: 5px;
-    --bigBorderRadius:8px
+    --bigBorderRadius:8px;
+
+    /* Icon Size */
+    --smallIcon: 1.25vh;
+    --medIcon: 2vh;
+    --largeIcon: 3vh;
 }
 
