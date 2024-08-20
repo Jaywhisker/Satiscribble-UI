@@ -23,23 +23,26 @@ export const setDefaultHeight = (textareaRef) => {
     setActive(true);
   };
   
-  export const handleBlur = (id, textValue, value, setValue, minutesID, chatHistoryID) => {
-    // console.log(minutesID, chatHistoryID, textValue)
-      // console.log(`Textarea with ID ${id} has lost focus, with text: ${textValue}`);
-    if (value.endsWith("<br></li></ul>")){
-      const newValue = value.slice(0, -14) + "</ul>";
-      setValue(newValue); // Update the state with the new value
-    };
+// Function that is used to remove extra empty bullet points if they are left empty
+// Used in textAreaUsingQuill
+export const handleBlur = (id, textValue, value, setValue, minutesID, chatHistoryID) => {
+  if (value.endsWith("<br></li></ul>")){
+    const newValue = value.slice(0, -14) + "</ul>";
+    setValue(newValue); // Update the state with the new value
   };
+};
 
-// This functions purpose is not to create an accurate capture of the html code, but trying to get the point at which to slice to
+// This functions purpose is to convert the list input from react quill into a single paragraph to be processed
+// Used in textAreaUsingQuill
 export const deltaToHTML = (delta) =>{
   let html = "<ul>";
   let previousCharWasNewline = false;
-
+  
+  // So delta is a list of each line from the react quill library
   delta.ops.forEach((op) => {
     let text = op.insert
     if (/^[\n]+$/.test(text)) {
+      // For each enter there is \n, but for empty gaps, it is \n\n, so this is used to check and replicate that
       let newlineCount = (text.match(/\n/g) || []).length;
       if (newlineCount != 1){
         html += `<li><br></li>`.repeat(newlineCount-1); 
@@ -53,6 +56,7 @@ export const deltaToHTML = (delta) =>{
         }
       }
     }else{
+      // Base case of text not being \n
       html += `<li>${text}</li>`; 
       previousCharWasNewline = false;
     }
@@ -61,6 +65,9 @@ export const deltaToHTML = (delta) =>{
 }
 
 
+// This function is used to create nested bullet points in react quill
+// They use a unique class so this is scanning for that class and readding it
+// Used in textAreaUsingQuill
 export const updateListItems = (processedDelta, quillValue) => {
   const listItemRegex = /<li(?: class="([^"]*)")?>(.*?)<\/li>/g;
 
@@ -76,7 +83,6 @@ export const updateListItems = (processedDelta, quillValue) => {
       const processedItemText = processedItem[2];
 
       if (quillItemClass) {
-        // console.log(index, processedItem)
         updatedProcessedDelta = updatedProcessedDelta.replace(
           processedItem[0],
           `<li class="${quillItemClass}">${processedItemText}</li>`
@@ -99,6 +105,9 @@ export const updateListItems = (processedDelta, quillValue) => {
   return { updatedProcessedDelta, lastQuillItemClass };
 }
 
+
+// Function that is used to cleanup the raw text from quill area before sending to backend
+// Used in textAreaUsingQuill
 export const deltaToBackend = (rawText) => {
   const multipleNewlineRegex = /(\n{2,})/g;
   
@@ -109,15 +118,15 @@ export const deltaToBackend = (rawText) => {
     cleanedText = cleanedText.slice(0, -1);
   }
 
-  //sir help remove the \n at the end, can just return cleanedText.slice(0, -2)
   return cleanedText
 }
 
+// Function that is used to find the last abbreviation in the content block
+// Used in textAreaUsingQuill
 export const detectLastAbbreviation = (text) => {
   // Regular expression to match the abbreviations as per the new rules
   const abbreviationRegex = /\b[A-Z]{2,}\b/g;
 
-  // Match all occurrences of the new abbreviation pattern in the text
   const matches = text.match(abbreviationRegex);
 
   // If no matches found, return null
@@ -125,6 +134,5 @@ export const detectLastAbbreviation = (text) => {
     return null;
   }
 
-  // Return the last matched abbreviation
   return matches[matches.length - 1];
 };

@@ -21,12 +21,21 @@ interface centerAreaProps {
 }
 
 function CenterArea(props: centerAreaProps) {
-  const [topicCount, setTopCount] = useState(0);
-  const [showCover, setShowCover] = useState(false); //prevent editing when there is a delete topic
+  const [topicCount, setTopCount] = useState(0); //Count on how many topic blocks have been created, count used for placeholders and indexing
+  const [showCover, setShowCover] = useState(false); //prevent editing when there is a delete topic, toggled when the delete button of a filled up topic block has been clicked
 
+  //Notification toasts (plugin in used for notifications)
   const toast = useToast();
 
+  // ------------------------------------------------------------------------
+  //
+  //                        Upadter Functions
+  //
+  // ------------------------------------------------------------------------
+
+  // Function that handles the creation of a new topic block
   const handleAddTopicArea = () => {
+    // Checks that there is at least one agenda item in the agenda block
     var filledAgendaContent = props.agendaContent
       .map((agenda) => agenda.name)
       .filter((items) => items.trim() !== "");
@@ -46,7 +55,9 @@ function CenterArea(props: centerAreaProps) {
     }
   };
 
+  // Function that handles updating the content of topic blcoks
   function updateBlockContent(id, newContent) {
+    // Finds the content that  has the  same id as the block that is being updated and edits it
     props.setTopicContent((prevContent) => {
       return prevContent.map((content) => {
         if (content.id === id) {
@@ -57,38 +68,21 @@ function CenterArea(props: centerAreaProps) {
     });
   }
 
+  // Function that handles the deleting of a topic area
   const handleDeleteTopicArea = async (id) => {
-    props.setTopicTitles((currentAreas) =>
-      currentAreas.filter((topic) => topic.id !== id)
+    props.setTopicTitles(
+      (currentAreas) => currentAreas.filter((topic) => topic.id !== id) //Removing the title of the deleted block from the storage
     );
-    props.setTopicContent((currentAreas) =>
-      currentAreas.filter((content) => content.id !== id)
+    props.setTopicContent(
+      (currentAreas) => currentAreas.filter((content) => content.id !== id) //Removing the content of the deleted block from the storage
     );
     var response = await deleteTopic(props.minutesID, props.chatHistoryID, id);
     if (response != undefined) {
-      // call alert to showcase error
       console.log(response.ERROR);
     }
   };
 
-  // useEffect(() => {
-  //   const handleKeyDown = (event) => {
-  //     // Check if Control and Enter keys are pressed
-  //     if (event.ctrlKey && event.key === "Enter") {
-  //       handleAddTopicArea();
-  //       console.log(props.topicTitles);
-  //     }
-  //   };
-
-  //   // Add event listener
-  //   window.addEventListener("keydown", handleKeyDown);
-
-  //   // Clean up event listener
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, []);
-
+  // Main Html
   return (
     <div className={styles.mainAreaContainer}>
       <EmptyBlock showCover={showCover} />
@@ -133,7 +127,10 @@ function CenterArea(props: centerAreaProps) {
         />
       ))}
 
-      <div className={styles.genericBlockHolder} style={{marginBottom: '75vh'}}>
+      <div
+        className={styles.genericBlockHolder}
+        style={{ marginBottom: "75vh" }}
+      >
         {showCover && <div className={styles.genericBlockCover}></div>}
         <button
           className={styles.mainAreaAddNewBlockButton}

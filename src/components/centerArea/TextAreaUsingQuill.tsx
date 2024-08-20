@@ -47,7 +47,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [quillDisplayed, setQuillDisplayed] = useState(true);
   const [quillValue, setQuillValue] = useState("<ul><li></li></ul>");
   const [topic, setTopic] = useState("");
-  const [lastheardItem, setLastHeardItem] = useState("");
 
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const [summaryContent, setSummaryContent] = useState("");
@@ -65,41 +64,39 @@ function TextAreaQuill(props: TextAreaQuillProps) {
   const [errorExist, setErrorExist] = useState(false);
   const [summaryWarning, setSummaryWarning] = useState(false);
 
-  const toast = useToast();
-
+  //Reference Containers
   const topicRef = useRef(null);
   const fullMinutesRef = useRef(null);
   const minutesRef = useRef(null);
   const quillRef = useRef();
   const prevTopicTitlesLength = useRef(props.topicTitlesLength);
 
+  //Notification toasts
+  const toast = useToast();
+
+  // Helper function to toggle between displaying the quill area
+  // Used for when the block has been summarised and text can be hidden
   const toggleQuillVisibility = () => {
     setQuillDisplayed(!quillDisplayed);
   };
 
-  const handleTopicChange = (event) => {
-    const newTitle = event.target.value;
-    setTopic(newTitle);
-    props.updateTitle(newTitle); // Update the title in the parent component
-  };
+  // ------------------------------------------------------------------------
+  //
+  //                        Initialisation Functions
+  //
+  // ------------------------------------------------------------------------
 
-  function handleChange(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      quillRef.current.focus();
-    }
-  }
-
+  // Setting quill Value (the content to the props it receives)
   useEffect(() => {
     setQuillValue(props.content);
   }, [props.content]);
 
-  const handleQuillValueChange = (newValue) => {
-    setSummaryWarning(false);
-    setQuillValue(newValue);
-    props.updateBlockContent(newValue);
-  };
+  // Sets the topic prop
+  useEffect(() => {
+    setTopic(props.title);
+  }, [props.title]);
 
+  // Function that Focuses the topic input area of the newest created block upon its initialisation
   useEffect(() => {
     if (
       props.shouldFocus &&
@@ -110,7 +107,13 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     prevTopicTitlesLength.current = props.topicTitlesLength;
   }, [props.shouldFocus]);
 
-  //animation logic for drop down -------------------------------------------------------------------------
+  // ------------------------------------------------------------------------
+  //
+  //                        Misc. Helper Functions
+  //
+  // ------------------------------------------------------------------------
+
+  //Used to resize the block to fit all the text in the quillarea
   useEffect(() => {
     if (minutesRef.current) {
       var currentReactQuillHeight = minutesRef.current.clientHeight;
@@ -120,6 +123,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   }, [quillValue]);
 
+  //animation logic for drop down -------------------------------------------------------------------------
   useEffect(() => {
     if (isSummaryVisible && fullMinutesRef.current) {
       if (quillDisplayed) {
@@ -139,6 +143,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   }, [isSummaryVisible, quillDisplayed]);
 
+  // Function that generates a summary using the content (and unhides it)
   const toggleSummaryVisibility = async () => {
     if (!deleteMode && props.content !== "<ul><li><br></li></ul>") {
       setIsSummaryVisible(true);
@@ -155,23 +160,105 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         setSummaryContent(response);
         setLoadingSummary(false);
       } else {
-        // console.log(response.ERROR);
         setTimeout(() => {
           setSummaryContent("Error generating summary, please try again");
           setLoadingSummary(false);
-          setQuillDisplayed(true)
-        }, 1500)
+          setQuillDisplayed(true);
+        }, 1500);
       }
     } else if (props.content == "<ul><li><br></li></ul>") {
       setSummaryWarning(true);
     }
   };
 
-  //handling updating of minutes ------------------------------
-  useEffect(() => {
-    setTopic(props.title);
-  }, [props.title]);
+  // Removes any alerts about changes to block cannot be saved when the block is focused
+  const handleFocus = () => {
+    setContentChanged(false);
+    var minutesFailedAlert = toast.alertContainer.filter(
+      (alert) =>
+        alert.type === "minutesSaveFail" &&
+        alert.stateValue == false &&
+        alert.message.reqData.topicID == props.id
+    );
+    if (minutesFailedAlert.length > 0) {
+      //update to remove the minutesFailedAlert
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
+      setErrorExist(true);
+    }
+  };
 
+  // Function that handles when the delete button is pressed and shows the confirmation screen
+  function handleDeleteButton() {
+    if (props.title == "" && props.content == "<ul><li><br></li></ul>") {
+      props.onDelete();
+    } else {
+      setDeleteMode(true);
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+      props.setShowCover(true);
+    }
+  }
+
+  // Function that actually handlesthe deletion
+  function actualDeletefunction() {
+    setDeleteMode(false);
+    var minutesFailedAlert = toast.alertContainer.filter(
+      (alert) =>
+        alert.type === "minutesSaveFail" &&
+        alert.stateValue == false &&
+        alert.message.reqData.topicID == props.id
+    );
+    if (minutesFailedAlert.length > 0) {
+      //update to remove the minutesFailedAlert on key down
+      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
+      setErrorExist(true);
+    }
+    props.onDelete();
+    document.body.style.overflow = "auto";
+    props.setShowCover(false);
+  }
+
+  // Function that handles the closing of the delete block
+  function handleClose() {
+    setDeleteMode(false);
+    // document.body.style.overflow = "auto"; Used to allow for the center area to be locked
+    props.setShowCover(false);
+  }
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Title Helper Functions
+  //
+  // ------------------------------------------------------------------------
+
+  // Helper function to handle updating the title
+  const handleTopicChange = (event) => {
+    const newTitle = event.target.value;
+    setTopic(newTitle);
+    props.updateTitle(newTitle);
+  };
+
+  // Helper function to enter  the content area upon pressing enter in the title
+  function handleChange(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      quillRef.current.focus();
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  //
+  //                        Content (Quill Area) Functions
+  //
+  // ------------------------------------------------------------------------
+
+  // Function that updates that updates the various props once content has been changed
+  const handleQuillValueChange = (newValue) => {
+    setSummaryWarning(false);
+    setQuillValue(newValue);
+    props.updateBlockContent(newValue);
+  };
+
+  // Function that calls updateMinutes  function once the content area has lost focus
   const handleBlurring = async (ignoreAlerts) => {
     const quillEditor = quillRef.current.getEditor();
     const rawText = quillEditor.getText();
@@ -192,21 +279,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     );
   };
 
-  const handleFocus = () => {
-    setContentChanged(false);
-    var minutesFailedAlert = toast.alertContainer.filter(
-      (alert) =>
-        alert.type === "minutesSaveFail" &&
-        alert.stateValue == false &&
-        alert.message.reqData.topicID == props.id
-    );
-    if (minutesFailedAlert.length > 0) {
-      //update to remove the minutesFailedAlert
-      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
-      setErrorExist(true);
-    }
-  };
-
+  // Function that processes the quillValue and updates the various props
   const handleUpdateMinutes = async (
     backendDelta,
     lastAbbreviation,
@@ -251,18 +324,25 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   };
 
+  // Function that handles  whenever something is typed in the content area
+  // Ok this function is used to handle all the unique  characteristics of quillarea
+  // Ie
+  // Everything is in bullet points
+  // Nested bullet points
+  // Pressing enter also moves the tab back like backspace
+  // This segment will be heavily commented
   const handleKeyDown = async (event) => {
+    // Sets content change to true so that if the area loses focus it can be updated on backend
     if (contentChanged == false) {
       setContentChanged(true);
     }
+
+    // Getting the editor from the block and the text inside
     const quillEditor = quillRef.current.getEditor();
     const rawText = quillEditor.getText();
-    const range = quillEditor.getSelection();
-    if (range) {
-      const array = quillEditor.getContents(0, range.index)["ops"];
-      setLastHeardItem(array[array.length - 1]);
-    }
 
+    // I honestly have never seen this function fire
+    // But essentially happens if someone has more than 3000 characters in a block
     if (rawText.length > 3000) {
       setTooLong(true);
       if (!tooLong) {
@@ -272,6 +352,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
       setTooLong(false);
     }
 
+    // If there is a alert on minutesSaveFail remove it upon keydown
     var minutesFailedAlert = toast.alertContainer.filter(
       (alert) =>
         alert.type === "minutesSaveFail" &&
@@ -285,9 +366,12 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
 
     if (event.ctrlKey && event.key === "Enter") {
+      // This is for the specific case of ctrl and enter being pressed
+      // In which a new block is created
       event.preventDefault();
       props.onAddTopicArea();
     } else if (event.key === "Enter") {
+      // This is for whenever the enter button is pressed
       const backendDelta = deltaToBackend(rawText);
       let lastAbbreviation = detectLastAbbreviation(backendDelta);
       if (lastAbbreviation == oldAbbreviation) {
@@ -305,20 +389,28 @@ function TextAreaQuill(props: TextAreaQuillProps) {
           quillValue
         );
 
+        // So we are trying to generate result,
+        // Which is the content of the quill block after the cursor
         const result = quillValue.replace(updatedProcessedDelta, "");
 
         const previousCursorPosition = range.index;
 
         if (result.startsWith("</ul><p><br></p>")) {
+          // This case happens if you pressed enter on an filled up bullet point, in which a new one will be made
           const indexOfSubstring =
             result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
           let textAfter = result.substring(indexOfSubstring);
           if (textAfter.includes("<ul>") && textAfter.includes("</ul>")) {
+            // If this happens that means that the user went back to the previous lines and pressed enter, so we need to get the text from beyond that point
             textAfter = textAfter.replace(/<ul>|<\/ul>/g, "").trim();
           }
+          // So lastQuillItem is from the existing things before the cursor
+          // We find whether the previous thing had the special class that helps to indent it
           let classAttribute = lastQuillItemClass
             ? ` class="${lastQuillItemClass}"`
             : "";
+          // offset is how much the cursor should be moved
+          // Bcos this function is manual, we have to move the cursor as well
           let offset = 1;
           let newLiElements = "";
           if (classAttribute == "") {
@@ -327,17 +419,19 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             newLiElements = `<li><br></li>`;
             offset = 0;
           }
+          // This is essentially combining previous text, the new added bullet point, text after the cursor and the closing <ul>
           const something =
             updatedProcessedDelta + newLiElements + textAfter + "</ul>";
-
-          // Updating the values and setting the cursor position
           setQuillValue(something);
+
+          // We use setTimeout for a little delay so the text is set before so that the cursor position is based on the new text
           setTimeout(() => {
             const quillEditor = quillRef.current.getEditor();
             const position = quillEditor.getLength();
             quillEditor.setSelection(previousCursorPosition + offset, 0);
           }, 0);
         } else if (result.startsWith("<p><br></p>")) {
+          // If you pressed enter on an empty bullet point, it just deletes it, so this is to add back the bullet point
           console.log(result);
           let textAfter = result.substring(11);
           console.log(textAfter);
@@ -347,6 +441,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         }
       }
     } else if (event.key === "Backspace") {
+      // This is for whenever the delete button is pressed
       const range = quillEditor.getSelection();
       if (range) {
         const contentUpToCursor = quillEditor.getContents(0, range.index);
@@ -360,7 +455,6 @@ function TextAreaQuill(props: TextAreaQuillProps) {
         const previousCursorPosition = range.index;
         const pattern = /<\/ul><p>(.*?)<\/p>([\s\S]*)/;
         const match = result.match(pattern);
-        console.log(result);
         if (result.startsWith("</ul><p><br></p>")) {
           const indexOfSubstring =
             result.indexOf("</ul><p><br></p>") + "</ul><p><br></p>".length;
@@ -375,8 +469,10 @@ function TextAreaQuill(props: TextAreaQuillProps) {
             quillEditor.setSelection(previousCursorPosition, 0);
           }, 0);
         } else if (result.startsWith("<p>")) {
+          // This is for the case of a bullet point being deleted
           setQuillValue("<ul>" + result + "</ul>");
         } else if (result.startsWith("<p><br></p>")) {
+          // This is for the case of the entire thing being deleted and just set it to a base case
           setQuillValue("<ul><p><br></p></ul>");
         } else if (match) {
           //ie someone deleted a bullet point with tet there to move it up?
@@ -391,6 +487,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
               .replace(/<ul>|<\/ul>/g, "")
               .trim();
           }
+          // This entire thing below is finding how should the class change to move back by one
           const lastLiRegex =
             /(<li[^>]*>)(<br>|.*?)(<\/li>)(?![\s\S]*<li[^>]*>)/;
           const lastLiMatch = updatedProcessedDelta.match(lastLiRegex);
@@ -418,40 +515,7 @@ function TextAreaQuill(props: TextAreaQuillProps) {
     }
   };
 
-  function handleDeleteButton() {
-    if (props.title == "" && props.content == "<ul><li><br></li></ul>") {
-      props.onDelete();
-    } else {
-      setDeleteMode(true);
-      document.body.style.overflow = "hidden"; // Prevent scrolling
-      props.setShowCover(true);
-    }
-  }
-
-  function actualDeletefunction() {
-    setDeleteMode(false);
-    var minutesFailedAlert = toast.alertContainer.filter(
-      (alert) =>
-        alert.type === "minutesSaveFail" &&
-        alert.stateValue == false &&
-        alert.message.reqData.topicID == props.id
-    );
-    if (minutesFailedAlert.length > 0) {
-      //update to remove the minutesFailedAlert on key down
-      toast.update(minutesFailedAlert[0].id, "meetingSaveFail", true);
-      setErrorExist(true);
-    }
-    props.onDelete();
-    document.body.style.overflow = "auto";
-    props.setShowCover(false);
-  }
-
-  function handleClose() {
-    setDeleteMode(false);
-    document.body.style.overflow = "auto";
-    props.setShowCover(false);
-  }
-
+  // HTML
   return (
     <div className={styles.topicBlockBigHolder}>
       {props.showCover && !deleteMode && (
