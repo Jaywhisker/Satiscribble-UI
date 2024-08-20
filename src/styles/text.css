@@ -1,12 +1,12 @@
 :root{
-    --ui-background-text: 800 5vh 'Lato';
-    --ui-heading: 600 3vh 'Lato';
-    --ui-alertHeaderText: 600 2.5vh 'Lato';
-    --ui-subheading: 800 2vh 'Lato';
-    --ui-text: 400 2vh 'Lato';
-    --ui-bold-text: 600 2vh 'Lato';
-    --ui-subtext: 600 1.95vh 'Lato';
-    --ui-alertText: 400 1.85vh 'Lato';
-    --ui-comment: 600 1.75vh 'Lato';
-    --ui-captions: 400 1.5vh 'Lato';
+    --ui-background-text: 800 2.5vw 'Lato';
+    --ui-heading: 600 1.5vw 'Lato';
+    --ui-alertHeaderText: 600 1.3vw 'Lato';
+    --ui-subheading: 800 1vw 'Lato';
+    --ui-text: 400 1.2vw 'Lato';
+    --ui-bold-text: 600 0.8vw 'Lato';
+    --ui-subtext: 600 0.8vw 'Lato';
+    --ui-alertText: 400 1vw 'Lato';
+    --ui-comment: 600 0.75vw 'Lato';
+    --ui-captions: 400 0.75vw 'Lato';
 }
